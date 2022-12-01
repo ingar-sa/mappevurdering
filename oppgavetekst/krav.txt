@@ -1,0 +1,44 @@
+
+Krav til Programmet/koden
+Følgende krav gjelder for programmet/applikasjonen:
+
+    Koden skal følge en bestemt kodestil (enten Google eller "BlueJ"-stilen gitt i regelfilen "IDATx1001" for Chekstyle)
+    Kodestilen skal verifiseres med CheckStyle-plugin (for BlueJ, IntelliJ osv) og vise ingen regelbrudd ved levering. Se: https://www.ntnu.no/wiki/display/idatx1001/CheckStyle+og+SonarLint+for+BlueJ%2C+IntelliJ+osv
+    Klassen og alle metoder, variabler (felt, parametre, lokale variabler) skal ha gode, beskrivende navn som tydelig gjenspeiler hvilken tjeneste en metode tilbyr, eller hvilken verdi variablene representerer/holder på.
+    Alle navn på klasser, metoder og variabler skal være på engelsk.
+    Løsningen din skal i størst mulig grad oppfylle designprinsippene coupling, cohesion og responsibility driven design.
+    Brukerinteraksjonen skal være brukervennlig, intuitiv og  utfyllende (bruker skal til enhver tid ha full oversikt over hva som foregår, hva some r foventet av han/henne)
+
+Du velger selv hvilken IDE (utviklingsverktøy) du vil bruke på prosjektet (BlueJ, IntelliJ, VisualStudio Code etc).
+For å teste klassen i starten (spesielt til dere som ikke bruker BlueJ): Lag en klasse som representerer selve applikasjonen, og implementert klassemetoden public static void main(String[] args){} i denne klassen. Skriv test-kode i main-metoden for å teste at Vare-klassen din fungerer som forventet.
+Senere, bruk enhetstesting (JUnit).
+Krav til innlevering
+Du leverer prosjektet ditt som en ZIP-fil (IKKE .TAR, . PAR,.GZ osv!!!) i Inspera når mappen åpnes. ZIP-filen skal inneholde hele mappestrukturen din slik at det er mulig for sensor å enkelt pakke ut ZIP-filen og kjøre applikasjonen din. Dersom sensor må tilpasse oppsett osv for å kunne få kjørt appliaksjoen din kan det medføre trekk under sensur;-)
+
+
+Krav til rapport
+Vi har laget en mal du kan bruke for rapporten. Denne malen er basert på samme mal som dere vil møte når dere skal skrive Bachelor-oppgave siste året. Ved å bli vant med å skrive rapport iht dette formatet allerede nå, blir det å skrive Bachelor-rapport siste året betydelig enklere ;-) Malen inneholder "hjelpe-tekst" (grønn) som dere enkelt kan fjerne før rapproten skal leveres inn.
+Her er malen: Studentrapport.dotx
+Følgende krav gjelder for rapporten:
+Rapporten skal inneholde:
+
+    En forside med kandidatnavn, og navn på emnet ("IDATA1001 Programmering 1" for Ålesund osv.)
+    En innholdsfortegnelse (automatisk generert)
+    En innledning som beskriver kort kravspesifikasjonen gitt i oppgaven (her kan du hente det meste fra oppgavebeskrivelsen).
+    En terminologi-liste, som inneholder begreper relatert til oppgaven, både på norsk og engelsk
+    En teori-del der dere kort gjør rede for de teorier som dere har anvendt under utviklingen av applikajsonen (coupling, cohesion osv)
+    En metode/desig-del der dere kort beskriver metoden dere har jobbet etter, og hvilke verktøy dere har benyttet (hvilken IDE, + andre verktøy)
+    Under hovedavsnittet "resultater". Beskriv med egne ord hvilke valg du har gjort når du utviklet applikasjonen:
+        Hvorfor valgte du de datatypene du valgte (for feltene til klassen)?
+        Har du implementert mutator-metoder for noen av feltene? I så fall; for hvilke felt og hvorfor?
+        Hvilke klasser har du laget? Hva ligger bak navngivingen av klassene?
+        Hvilke ansvar/rolle har de ulike klassene?
+        Beskriv også prosessen (NB! IKKE SOM "DAGBOK"): hvilke endringer fant du ut underveis at var lurt å gjøre og hvorfor (refactoring) ?
+        Reflekter/diskuter hvilke tiltak du har innført for å sikre at klassen er implementert som en robust klasse (en robust klasse er en klasse der det ikke er mulig å angi ugyldige verdier til feltene i klassen).
+    Avslutt rapproten med drøfting der du gir din vurdering av det endelige resultatet. Hvordan ble resultatet i forhold til teoriene for god design ?
+    Konkluder til slutt (i konklusjon-delen): hva har vært det mest lærerike med oppgaven? Hva ville du foreslått som forbedringer? Hva ville du ha utvidet applikasjonen med om det var mer tid?
+
+
+NB! Pass på at rapporten ikke blir en dagbok ("I del 1 ble vi bedt om å .....", "deretter i del 2 skulle vi lage..."). Tenk at rapporten skal være kjemisk fri for referanse til de 3 delene oppgaven er inndelt i. Fokuser på sluttproduktet og veien din dit. Beskriv f.eks. i resultatdelen at "Første versjon av Vare-klassen hadde noen klare svaketer, som ..... Klassen ble derfor refaktorert/re-designet ...slik og slik.. for å oppnå...". "For klassen AAA ble det valgt å ....".
+Unngå også i størst mulig grad å skrive på "jeg"-form: "Jeg tok først..:", "Deretter valgte jeg....".
+LYKKE TIL :-)
