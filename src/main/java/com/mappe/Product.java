@@ -155,6 +155,7 @@ public class Product {
    * @param category The new category of the item.
    */
   public void setCategory(int category) {
+    assertValidCategory(category);
     this.category = category;
   }
 
