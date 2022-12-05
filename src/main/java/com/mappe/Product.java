@@ -1,6 +1,6 @@
 package com.mappe;
 
-public class Item {
+public class Product {
     
   private String id;
     
@@ -35,7 +35,7 @@ public class Item {
    * @param quantity The quantity of the item. Must be greater than or equal to 0.
    * @param category The category of the item. Must be either 1, 2, 3, or 4.
    */
-  public Item(String id, 
+  public Product(String id, 
               String description,
               int price,
               String brand,
@@ -68,7 +68,7 @@ public class Item {
    * Copy constructor for the Item class.
    * @param item The item to be copied.
    */
-  public Item(Item item) {
+  public Product(Product item) {
     this(item.getId(), // TODO(ingar): need to assert that the id is unique in the inventory class.
          item.getDescription(),
          item.getPrice(),
@@ -82,6 +82,14 @@ public class Item {
   }
 
   /**
+   * Change the description of the item.
+   * @param description The new description of the item.
+   */
+  public void setDesciption(String description) {
+    this.description = description;
+  }
+
+  /**
    * Change the price of the item. The price must be greater than 0.
    * @param price The new price of the item.
    */
@@ -91,12 +99,63 @@ public class Item {
   }
 
   /**
+   * Change the brand of the item.
+   * @param brand The new brand of the item.
+   */
+  public void setBrand(String brand) {
+    this.brand = brand;
+  }
+
+  /**
+   * Change the weight of the item. The weight must be greater than 0.
+   * @param weight The new weight of the item.
+   */
+  public void setWeight(double weight) {
+    assertPositiveNumber(weight);
+    this.weight = weight;
+  }
+
+  /**
+   * Change the length of the item. The length must be greater than 0.
+   * @param length The new length of the item.
+   */
+  public void setLength(double length) {
+    assertPositiveNumber(length);
+    this.length = length;
+  }
+
+  /**
+   * Change the height of the item. The height must be greater than 0.
+   * @param height The new height of the item.
+   */
+  public void setHeight(double height) {
+    assertPositiveNumber(height);
+    this.height = height;
+  }
+
+  /**
+   * Change the color of the item.
+   * @param color The new color of the item.
+   */
+  public void setColor(String color) {
+    this.color = color;
+  }
+
+  /**
    * Change the quantity of the item. The quantity must be greater than or equal to 0.
    * @param quantity The new quantity of the item.
    */
   public void setQuantity(int quantity) {
     assertValidItemQuantity(quantity);
     this.quantity = quantity;
+  }
+
+  /**
+   * Change the category of the item. The category must be either 1, 2, 3, or 4.
+   * @param category The new category of the item.
+   */
+  public void setCategory(int category) {
+    this.category = category;
   }
 
   public String getId() {
@@ -140,6 +199,8 @@ public class Item {
     return category;
   }
 
+  // TODO(ingar): Do a review to see if the asserts should use exceptions,
+  // or if they should use some other means of error handling.
   private void assertValidCategory(int category) {
     if (category < 1 || category > 4) {
       throw new IllegalArgumentException("Category must be 1, 2, 3 or 4");
@@ -172,7 +233,7 @@ public class Item {
   }
 
   public static void main(String[] args) {
-    Item item = new Item("1", "description", 1, "brand", 1.0, 1.0, 1.0, "color", 1, 1);
+    Product item = new Product("1", "description", 1, "brand", 1.0, 1.0, 1.0, "color", 1, 1);
     System.out.println(item);
   }
 
