@@ -6,7 +6,7 @@ public class Item {
     
   private String description;
   
-  private double price;
+  private int price;
   
   private String brand;
   
@@ -26,18 +26,18 @@ public class Item {
    * The constructor takes in all the parameters and assigns them to the member fields.
    * @param id The id of the item.
    * @param description The description of the item.
-   * @param price The price of the item.
+   * @param price The price of the item. Must be greater than 0.
    * @param brand The brand of the item.
-   * @param weight The weight of the item.
-   * @param length The length of the item.
-   * @param height The height of the item.
+   * @param weight The weight of the item. Must be greater than 0.
+   * @param length The length of the item. Must be greater than 0.
+   * @param height The height of the item. Must be greater than 0.
    * @param color The color of the item.
-   * @param quantity The quantity of the item.
-   * @param category The category of the item.
+   * @param quantity The quantity of the item. Must be greater than or equal to 0.
+   * @param category The category of the item. Must be either 1, 2, 3, or 4.
    */
   public Item(String id, 
               String description,
-              double price,
+              int price,
               String brand,
               double weight,
               double length,
@@ -45,9 +45,6 @@ public class Item {
               String color,
               int quantity,
               int category) {
-
-    
-    
     this.id = id;
     this.description = description;
     this.price = price;
@@ -58,9 +55,89 @@ public class Item {
     this.color = color;
     this.quantity = quantity;
     this.category = category;
-
+    
+    assertPositiveNumber(price);
+    assertPositiveNumber(weight);
+    assertPositiveNumber(length);
+    assertPositiveNumber(height);
+    assertValidItemQuantity(quantity);
     assertValidCategory(category);
-    assertPositiveItemQuantity(quantity);
+  }
+
+  /**
+   * Copy constructor for the Item class.
+   * @param item The item to be copied.
+   */
+  public Item(Item item) {
+    this(item.getId(), // TODO(ingar): need to assert that the id is unique in the inventory class.
+         item.getDescription(),
+         item.getPrice(),
+         item.getBrand(),
+         item.getWeight(),
+         item.getLength(),
+         item.getHeight(),
+         item.getColor(),
+         item.getQuantity(),
+         item.getCategory());
+  }
+
+  /**
+   * Change the price of the item. The price must be greater than 0.
+   * @param price The new price of the item.
+   */
+  public void setPrice(int price) {
+    assertPositiveNumber(price);
+    this.price = price;
+  }
+
+  /**
+   * Change the quantity of the item. The quantity must be greater than or equal to 0.
+   * @param quantity The new quantity of the item.
+   */
+  public void setQuantity(int quantity) {
+    assertValidItemQuantity(quantity);
+    this.quantity = quantity;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public int getPrice() {
+    return price;
+  }
+
+  public String getBrand() {
+    return brand;
+  }
+
+  public double getWeight() {
+    return weight;
+  }
+
+  public double getLength() {
+    return length;
+  }
+
+  public double getHeight() {
+    return height;
+  }
+
+  public String getColor() {
+    return color;
+  }
+
+  public int getQuantity() {
+    return quantity;
+  }
+
+  // TODO(ingar): xShould be turned into an enum at some point
+  public int getCategory() {
+    return category;
   }
 
   private void assertValidCategory(int category) {
@@ -69,9 +146,21 @@ public class Item {
     }
   }
 
-  private void assertPositiveItemQuantity(int quantity) {
+  private void assertValidItemQuantity(int quantity) {
     if (quantity < 0) {
-      throw new IllegalArgumentException("Item quantity must be positive");
+      throw new IllegalArgumentException("Item quantity must be greater than or equal to 0");
+    }
+  }
+
+  private void assertPositiveNumber(double number) {
+    if (number <= 0) {
+      throw new IllegalArgumentException("Number must be greater than 0.");
+    }
+  }
+
+  private void assertPositiveNumber(int number) {
+    if (number <= 0) {
+      throw new IllegalArgumentException("Number must be greater than 0.");
     }
   }
 
@@ -83,7 +172,7 @@ public class Item {
   }
 
   public static void main(String[] args) {
-    Item item = new Item("1", "description", 1.0, "brand", 1.0, 1.0, 1.0, "color", 1, 1);
+    Item item = new Item("1", "description", 1, "brand", 1.0, 1.0, 1.0, "color", 1, 1);
     System.out.println(item);
   }
 
