@@ -45,7 +45,97 @@ I have used the asserts used in the constructor to assure the values are valid.
 Another way I ensure robustness, is saying explicitly in the javadoc what values are
 accepted in the methods and the constructor.
 
+**Part 2**
+The client has an inventory. The inventory has items.
+This ensures composition and not aggregation, which
+is what makes sense in this case.
 
+Print all products:
+Probably don't want to use a toString for this,
+but rather a custom format. I think it is best that
+the printing is done from the Inventory class as well,
+instead of the inventory class returning the data from
+the products.
+
+Finding by id and/or descriptioin:
+The way this makes sense to me is that they meant
+that you only have to implement either type, but that
+doesn't seem quite right either. I am going to implement
+two separate methods.
+In both of them, you shouldn't have to input the exact
+text that is stored in the product, rather the input is
+checked for all items, and if it contains it, returns the item.
+This makes sense to me from a usability perspective.
+
+In functions where you have to look up an item, a possible 
+implementation is that you use either id search or description
+search, and then present a list of the results. You can then
+choose one by a number. It requires a relatively complicated
+relationship between the client and the inventory class but
+it is quite user friendly.
+
+Might need separate functions for internal search and
+external search (searching from the client)
+Might make one method were it checks if either
+the id or the description matches
+All id's have uppercase letters and the search
+for id's is case sensitive.
+Search for description is case insensitive
+
+Finding by id:
+Take in a string
+If any id *starts* with the string, it is returned.
+For example: P1id: ABC1234, P2id: ABC234
+Input: A, AB or ABC will return both
+Input: ABC1 will return P1, ABC2 will return P2
+Input: Anything *not* starting with A will return nothing
+
+Finding by description:
+Take in a string
+Case insensitive
+Any item that contains the string *as a whole symbol,*
+*or a series of symbols, split by spaces*  will be returned
+For example: P1des: Shoe color red, P2des: Shoe color blue
+Input: "Shoe" or "Shoe color" will return both
+Input: "red" returns p1, "blue" returns P2
+Input: "hoe", "col", "e" returns nothing
+
+
+Adding a product:
+The client gets information from the user and calls
+a method in the inventory that adds a product from that
+data.
+
+Increase product quantity:
+Use the either of the search methods
+
+Decrause product quantity:
+Take in an id and quantity
+Decrease its quantity with the input
+
+Deleting a product:
+What makes most sense to me is that the user inputs the product
+id, and it is deleted from that. Since you are able to search
+by description, it might make sense to be able to delete a 
+product by that, but I don't think that is a good idea.
+Multiple products may contain the string you are searching
+for when searching through the descriptions, so it is not
+specific enough for deleting a product.
+Should probably call the findProductById method
+
+Different methods for changing all the fields
+
+Client:
+I'm not sure whether or not I want to use the boxes or not.
+Maybe I should just use them for getting certain types of input,
+since it makes it very clear where you are supposed to type.
+However, that might make a disjointed experience, since you are
+moving between using the terminal and the boxes. There is also
+the issue that with previous implementations, I am creating and
+deleting the boxes when tehy have fulfilled their purpose. I
+think I should either make a completely GUI program, which is 
+time consuming and way outside of the curriculum, or just a pure
+CLI. I am definitely leaning towards the CLI route.
 
 **Ideas**
 Use hashmap with the id's as keys, since this has O(1) lookup time.

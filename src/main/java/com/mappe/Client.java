@@ -1,94 +1,54 @@
 package com.mappe;
 
+import java.util.Scanner;
+
 public class Client {
-  public static void main(String[] args) {
+  
+  Inventory inventory;
 
-    try {
-      Product validProduct = new Product("123", "A product", 100, "A brand", 1.0, 1.0, 1.0, "red", 1, 1);
-      System.out.println(validProduct);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    
-    try {
-      Product invalidPrice = new Product("456", "A product", 0, "A brand", 1.0, 1.0, 1.0, "red", 1, 1);
-      System.out.println(invalidPrice);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    
-    try {
-      Product invalidWeight = new Product("789", "A product", 100, "A brand", 0.0, 1.0, 1.0, "red", 1, 1);
-      System.out.println(invalidWeight);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    
-    try {
-      Product invalidLength = new Product("101", "A product", 100, "A brand", 1.0, 0.0, 1.0, "red", 1, 1);
-      System.out.println(invalidLength);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+  /**
+   * The constructor initializes an Inventory object.
+   */
+  public Client() {
+    inventory = new Inventory();
+  }
 
-    try {
-      Product invalidHeight = new Product("101", "A product", 100, "A brand", 1.0, 1.0, 0.0, "red", 1, 1);  
-      System.out.println(invalidHeight);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    
-    try {
-      Product invalidCategory = new Product("101", "A product", 100, "A brand", 1.0, 1.0, 1.0, "red", 1, 5);
-      System.out.println(invalidCategory);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    try {
-      Product invalidQuantity = new Product("101", "A product", 100, "A brand", 1.0, 1.0, 1.0, "red", -1, 1);
-      System.out.println(invalidQuantity);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    Product product = new Product("123", "A product", 100, "A brand", 1.0, 1.0, 1.0, "red", 1, 1);
-
-    try {
-      product.setCategory(5);
-    } catch (Exception e) {
-      System.out.println("Set invalid category: " + e.getMessage());
-    }
-
-    try {
-      product.setPrice(0);
-    } catch (Exception e) {
-      System.out.println("Set invalid price: " + e.getMessage());
-    }
-
-    try {
-      product.setWeight(0.0);
-    } catch (Exception e) {
-      System.out.println("Set invalid weight: " + e.getMessage());
-    }
-
-    try {
-      product.setLength(0.0);
-    } catch (Exception e) {
-      System.out.println("Set invalid length: " + e.getMessage());
-    }
-
-    try {
-      product.setHeight(0.0);
-    } catch (Exception e) {
-      System.out.println("Set invalid height: " + e.getMessage());
-    }
-
-    try {
-      product.setQuantity(-1);
-    } catch (Exception e) {
-      System.out.println("Set invalid quantity: " + e.getMessage());
+  public void run() {
+    Scanner scanner = new Scanner(System.in);
+    while (true) {
+      String nextString = scanner.nextLine();
+      System.out.println("Print 1: " + scanner.nextLine());
+      System.out.println("Print 2: " + scanner.nextLine());
+      
     }
   }
-}
 
+  private void deleteProduct() {
+  }
+
+  private void addProduct() {
+  }
+
+  private void increaseProductQuantity() {
+  }
+
+  private void decreaseProductQuantity() {
+  }
+
+  private void printAllProducts() {
+  }
+
+  // TODO(note): The description says that you should be able to search
+  // by both id and/or description, but this doesn't make much senese to me
+  private void findProductById() {
+  }
+
+  private void findProductByDescription() {
+  }
+  
+
+  public static void main(String[] args) {
+    Client client = new Client();
+    client.run();
+  }
+}

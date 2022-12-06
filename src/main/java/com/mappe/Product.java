@@ -200,6 +200,19 @@ public class Product {
     return category;
   }
 
+  public void printFormatted() {
+    System.out.println("ID: " + id);
+    System.out.println("Description: " + description);
+    System.out.println("Price: " + price);
+    System.out.println("Brand: " + brand);
+    System.out.println("Weight: " + weight);
+    System.out.println("Length: " + length);
+    System.out.println("Height: " + height);
+    System.out.println("Color: " + color);
+    System.out.println("Quantity: " + quantity);
+    System.out.println("Category: " + category);
+  }
+
   // TODO(ingar): Do a review to see if the asserts should use exceptions,
   // or if they should use some other means of error handling.
   private void assertValidCategory(int category) {
