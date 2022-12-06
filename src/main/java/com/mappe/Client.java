@@ -17,6 +17,7 @@ public final class Client {
 
   public void run() {
     Scanner scanner = new Scanner(System.in);
+    scanner.useDelimiter(System.lineSeparator());
     boolean running = true;
     while (running) {
       
@@ -32,10 +33,9 @@ public final class Client {
       System.out.println("\nEnter a number: ");
 
       int choice = -1;
-      if (scanner.hasNextInt()) {
-        choice = scanner.nextInt();
-      }
-
+      // Scanner scanner = new Scanner(System.in);
+      choice = scanner.nextInt();
+      
       switch (choice) {
         case 1:
           printAllProducts();
@@ -66,8 +66,8 @@ public final class Client {
           System.out.println("Invalid choice. Please try again.");
           break;
       }
-
-      
+      scanner.next();
+      // scanner.close();
     }
 
     scanner.close();
@@ -162,7 +162,8 @@ public final class Client {
     System.out.println("---Search for a product---");
     System.out.println("Enter search term (--help for help): ");
     Scanner scanner = new Scanner(System.in);
-    String searchTerm = scanner.nextLine();
+    scanner.useDelimiter(System.lineSeparator());
+    String searchTerm = scanner.next();
 
     if (searchTerm.equals("--help")) {
       System.out.println("Search by id or description. "
@@ -173,7 +174,7 @@ public final class Client {
             + "The description(s) that matches the search term the closest will be returned.\n");
                       
       System.out.println("Enter search term: ");
-      searchTerm = scanner.nextLine();
+      searchTerm = scanner.next();
     }
     
     List<Product> matches = inventory.findProducts(searchTerm);
@@ -198,7 +199,7 @@ public final class Client {
       if (scanner.hasNextInt()) {
         chosenOption = scanner.nextInt();
       } else {
-        String exit = scanner.nextLine();
+        String exit = scanner.next();
         if (exit.equals("--exit")) {
           scanner.close();
           return null;
