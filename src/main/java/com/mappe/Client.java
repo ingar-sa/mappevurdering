@@ -41,22 +41,22 @@ public final class Client {
           printAllProducts();
           break;
         case 2:
-          printProduct();
+          printProduct(scanner);
           break;
         case 3:
-          addProduct();
+          addProduct(scanner);
           break;
         case 4:
-          deleteProduct();
+          deleteProduct(scanner);
           break;
         case 5:
-          increaseProductQuantity();
+          increaseProductQuantity(scanner);
           break;
         case 6:
-          decreaseProductQuantity();
+          decreaseProductQuantity(scanner);
           break;
         case 7:
-          modifyProduct();
+          modifyProduct(scanner);
           break;
         case 8:
           System.out.println("Goodbye!");
@@ -147,7 +147,7 @@ public final class Client {
     inventory.decreaseProductQuantity(id, amount);
   }
 
-  private void modifyProduct() {
+  private void modifyProduct(Scanner scanner) {
   }
 
   private String findProduct(Scanner scanner) {
