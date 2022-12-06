@@ -91,7 +91,7 @@ public class Inventory {
     product.printFormatted();
   }
 
-  public List<Product> findProduct(String stringToMatch) {
+  public List<Product> findProducts(String stringToMatch) {
     List<Product> products = new ArrayList<Product>();
 
     // Case sensitive search. ID's allways have uppercase letters
