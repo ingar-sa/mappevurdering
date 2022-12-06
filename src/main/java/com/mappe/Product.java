@@ -66,19 +66,19 @@ public class Product {
 
   /**
    * Copy constructor for the Item class.
-   * @param item The item to be copied.
+   * @param product The item to be copied.
    */
-  public Product(Product item) {
-    this(item.getId(), // TODO(ingar): need to assert that the id is unique in the inventory class.
-         item.getDescription(),
-         item.getPrice(),
-         item.getBrand(),
-         item.getWeight(),
-         item.getLength(),
-         item.getHeight(),
-         item.getColor(),
-         item.getQuantity(),
-         item.getCategory());
+  public Product(Product product) {
+    this(product.getId(), // TODO(ingar): need to assert that the id is unique in the inventory class.
+         product.getDescription(),
+         product.getPrice(),
+         product.getBrand(),
+         product.getWeight(),
+         product.getLength(),
+         product.getHeight(),
+         product.getColor(),
+         product.getQuantity(),
+         product.getCategory());
   }
 
   /**
@@ -201,16 +201,17 @@ public class Product {
   }
 
   public void printFormatted() {
-    System.out.println("ID: " + id);
+    System.out.println("ID:          " + id);
     System.out.println("Description: " + description);
-    System.out.println("Price: " + price);
-    System.out.println("Brand: " + brand);
-    System.out.println("Weight: " + weight);
-    System.out.println("Length: " + length);
-    System.out.println("Height: " + height);
-    System.out.println("Color: " + color);
-    System.out.println("Quantity: " + quantity);
-    System.out.println("Category: " + category);
+    System.out.println("Price:       " + price);
+    System.out.println("Brand:       " + brand);
+    System.out.println("Weight:      " + weight);
+    System.out.println("Length:      " + length);
+    System.out.println("Height:      " + height);
+    System.out.println("Color:       " + color);
+    System.out.println("Quantity:    " + quantity);
+    System.out.println("Category:    " + category);
+    System.out.println('\n');
   }
 
   // TODO(ingar): Do a review to see if the asserts should use exceptions,

@@ -137,6 +137,8 @@ think I should either make a completely GUI program, which is
 time consuming and way outside of the curriculum, or just a pure
 CLI. I am definitely leaning towards the CLI route.
 
+
+
 **Ideas**
 Use hashmap with the id's as keys, since this has O(1) lookup time.
 This also works since strings are immutable objects.

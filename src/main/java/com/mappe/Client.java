@@ -11,6 +11,7 @@ public class Client {
    */
   public Client() {
     inventory = new Inventory();
+    //TODO(ingar): Add welcome message.
   }
 
   public void run() {

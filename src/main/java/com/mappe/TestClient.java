@@ -89,6 +89,11 @@ public class TestClient {
     } catch (Exception e) {
       System.out.println("Set invalid quantity: " + e.getMessage());
     }
+
+    product.printFormatted();
+    product.printFormatted();
+    product.printFormatted();
+
   }
 }
 

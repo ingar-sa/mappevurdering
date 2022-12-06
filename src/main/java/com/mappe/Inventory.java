@@ -15,7 +15,11 @@ public class Inventory {
     inventory = new ArrayList<Product>();    
   }
 
-  public void deleteProduct() {
+  public Inventory(boolean debug) {
+    inventory = new ArrayList<Product>();    
+    if (debug) {
+      addDefaultProducts();
+    }
   }
 
   public void addProduct(
@@ -29,6 +33,10 @@ public class Inventory {
       String color,
       int quantity,
       int category) {
+    
+    if (!isUniqueID(id)) {
+      throw new IllegalArgumentException("The id is not unique.");
+    }
 
     inventory.add(
         new Product(
@@ -44,6 +52,16 @@ public class Inventory {
         category
       )
     );
+  }
+
+  /*
+   * The client handles searching for the product and 
+   * the user choosing which product to delete.
+   * It then passes the id of the product to this method. 
+   */
+  public void deleteProduct(String id) {
+    Product product = findProductById(id);
+    inventory.remove(product);
   }
 
   /*
@@ -105,6 +123,83 @@ public class Inventory {
     throw new NoSuchElementException("No product with id: " + searchId);
   }
 
+  private boolean isUniqueID(String id) {
+    for (Product product : inventory) {
+      if (product.getId().equals(id)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private void addDefaultProducts() {
+    addProduct(
+        "A123", 
+        "A description of the product", 
+        1000, 
+        "Brand", 
+        1.0, 
+        1.0, 
+        1.0, 
+        "Color", 
+        1, 
+        1
+    );
+
+    addProduct(
+        "B123", 
+        "a description of the product", 
+        1000, 
+        "Brand", 
+        1.0, 
+        1.0, 
+        1.0, 
+        "Color", 
+        1, 
+        1
+    );
+
+    addProduct(
+        "C123", 
+        "This is a product", 
+        1000, 
+        "Brand", 
+        1.0, 
+        1.0, 
+        1.0, 
+        "Color", 
+        1, 
+        1
+    );
+
+    addProduct(
+        "C1A3", 
+        "Another product", 
+        1000, 
+        "Brand", 
+        1.0, 
+        1.0, 
+        1.0, 
+        "Color", 
+        1, 
+        1
+    );
+
+    addProduct(
+        "E123", 
+        "A hammer", 
+        1000, 
+        "Brand", 
+        1.0, 
+        1.0, 
+        1.0, 
+        "Color", 
+        1, 
+        1
+    );
+  }
+
   // public List<Product> findProductByDescription(String searchDescription) {
   //   ArrayList<Product> products = new ArrayList<Product>();
   //   for (Product product : inventory) {
@@ -119,5 +214,5 @@ public class Inventory {
   //   //TODO(ingar): Should I do handling for an empty list here?
   //   return products;
   // }
-  
+
 }
