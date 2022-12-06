@@ -137,8 +137,35 @@ think I should either make a completely GUI program, which is
 time consuming and way outside of the curriculum, or just a pure
 CLI. I am definitely leaning towards the CLI route.
 
+Steps:
+user chooses option for what they want to do:
+  1. print all products
+    1. Call print all products method
+    2. Start outer loop again.
+  2. Find (print) a product
+    1. Call search function
+    2. Call printSingleProduct function on inventory
+    3. Start outer loop again
+  3. Add a product
+     1. 
+  4. Increase item quantity
+     1. Call search function
+     2. Once single item is chosen, ask how many they want to increase by
+     3. Call increase item function on inventory
+     4. Handle case where the input is invalid (might not be necessary)
+     5. Start outer loop again
+  5. Decrease item quantity: same as above
+  6. 
 
-
+private functions:
+2. Search for an item
+     1. Write infor about how the search workds
+     2. Pass user string to inventory's search function
+     3. Check if the list is empty
+     4. Yes: print that there is no such item. Start outer loop again.
+     5. No: print an option list with the different items (doesn't matter if there is just one, they choose regardless)
+     6. return item id
+   
 **Ideas**
 Use hashmap with the id's as keys, since this has O(1) lookup time.
 This also works since strings are immutable objects.
@@ -150,3 +177,7 @@ provide a very convenient way to find the item based on this, yes, but
 it will make looking up based on other qualities harder, since you have
 to iterate over the values in the hashmap for everything else. Therefore
 I think it makes most sence to use an array based container.
+
+**WTF...**
+Apparently there is a max distance between a variable declaration and its first
+use that is allowed, which is kinda dumb if 

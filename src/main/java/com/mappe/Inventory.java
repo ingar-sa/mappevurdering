@@ -86,6 +86,11 @@ public class Inventory {
     inventory.stream().forEach(product -> product.printFormatted());
   }
 
+  public void printSingleProduct(String id) {
+    Product product = findProductById(id);
+    product.printFormatted();
+  }
+
   public List<Product> findProduct(String stringToMatch) {
     List<Product> products = new ArrayList<Product>();
 
@@ -126,11 +131,11 @@ public class Inventory {
   private boolean isUniqueID(String id) {
     for (Product product : inventory) {
       if (product.getId().equals(id)) {
-        return true;
+        return false;
       }
     }
 
-    return false;
+    return true;
   }
 
   private void addDefaultProducts() {
