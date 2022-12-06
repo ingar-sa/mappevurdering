@@ -18,8 +18,8 @@ public final class Client {
   public void run() {
     Scanner scanner = new Scanner(System.in);
     boolean running = true;
-
     while (running) {
+      
       System.out.println("\n---What would you like to do?---");
       System.out.println("1. Print all products");
       System.out.println("2. Print a product");
@@ -41,22 +41,22 @@ public final class Client {
           printAllProducts();
           break;
         case 2:
-          printProduct(scanner);
+          printProduct();
           break;
         case 3:
-          addProduct(scanner);
+          addProduct();
           break;
         case 4:
-          deleteProduct(scanner);
+          deleteProduct();
           break;
         case 5:
-          increaseProductQuantity(scanner);
+          increaseProductQuantity();
           break;
         case 6:
-          decreaseProductQuantity(scanner);
+          decreaseProductQuantity();
           break;
         case 7:
-          modifyProduct(scanner);
+          modifyProduct();
           break;
         case 8:
           System.out.println("Goodbye!");
@@ -66,6 +66,8 @@ public final class Client {
           System.out.println("Invalid choice. Please try again.");
           break;
       }
+
+      
     }
 
     scanner.close();
@@ -75,12 +77,12 @@ public final class Client {
     inventory.printAllProducts();
   }
 
-  private void printProduct(Scanner scanner) {
-    String id = findProduct(scanner);
+  private void printProduct() {
+    String id = findProduct();
     inventory.printSingleProduct(id);
   }
 
-  private void addProduct(Scanner scanner) {
+  private void addProduct() {
 
     System.out.println("Enter the id: ");
     final String id = scanner.nextLine();
@@ -127,37 +129,44 @@ public final class Client {
   }
 
 
-  private void deleteProduct(Scanner scanner) {
-    String id = findProduct(scanner);
+  private void deleteProduct() {
+    String id = findProduct();
     inventory.deleteProduct(id);
   }
 
  
-  private void increaseProductQuantity(Scanner scanner) {
-    String id = findProduct(scanner);
+  private void increaseProductQuantity() {
+    String id = findProduct();
     System.out.println("Enter the amount to increase the quantity by: ");
+
+    Scanner scanner = new Scanner(System.in);
     int amount = scanner.nextInt();
     inventory.increaseProductQuantity(id, amount);
+    scanner.close();
   }
 
-  private void decreaseProductQuantity(Scanner scanner) {
-    String id = findProduct(scanner);
+  private void decreaseProductQuantity() {
+    String id = findProduct();
     System.out.println("Enter the amount to decrease the quantity by: ");
+
+    Scanner scanner = new Scanner(System.in);
     int amount = scanner.nextInt();
     inventory.decreaseProductQuantity(id, amount);
+    scanner.close();
   }
 
-  private void modifyProduct(Scanner scanner) {
+  private void modifyProduct() {
   }
 
-  private String findProduct(Scanner scanner) {
+  private String findProduct() {
     System.out.println("---Search for a product---");
     System.out.println("Enter search term (--help for help): ");
+    Scanner scanner = new Scanner(System.in);
     String searchTerm = scanner.nextLine();
 
     if (searchTerm.equals("--help")) {
       System.out.println("Search by id or description. "
-            + "You don't have to enter the whole id or description, only part of it. "
+            + "You don't have to enter the whole id or description, only part of it.\n"
             + "ID's are case sensitive, and the input must match from the start:\n"
             + "AB will match with ABC, but BC or aB will not.\n"
             + "Descriptions are not case sensitive, but the term must match whole words.\n"
@@ -171,6 +180,7 @@ public final class Client {
 
     if (matches.size() == 0) {
       System.out.println("No matches found.");
+      scanner.close();
       return null; //TODO(ingar): Throw exception instead?
     }
 
@@ -181,6 +191,7 @@ public final class Client {
     }
 
     boolean chosenProduct = false;
+    String product = new String();
     while (!chosenProduct) {
       System.out.println("Enter option number (--exit to exit): ");
       int chosenOption = -1;
@@ -189,19 +200,21 @@ public final class Client {
       } else {
         String exit = scanner.nextLine();
         if (exit.equals("--exit")) {
+          scanner.close();
           return null;
         }
       }
 
       if (chosenOption > 0 && chosenOption <= matches.size()) {
         chosenProduct = true;
-        return matches.get(chosenOption - 1).getId();
+        product = matches.get(chosenOption - 1).getId();
       } else {
         System.out.println("Invalid option. Please try again.");
       }
     }
 
-    throw new RuntimeException("This should never happen.");
+    scanner.close();
+    return product;
   }
 
   public static void main(String[] args) {
