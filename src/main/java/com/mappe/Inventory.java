@@ -60,7 +60,7 @@ public class Inventory {
    * It then passes the id of the product to this method. 
    */
   public void deleteProduct(String id) {
-    Product product = findProductById(id);
+    Product product = findProductsById(id).get(0);
     inventory.remove(product);
   }
 
@@ -103,7 +103,7 @@ public class Inventory {
         throw new NoSuchElementException("No products matches the search term: " + searchTerm);
       }
     }
-    
+
     return products;
   }
 
@@ -123,7 +123,9 @@ public class Inventory {
         }
       }
 
-      if (words > maxWords) {
+      if (words == 0) {
+        continue;
+      } else if (words > maxWords) {
         maxWords = words;
         products.clear();
         products.add(new Product(product));
@@ -132,11 +134,7 @@ public class Inventory {
       }
     }
 
-    if (!products.isEmpty()) {
-      return products;
-    }
-
-    throw new NoSuchElementException("No products matches the description: " + searchTerm);
+    return products;
   }
 
   /*

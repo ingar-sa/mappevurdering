@@ -51,7 +51,7 @@ public final class Client {
           printProduct(scanner);
           break;
         case 3:
-          addProduct();
+          addProduct(scanner);
           break;
         case 4:
           deleteProduct(scanner);
@@ -74,8 +74,10 @@ public final class Client {
           break;
       }
       
-      System.out.println("Press enter to continue...");
-      scanner.next();
+      if (running) {
+        System.out.println("Press enter to continue...");
+        scanner.next();
+      }
     }
 
     scanner.close();
@@ -87,74 +89,135 @@ public final class Client {
 
   private void printProduct(Scanner scanner) {
     String id = findProduct(scanner);
+    if (id == null) {
+      return;
+    }
+
     inventory.printSingleProduct(id);
   }
 
-  private void addProduct() {
+  private void addProduct(Scanner scanner) {
+    try {
+      System.out.println("Write --exit to return to the menu\n");
+      System.out.println("Enter the id: ");
+      String input = scanner.next();
+      if (input.equals("--exit")) {
+        return;
+      }
+      final String id = input;
 
-    System.out.println("Enter the id: ");
-    final String id = scanner.nextLine();
+      System.out.println("Enter the description: ");
+      input = scanner.next();
+      if (id.equals("--exit")) {
+        return;
+      }
+      final String description = input;
 
-    System.out.println("Enter the description: ");
-    final String description = scanner.nextLine();
+      System.out.println("Enter the price: ");
+      input = scanner.next();
+      if (id.equals("--exit")) {
+        return;
+      }
+      final int price = Integer.parseInt(input);
 
-    System.out.println("Enter the price: ");
-    final int price = scanner.nextInt();
+      System.out.println("Enter the brand: ");
+      input = scanner.next();
+      if (id.equals("--exit")) {
+        return;
+      }
+      final String brand = input;
 
-    System.out.println("Enter the brand: ");
-    final String brand = scanner.nextLine();
+      System.out.println("Enter the weight: ");
+      input = scanner.next();
+      if (id.equals("--exit")) {
+        return;
+      }
+      final double weight = Double.parseDouble(input);
 
-    System.out.println("Enter the weight: ");
-    final double weight = scanner.nextDouble();
+      System.out.println("Enter the length: ");
+      input = scanner.next();
+      if (id.equals("--exit")) {
+        return;
+      }
+      final double length = Double.parseDouble(input);
 
-    System.out.println("Enter the length: ");
-    final double length = scanner.nextDouble();
+      System.out.println("Enter the height: ");
+      input = scanner.next();
+      if (id.equals("--exit")) {
+        return;
+      }
+      final double height = Double.parseDouble(input);
 
-    System.out.println("Enter the height: ");
-    final double height = scanner.nextDouble();
+      System.out.println("Enter the color: ");
+      input = scanner.next();
+      if (id.equals("--exit")) {
+        return;
+      }
+      final String color = input;
 
-    System.out.println("Enter the color: ");
-    final String color = scanner.nextLine();
+      System.out.println("Enter the quantity: ");
+      input = scanner.next();
+      if (id.equals("--exit")) {
+        return;
+      }
+      final int quantity = Integer.parseInt(input);
 
-    System.out.println("Enter the quantity: ");
-    final int quantity = scanner.nextInt();
+      System.out.println("Enter the category: ");
+      input = scanner.next();
+      if (id.equals("--exit")) {
+        return;
+      }
+      final int category = Integer.parseInt(input);
 
-    System.out.println("Enter the category: ");
-    final int category = scanner.nextInt();
+      inventory.addProduct(
+          id, 
+          description, 
+          price,
+          brand,
+          weight,
+          length,
+          height,
+          color,
+          quantity,
+          category
+      );
 
-    inventory.addProduct(
-        id, 
-        description, 
-        price,
-        brand,
-        weight,
-        length,
-        height,
-        color,
-        quantity,
-        category
-    );
+    } catch (IllegalArgumentException e) {
+      System.out.println("ID is not unique.");
+    } catch (Exception e) {
+      System.out.println("Invalid input. Please try again.");
+    }
   }
 
 
   private void deleteProduct(Scanner scanner) {
     String id = findProduct(scanner);
+    if (id == null) {
+      return;
+    }
+
     inventory.deleteProduct(id);
   }
 
  
   private void increaseProductQuantity(Scanner scanner) {
     String id = findProduct(scanner);
-    System.out.println("\nEnter the amount to increase the quantity by: ");
+    if (id == null) {
+      return;
+    }
 
+    System.out.println("\nEnter the amount to increase the quantity by: ");
     int amount = Integer.parseInt(scanner.next());
     inventory.increaseProductQuantity(id, amount);
   }
 
   private void decreaseProductQuantity(Scanner scanner) {
     String id = findProduct(scanner);
-    System.out.println("\nEnter the amount to decrease the quantity by: ");
+    if (id == null) {
+      return;
+    }
 
+    System.out.println("\nEnter the amount to decrease the quantity by: ");
     int amount = Integer.parseInt(scanner.next());
     inventory.decreaseProductQuantity(id, amount);
   }
@@ -164,8 +227,12 @@ public final class Client {
 
   private String findProduct(Scanner scanner) {
     System.out.println("---Search for a product---");
-    System.out.println("Enter search term (--help for help): ");
+    System.out.println("Enter search term (--help for help, --exit to exit): ");
     String searchTerm = scanner.next();
+
+    if (searchTerm.equals("--exit")) {
+      return null;
+    }
 
     if (searchTerm.equals("--help")) {
       System.out.println("\nSearch by id or description. "
@@ -183,7 +250,7 @@ public final class Client {
 
     if (matches.size() == 0) {
       System.out.println("No matches found.");
-      return null; //TODO(ingar): Throw exception instead?
+      return null;
     }
 
     for (int i = 0; i < matches.size(); i++) {
@@ -198,13 +265,16 @@ public final class Client {
       System.out.println("\nEnter option number (--exit to exit): ");
 
       int chosenOption = -1;
-      if (scanner.hasNextInt()) {
-        chosenOption = Integer.parseInt(scanner.next());
-      } else {
-        String exit = scanner.next();
-        if (exit.equals("--exit")) {
-          return null;
-        }
+      String input = scanner.next();
+      if (input.equals("--exit")) {
+        return null;
+      }
+
+      try {
+        chosenOption = Integer.parseInt(input);
+      } catch (NumberFormatException e) {
+        System.out.println("Invalid option. Please try again.");
+        continue;
       }
 
       if (chosenOption > 0 && chosenOption <= matches.size()) {
@@ -212,6 +282,7 @@ public final class Client {
         product = matches.get(chosenOption - 1).getId();
       } else {
         System.out.println("Invalid option. Please try again.");
+        continue;
       }
     }
     
