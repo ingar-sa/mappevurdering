@@ -97,65 +97,74 @@ public class Inventory {
     return deepCopiedProducts;
   }
 
-  public void editProduct(
-      String id,
+  public Product editProduct(
+      String oldId,
       String newId,
       String description,
-      int price,
+      String price,
       String brand,
-      double weight,
-      double length,
-      double height,
+      String weight,
+      String length,
+      String height,
       String color,
-      int quantity,
-      int category) {
+      String quantity,
+      String category) {
 
-    Product product = findProductsById(id).get(0);
+    Product oldProduct = findProductsById(oldId).get(0);
+    Product newProduct = new Product(oldProduct);
+
     if (!isUniqueID(newId)) {
       throw new IllegalArgumentException("The id is not unique.");
     }
 
-    if (newId != null) {
-      product.setId(newId);
+    if (!newId.equals("")) {
+      newProduct.setId(newId);
     }
 
-    if (description != null) {
-      product.setDescription(description);
+    if (!description.equals("")) {
+      newProduct.setDescription(description);
     }
 
-    if (price != -1) {
-      product.setPrice(price);
+    if (!price.equals("")) {
+      newProduct.setPrice(Integer.parseInt(price));
     }
     
-    if (brand != null) {
-      product.setBrand(brand);
+    if (!brand.equals("")) {
+      newProduct.setBrand(brand);
     }
 
-    if (weight != -1) {
-      product.setWeight(weight);
+    if (!weight.equals("")) {
+      newProduct.setWeight(Double.parseDouble(weight));
     }
 
-    if (length != -1) {
-      product.setLength(length);
+    if (!length.equals("")) {
+      newProduct.setLength(Double.parseDouble(length));
     }
 
-    if (height != -1) {
-      product.setHeight(height);
+    if (!height.equals("")) {
+      newProduct.setHeight(Double.parseDouble(height));
     }
 
-    if (color != null) {
-      product.setColor(color);
+    if (!color.equals("")) {
+      newProduct.setColor(color);
     }
 
-    if (quantity != -1) {
-      product.setQuantity(quantity);
+    if (!quantity.equals("")) {
+      newProduct.setQuantity(Integer.parseInt(quantity));
     }
 
-    if (category != -1) {
-      product.setCategory(category);
+    if (!category.equals("")) {
+      newProduct.setCategory(Integer.parseInt(category));
     }
+
+    return newProduct;
   }
 
+  public void replaceProduct(Product newProduct, String oldId) {
+    Product oldProduct = findProductsById(oldId).get(0);
+    inventory.set(inventory.indexOf(oldProduct), new Product(newProduct));
+  }
+  
   private List<Product> findProductByDescription(String searchTerm) {
     List<Product> products = new ArrayList<Product>();
     String[] splitSearchTerm = searchTerm.split(" ");
