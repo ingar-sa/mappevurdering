@@ -234,6 +234,7 @@ public final class Client {
       System.out.println("Something went wrong. Please try again.");
     }
   }
+  
   /*
    * Essentially the same as addProduct, but empty input
    * will be treated as no change to the given field.
@@ -245,6 +246,99 @@ public final class Client {
       return;
     }
 
+    try {
+      System.out.println("Write --exit to return to the menu\n");
+      System.out.println("Enter the id: ");
+      String input = scanner.next();
+      if (input.equals("--exit")) {
+        return;
+      }
+      final String newId = (input.equals("")) ? null : input;
+
+      System.out.println("Enter the description: ");
+      input = scanner.next();
+      if (input.equals("--exit")) {
+        return;
+      }
+      final String description = (input.equals("")) ? null : input;
+
+      System.out.println("Enter the price: ");
+      input = scanner.next();
+      if (input.equals("--exit")) {
+        return;
+      }
+      final int price = (input.equals("")) ? -1 : Integer.parseInt(input);
+
+      System.out.println("Enter the brand: ");
+      input = scanner.next();
+      if (input.equals("--exit")) {
+        return;
+      }
+      final String brand = (input.equals("")) ? null : input;
+
+      System.out.println("Enter the weight: ");
+      input = scanner.next();
+      if (input.equals("--exit")) {
+        return;
+      }
+      final double weight = (input.equals("")) ? -1 : Double.parseDouble(input);
+
+      System.out.println("Enter the length: ");
+      input = scanner.next();
+      if (input.equals("--exit")) {
+        return;
+      }
+      final double length = (input.equals("")) ? -1 : Double.parseDouble(input);
+
+      System.out.println("Enter the height: ");
+      input = scanner.next();
+      if (input.equals("--exit")) {
+        return;
+      }
+      final double height = (input.equals("")) ? -1 : Double.parseDouble(input);
+
+      System.out.println("Enter the color: ");
+      input = scanner.next();
+      if (input.equals("--exit")) {
+        return;
+      }
+      final String color = (input.equals("")) ? null : input;
+
+      System.out.println("Enter the quantity: ");
+      input = scanner.next();
+      if (input.equals("--exit")) {
+        return;
+      }
+      final int quantity = (input.equals("")) ? -1 : Integer.parseInt(input);
+
+      System.out.println("Enter the category: ");
+      input = scanner.next();
+      if (id.equals("--exit")) {
+        return;
+      }
+      final int category = (input.equals("")) ? -1 : Integer.parseInt(input);
+
+      inventory.editProduct(
+          id,
+          newId, 
+          description,
+          price,
+          brand,
+          weight,
+          length,
+          height,
+          color,
+          quantity,
+          category
+      );
+      
+    } catch (NumberFormatException e) {
+      System.out.println("Invalid input. Please try again.");
+    } catch (IllegalArgumentException e) {
+      System.out.println(e.getMessage());
+    } catch (Exception e) {
+      System.out.println("Invalid input. Please try again.");
+    }
   }
    
   private String findProduct(Scanner scanner) {

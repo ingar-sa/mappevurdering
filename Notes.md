@@ -166,6 +166,19 @@ private functions:
      5. No: print an option list with the different items (doesn't matter if there is just one, they choose regardless)
      6. return item id
    
+hashmap verification of inputs:
+You would need an array of all of the different messages
+loop through it and print the message for each one
+wait for user input
+exit if it is --exit 
+store it as a string in a hashmap
+
+pass the hashmap into the inventory
+inventory loops through the hashmap
+if it is not an empty string
+this is already incredibly convoluted
+ifs it is
+   
 **Ideas**
 Use hashmap with the id's as keys, since this has O(1) lookup time.
 This also works since strings are immutable objects.

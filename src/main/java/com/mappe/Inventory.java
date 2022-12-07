@@ -97,10 +97,63 @@ public class Inventory {
     return deepCopiedProducts;
   }
 
-  public void editProduct(Product product) {
-    Product oldProduct = findProductsById(product.getId()).get(0);
-    inventory.remove(oldProduct);
-    inventory.add(new Product(product));
+  public void editProduct(
+      String id,
+      String newId,
+      String description,
+      int price,
+      String brand,
+      double weight,
+      double length,
+      double height,
+      String color,
+      int quantity,
+      int category) {
+
+    Product product = findProductsById(id).get(0);
+    if (!isUniqueID(newId)) {
+      throw new IllegalArgumentException("The id is not unique.");
+    }
+
+    if (newId != null) {
+      product.setId(newId);
+    }
+
+    if (description != null) {
+      product.setDescription(description);
+    }
+
+    if (price != -1) {
+      product.setPrice(price);
+    }
+    
+    if (brand != null) {
+      product.setBrand(brand);
+    }
+
+    if (weight != -1) {
+      product.setWeight(weight);
+    }
+
+    if (length != -1) {
+      product.setLength(length);
+    }
+
+    if (height != -1) {
+      product.setHeight(height);
+    }
+
+    if (color != null) {
+      product.setColor(color);
+    }
+
+    if (quantity != -1) {
+      product.setQuantity(quantity);
+    }
+
+    if (category != -1) {
+      product.setCategory(category);
+    }
   }
 
   private List<Product> findProductByDescription(String searchTerm) {
