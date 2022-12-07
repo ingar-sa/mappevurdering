@@ -283,19 +283,4 @@ public class Inventory {
     );
   }
 
-  // public List<Product> findProductByDescription(String searchDescription) {
-  //   ArrayList<Product> products = new ArrayList<Product>();
-  //   for (Product product : inventory) {
-  //     String[] splitDescription = product.getDescription().split(" ");
-  //     for (String word : splitDescription) {
-  //       if (word.equals(searchDescription)) {
-  //         products.add(new Product(product));
-  //         break;
-  //       }
-  //     }
-  //   }
-  //   //TODO(ingar): Should I do handling for an empty list here?
-  //   return products;
-  // }
-
 }
