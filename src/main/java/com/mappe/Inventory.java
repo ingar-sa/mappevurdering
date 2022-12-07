@@ -75,6 +75,7 @@ public class Inventory {
   public void increaseProductQuantity(String id, int quantity) {
     Product product = findProductsById(id).get(0);
     product.setQuantity(product.getQuantity() + quantity);
+    product.printFormatted();
   }
 
   public void decreaseProductQuantity(String id, int quantity) {
@@ -104,7 +105,12 @@ public class Inventory {
       }
     }
 
-    return products;
+    List<Product> deepcopieProducts = new ArrayList<Product>();
+    for (Product product : products) {
+      deepcopieProducts.add(new Product(product));
+    }
+
+    return deepcopieProducts;
   }
 
   private List<Product> findProductByDescription(String searchTerm) {
@@ -144,7 +150,7 @@ public class Inventory {
     List<Product> products = new ArrayList<Product>();
     for (Product product : inventory) {
       if (product.getId().startsWith(searchId)) {
-        products.add(new Product(product));
+        products.add(product);
       }
     }
     
