@@ -108,56 +108,56 @@ public final class Client {
 
       System.out.println("Enter the description: ");
       input = scanner.next();
-      if (id.equals("--exit")) {
+      if (input.equals("--exit")) {
         return;
       }
       final String description = input;
 
       System.out.println("Enter the price: ");
       input = scanner.next();
-      if (id.equals("--exit")) {
+      if (input.equals("--exit")) {
         return;
       }
       final int price = Integer.parseInt(input);
 
       System.out.println("Enter the brand: ");
       input = scanner.next();
-      if (id.equals("--exit")) {
+      if (input.equals("--exit")) {
         return;
       }
       final String brand = input;
 
       System.out.println("Enter the weight: ");
       input = scanner.next();
-      if (id.equals("--exit")) {
+      if (input.equals("--exit")) {
         return;
       }
       final double weight = Double.parseDouble(input);
 
       System.out.println("Enter the length: ");
       input = scanner.next();
-      if (id.equals("--exit")) {
+      if (input.equals("--exit")) {
         return;
       }
       final double length = Double.parseDouble(input);
 
       System.out.println("Enter the height: ");
       input = scanner.next();
-      if (id.equals("--exit")) {
+      if (input.equals("--exit")) {
         return;
       }
       final double height = Double.parseDouble(input);
 
       System.out.println("Enter the color: ");
       input = scanner.next();
-      if (id.equals("--exit")) {
+      if (input.equals("--exit")) {
         return;
       }
       final String color = input;
 
       System.out.println("Enter the quantity: ");
       input = scanner.next();
-      if (id.equals("--exit")) {
+      if (input.equals("--exit")) {
         return;
       }
       final int quantity = Integer.parseInt(input);
@@ -183,7 +183,7 @@ public final class Client {
       );
 
     } catch (IllegalArgumentException e) {
-      System.out.println("ID is not unique.");
+      System.out.println(e.getMessage());
     } catch (Exception e) {
       System.out.println("Invalid input. Please try again.");
     }

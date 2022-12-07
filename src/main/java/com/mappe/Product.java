@@ -47,21 +47,14 @@ public class Product {
               int category) {
     this.id = id;
     this.description = description;
-    this.price = price;
+    this.setPrice(price);
     this.brand = brand;
-    this.weight = weight;
-    this.length = length;
-    this.height = height;
+    this.setWeight(weight);
+    this.setLength(length);
+    this.setHeight(height);
     this.color = color;
-    this.quantity = quantity;
-    this.category = category;
-    
-    assertPositiveNumber(price);
-    assertPositiveNumber(weight);
-    assertPositiveNumber(length);
-    assertPositiveNumber(height);
-    assertValidItemQuantity(quantity);
-    assertValidCategory(category);
+    this.setQuantity(quantity);
+    this.setCategory(category);
   }
 
   /**
@@ -69,7 +62,7 @@ public class Product {
    * @param product The item to be copied.
    */
   public Product(Product product) {
-    this(product.getId(), // TODO(ingar): need to assert that the id is unique in the inventory class.
+    this(product.getId(),
          product.getDescription(),
          product.getPrice(),
          product.getBrand(),
@@ -94,7 +87,9 @@ public class Product {
    * @param price The new price of the item.
    */
   public void setPrice(int price) {
-    assertPositiveNumber(price);
+    if (!assertPositiveNumber(price)) {
+      throw new IllegalArgumentException("The price must be greater than 0.");
+    }
     this.price = price;
   }
 
@@ -111,7 +106,9 @@ public class Product {
    * @param weight The new weight of the item.
    */
   public void setWeight(double weight) {
-    assertPositiveNumber(weight);
+    if (!assertPositiveNumber(weight)) {
+      throw new IllegalArgumentException("The weight must be greater than 0.");
+    }
     this.weight = weight;
   }
 
@@ -120,7 +117,9 @@ public class Product {
    * @param length The new length of the item.
    */
   public void setLength(double length) {
-    assertPositiveNumber(length);
+    if (!assertPositiveNumber(length)) {
+      throw new IllegalArgumentException("The length must be greater than 0.");
+    }
     this.length = length;
   }
 
@@ -129,7 +128,9 @@ public class Product {
    * @param height The new height of the item.
    */
   public void setHeight(double height) {
-    assertPositiveNumber(height);
+    if (!assertPositiveNumber(height)) {
+      throw new IllegalArgumentException("The height must be greater than 0.");
+    }
     this.height = height;
   }
 
@@ -146,7 +147,9 @@ public class Product {
    * @param quantity The new quantity of the item.
    */
   public void setQuantity(int quantity) {
-    assertValidItemQuantity(quantity);
+    if (!assertPositiveNumber(quantity)) {
+      throw new IllegalArgumentException("The quantity must be greater than or equal to 0.");
+    }
     this.quantity = quantity;
   }
 
@@ -155,7 +158,9 @@ public class Product {
    * @param category The new category of the item.
    */
   public void setCategory(int category) {
-    assertValidCategory(category);
+    if (category < 1 || category > 4) {
+      throw new IllegalArgumentException("The category must be either 1, 2, 3, or 4.");
+    }
     this.category = category;
   }
 
@@ -214,12 +219,12 @@ public class Product {
     System.out.println('\n');
   }
 
-  // TODO(ingar): Do a review to see if the asserts should use exceptions,
-  // or if they should use some other means of error handling.
-  private void assertValidCategory(int category) {
+  private boolean assertValidCategory(int category) {
     if (category < 1 || category > 4) {
-      throw new IllegalArgumentException("Category must be 1, 2, 3 or 4");
+      return false;
     }
+
+    return true;
   }
 
   private void assertValidItemQuantity(int quantity) {
@@ -228,16 +233,20 @@ public class Product {
     }
   }
 
-  private void assertPositiveNumber(double number) {
+  private boolean assertPositiveNumber(double number) {
     if (number <= 0) {
-      throw new IllegalArgumentException("Number must be greater than 0.");
+      return true;
     }
+
+    return false;
   }
 
-  private void assertPositiveNumber(int number) {
+  private boolean assertPositiveNumber(int number) {
     if (number <= 0) {
-      throw new IllegalArgumentException("Number must be greater than 0.");
+      return true;
     }
+
+    return false;
   }
 
   @Override
@@ -245,11 +254,6 @@ public class Product {
     return "Item [id=" + id + ", description=" + description + ", price=" + price + ", brand=" 
       + brand + ", weight=" + weight + ", length=" + length + ", height=" + height + ", color=" 
       + color + ", quantity=" + quantity + ", category=" + category + "]";
-  }
-
-  public static void main(String[] args) {
-    Product item = new Product("1", "description", 1, "brand", 1.0, 1.0, 1.0, "color", 1, 1);
-    System.out.println(item);
   }
 
 }
