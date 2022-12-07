@@ -54,31 +54,19 @@ public class Inventory {
     );
   }
 
-  /*
-   * The client handles searching for the product and 
-   * the user choosing which product to delete.
-   * It then passes the id of the product to this method. 
-   */
   public void deleteProduct(String id) {
-    Product product = findProductById(id);
+    Product product = findProductsById(id).get(0);
     inventory.remove(product);
   }
 
-  /*
-   * The increase and decrease methods should get the id to a specific product
-   * instead of using the search function here.
-   * When the user wants to increase or decrease the quantity of a product,
-   * the client handles searching for and selecting the specific product.
-   * 
-   */
-
   public void increaseProductQuantity(String id, int quantity) {
-    Product product = findProductById(id);
+    Product product = findProductsById(id).get(0);
     product.setQuantity(product.getQuantity() + quantity);
+    product.printFormatted();
   }
 
   public void decreaseProductQuantity(String id, int quantity) {
-    Product product = findProductById(id);
+    Product product = findProductsById(id).get(0);
     product.setQuantity(product.getQuantity() - quantity);
   }
 
@@ -87,45 +75,73 @@ public class Inventory {
   }
 
   public void printSingleProduct(String id) {
-    Product product = findProductById(id);
+    Product product = findProductsById(id).get(0);
     product.printFormatted();
   }
 
-  public List<Product> findProducts(String stringToMatch) {
-    List<Product> products = new ArrayList<Product>();
+  public List<Product> findProducts(String searchTerm) {
+    List<Product> products = findProductsById(searchTerm);
+    if (products.isEmpty()) {
+      products = findProductByDescription(searchTerm);
+    }
 
-    // Case sensitive search. ID's allways have uppercase letters
+    if (products.isEmpty()) {
+      return products;
+    }
+
+    List<Product> deepCopiedProducts = new ArrayList<Product>();
+    for (Product product : products) {
+      deepCopiedProducts.add(new Product(product));
+    }
+
+    return deepCopiedProducts;
+  }
+
+  public void editProduct(Product product) {
+    Product oldProduct = findProductsById(product.getId()).get(0);
+    inventory.remove(oldProduct);
+    inventory.add(new Product(product));
+  }
+
+  private List<Product> findProductByDescription(String searchTerm) {
+    List<Product> products = new ArrayList<Product>();
+    String[] splitSearchTerm = searchTerm.split(" ");
+    int maxWords = 0;
+
     for (Product product : inventory) {
-      if (product.getId().startsWith(stringToMatch)) {
-        products.add(new Product(product));
-        break;
+      String[] splitDescription = product.getDescription().split(" ");
+      int words = 0;
+      for (String searchWord : splitSearchTerm) {
+        for (String descriptionWord : splitDescription) {
+          if (descriptionWord.equalsIgnoreCase(searchWord)) {
+            words++;
+          }
+        }
       }
 
-      // Case insensitive search. 
-      String[] splitDescription = product.getDescription().split(" ");
-      for (String word : splitDescription) {
-        if (word.toLowerCase().equals(stringToMatch.toLowerCase())) {
-          products.add(new Product(product));
-          break;
-        }
+      if (words == 0) {
+        continue;
+      } else if (words > maxWords) {
+        maxWords = words;
+        products.clear();
+        products.add(product);
+      } else if (words == maxWords) {
+        products.add(product);
       }
     }
 
-    //TODO(ingar): Should I do handling for an empty list here?
     return products;
   }
 
-  /*
-   * The method should return a list of products that match the given id.
-   */
-  private Product findProductById(String searchId) {
+  private List<Product> findProductsById(String searchId) {
+    List<Product> products = new ArrayList<Product>();
     for (Product product : inventory) {
       if (product.getId().startsWith(searchId)) {
-        return product;
+        products.add(product);
       }
     }
 
-    throw new NoSuchElementException("No product with id: " + searchId);
+    return products;
   }
 
   private boolean isUniqueID(String id) {

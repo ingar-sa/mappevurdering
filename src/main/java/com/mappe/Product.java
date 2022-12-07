@@ -24,16 +24,16 @@ public class Product {
 
   /**
    * The constructor takes in all the parameters and assigns them to the member fields.
-   * @param id The id of the item.
-   * @param description The description of the item.
-   * @param price The price of the item. Must be greater than 0.
-   * @param brand The brand of the item.
-   * @param weight The weight of the item. Must be greater than 0.
-   * @param length The length of the item. Must be greater than 0.
-   * @param height The height of the item. Must be greater than 0.
-   * @param color The color of the item.
-   * @param quantity The quantity of the item. Must be greater than or equal to 0.
-   * @param category The category of the item. Must be either 1, 2, 3, or 4.
+   * @param id The id of the product.
+   * @param description The description of the product.
+   * @param price The price of the product. Must be greater than 0.
+   * @param brand The brand of the product.
+   * @param weight The weight of the product. Must be greater than 0.
+   * @param length The length of the product. Must be greater than 0.
+   * @param height The height of the product. Must be greater than 0.
+   * @param color The color of the product.
+   * @param quantity The quantity of the product. Must be greater than or equal to 0.
+   * @param category The category of the product. Must be either 1, 2, 3, or 4.
    */
   public Product(String id, 
               String description,
@@ -45,31 +45,24 @@ public class Product {
               String color,
               int quantity,
               int category) {
-    this.id = id;
-    this.description = description;
-    this.price = price;
-    this.brand = brand;
-    this.weight = weight;
-    this.length = length;
-    this.height = height;
-    this.color = color;
-    this.quantity = quantity;
-    this.category = category;
-    
-    assertPositiveNumber(price);
-    assertPositiveNumber(weight);
-    assertPositiveNumber(length);
-    assertPositiveNumber(height);
-    assertValidItemQuantity(quantity);
-    assertValidCategory(category);
+    this.setId(id);
+    this.setDescription(description);
+    this.setPrice(price);
+    this.setBrand(brand);
+    this.setWeight(weight);
+    this.setLength(length);
+    this.setHeight(height);
+    this.setColor(color);
+    this.setQuantity(quantity);
+    this.setCategory(category);
   }
 
   /**
-   * Copy constructor for the Item class.
-   * @param product The item to be copied.
+   * Copy constructor for the Product class.
+   * @param product The product to be copied.
    */
   public Product(Product product) {
-    this(product.getId(), // TODO(ingar): need to assert that the id is unique in the inventory class.
+    this(product.getId(),
          product.getDescription(),
          product.getPrice(),
          product.getBrand(),
@@ -82,80 +75,100 @@ public class Product {
   }
 
   /**
-   * Change the description of the item.
-   * @param description The new description of the item.
+   * Change the id of the product.
+   * @param id The new id.
    */
-  public void setDesciption(String description) {
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  /**
+   * Change the description of the product.
+   * @param description The new description of the product.
+   */
+  public void setDescription(String description) {
     this.description = description;
   }
 
   /**
-   * Change the price of the item. The price must be greater than 0.
-   * @param price The new price of the item.
+   * Change the price of the product. The price must be greater than 0.
+   * @param price The new price of the product.
    */
   public void setPrice(int price) {
-    assertPositiveNumber(price);
+    if (price <= 0) {
+      throw new IllegalArgumentException("The price must be greater than 0.");
+    }
     this.price = price;
   }
 
   /**
-   * Change the brand of the item.
-   * @param brand The new brand of the item.
+   * Change the brand of the product.
+   * @param brand The new brand of the product.
    */
   public void setBrand(String brand) {
     this.brand = brand;
   }
 
   /**
-   * Change the weight of the item. The weight must be greater than 0.
-   * @param weight The new weight of the item.
+   * Change the weight of the product. The weight must be greater than 0.
+   * @param weight The new weight of the product.
    */
   public void setWeight(double weight) {
-    assertPositiveNumber(weight);
+    if (weight <= 0) {
+      throw new IllegalArgumentException("The weight must be greater than 0.");
+    }
     this.weight = weight;
   }
 
   /**
-   * Change the length of the item. The length must be greater than 0.
-   * @param length The new length of the item.
+   * Change the length of the product. The length must be greater than 0.
+   * @param length The new length of the product.
    */
   public void setLength(double length) {
-    assertPositiveNumber(length);
+    if (length <= 0) {
+      throw new IllegalArgumentException("The length must be greater than 0.");
+    }
     this.length = length;
   }
 
   /**
-   * Change the height of the item. The height must be greater than 0.
-   * @param height The new height of the item.
+   * Change the height of the product. The height must be greater than 0.
+   * @param height The new height of the product.
    */
   public void setHeight(double height) {
-    assertPositiveNumber(height);
+    if (height <= 0) {
+      throw new IllegalArgumentException("The height must be greater than 0.");
+    }
     this.height = height;
   }
 
   /**
-   * Change the color of the item.
-   * @param color The new color of the item.
+   * Change the color of the product.
+   * @param color The new color.
    */
   public void setColor(String color) {
     this.color = color;
   }
 
   /**
-   * Change the quantity of the item. The quantity must be greater than or equal to 0.
-   * @param quantity The new quantity of the item.
+   * Change the quantity of the product. The quantity must be greater than or equal to 0.
+   * @param quantity The new quantity of the product.
    */
   public void setQuantity(int quantity) {
-    assertValidItemQuantity(quantity);
+    if (quantity < 0) {
+      throw new IllegalArgumentException("The quantity must be greater than or equal to 0.");
+    }
     this.quantity = quantity;
   }
 
   /**
-   * Change the category of the item. The category must be either 1, 2, 3, or 4.
-   * @param category The new category of the item.
+   * Change the category of the product. The category must be either 1, 2, 3, or 4.
+   * @param category The new category of the product.
    */
   public void setCategory(int category) {
-    assertValidCategory(category);
+    if (category < 1 || category > 4) {
+      throw new IllegalArgumentException("The category must be either 1, 2, 3, or 4.");
+    }
     this.category = category;
   }
 
@@ -200,6 +213,9 @@ public class Product {
     return category;
   }
 
+  /**
+   * Prints a formatted presentation of the products information.
+   */
   public void printFormatted() {
     System.out.println("ID:          " + id);
     System.out.println("Description: " + description);
@@ -214,42 +230,11 @@ public class Product {
     System.out.println('\n');
   }
 
-  // TODO(ingar): Do a review to see if the asserts should use exceptions,
-  // or if they should use some other means of error handling.
-  private void assertValidCategory(int category) {
-    if (category < 1 || category > 4) {
-      throw new IllegalArgumentException("Category must be 1, 2, 3 or 4");
-    }
-  }
-
-  private void assertValidItemQuantity(int quantity) {
-    if (quantity < 0) {
-      throw new IllegalArgumentException("Item quantity must be greater than or equal to 0");
-    }
-  }
-
-  private void assertPositiveNumber(double number) {
-    if (number <= 0) {
-      throw new IllegalArgumentException("Number must be greater than 0.");
-    }
-  }
-
-  private void assertPositiveNumber(int number) {
-    if (number <= 0) {
-      throw new IllegalArgumentException("Number must be greater than 0.");
-    }
-  }
-
   @Override
   public String toString() {
-    return "Item [id=" + id + ", description=" + description + ", price=" + price + ", brand=" 
+    return "Product [id=" + id + ", description=" + description + ", price=" + price + ", brand=" 
       + brand + ", weight=" + weight + ", length=" + length + ", height=" + height + ", color=" 
       + color + ", quantity=" + quantity + ", category=" + category + "]";
-  }
-
-  public static void main(String[] args) {
-    Product item = new Product("1", "description", 1, "brand", 1.0, 1.0, 1.0, "color", 1, 1);
-    System.out.println(item);
   }
 
 }
