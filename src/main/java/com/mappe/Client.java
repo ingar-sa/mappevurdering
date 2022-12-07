@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public final class Client {
   
-  Inventory inventory;
+  private Inventory inventory;
 
   /**
    * The constructor initializes an Inventory object.
@@ -63,7 +63,7 @@ public final class Client {
           decreaseProductQuantity(scanner);
           break;
         case 7:
-          modifyProduct();
+          editProduct(scanner);
           break;
         case 8:
           System.out.println("Goodbye!");
@@ -181,14 +181,14 @@ public final class Client {
           quantity,
           category
       );
-
+    } catch (NumberFormatException e) {
+      System.out.println("Invalid input. Please try again.");
     } catch (IllegalArgumentException e) {
       System.out.println(e.getMessage());
     } catch (Exception e) {
       System.out.println("Invalid input. Please try again.");
     }
   }
-
 
   private void deleteProduct(Scanner scanner) {
     String id = findProduct(scanner);
@@ -199,7 +199,6 @@ public final class Client {
     inventory.deleteProduct(id);
   }
 
- 
   private void increaseProductQuantity(Scanner scanner) {
     String id = findProduct(scanner);
     if (id == null) {
@@ -207,8 +206,14 @@ public final class Client {
     }
 
     System.out.println("\nEnter the amount to increase the quantity by: ");
-    int amount = Integer.parseInt(scanner.next());
-    inventory.increaseProductQuantity(id, amount);
+    try {
+      int amount = Integer.parseInt(scanner.next());
+      inventory.increaseProductQuantity(id, amount);
+    } catch (NumberFormatException e) {
+      System.out.println("Invalid input. Please try again.");
+    } catch (Exception e) {
+      System.out.println("Something went wrong. Please try again.");
+    }
   }
 
   private void decreaseProductQuantity(Scanner scanner) {
@@ -218,43 +223,61 @@ public final class Client {
     }
 
     System.out.println("\nEnter the amount to decrease the quantity by: ");
-    int amount = Integer.parseInt(scanner.next());
-    inventory.decreaseProductQuantity(id, amount);
+    try {
+      int amount = Integer.parseInt(scanner.next());
+      inventory.decreaseProductQuantity(id, amount);
+    } catch (NumberFormatException e) {
+      System.out.println("Invalid input. Please try again.");
+    } catch (IllegalArgumentException e) {
+      System.out.println(e.getMessage());
+    } catch (Exception e) {
+      System.out.println("Something went wrong. Please try again.");
+    }
   }
-
-  private void modifyProduct() {
-  }
-
-  private String findProduct(Scanner scanner) {
-    System.out.println("---Search for a product---");
-    System.out.println("Enter search term (--help for help, --exit to exit): ");
-    String searchTerm = scanner.next();
-
-    if (searchTerm.equals("--exit")) {
-      return null;
+  /*
+   * Essentially the same as addProduct, but empty input
+   * will be treated as no change to the given field.
+   * The user can exit any time using "--exit".
+   */
+  private void editProduct(Scanner scanner) {
+    String id = findProduct(scanner);
+    if (id == null) {
+      return;
     }
 
-    if (searchTerm.equals("--help")) {
+  }
+   
+  private String findProduct(Scanner scanner) {
+    System.out.println("---Search for a product by id or description---");
+    System.out.println("Enter search term (--help for help, --exit to exit): ");
+
+    String searchTerm = scanner.next();
+    if (searchTerm.equals("--exit")) {
+      return null;
+    } else if (searchTerm.equals("--help")) {
       System.out.println("\nSearch by id or description. "
             + "You don't have to enter the whole id or description, only part of it.\n"
             + "ID's are case sensitive, and the input must match from the start of the ID:\n"
             + "AB will match with ABC, but BC or aB will not.\n"
             + "Descriptions are not case sensitive, but the term must match whole words.\n"
-            + "The description(s) that matches the search term the closest will be returned.\n");
-                      
-      System.out.println("Enter search term: ");
+            + "The description(s) with the most matching words will be returned.\n"
+            + "\nEnter search term (--exit to exit): ");
+
       searchTerm = scanner.next();
+    }
+
+    if (searchTerm.equals("--exit")) {
+      return null;
     }
     
     List<Product> matches = inventory.findProducts(searchTerm);
-
     if (matches.size() == 0) {
       System.out.println("No matches found.");
       return null;
     }
 
     for (int i = 0; i < matches.size(); i++) {
-      System.out.println("\nOption " + (i + 1) + ":\n" 
+      System.out.println("\nOption " + (i + 1) + ":\n"
                   + "\tID: " + matches.get(i).getId()
                   + "\n\tDescription: " + matches.get(i).getDescription());
     }

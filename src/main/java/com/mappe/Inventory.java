@@ -97,6 +97,12 @@ public class Inventory {
     return deepCopiedProducts;
   }
 
+  public void editProduct(Product product) {
+    Product oldProduct = findProductsById(product.getId()).get(0);
+    inventory.remove(oldProduct);
+    inventory.add(new Product(product));
+  }
+
   private List<Product> findProductByDescription(String searchTerm) {
     List<Product> products = new ArrayList<Product>();
     String[] splitSearchTerm = searchTerm.split(" ");
@@ -127,9 +133,6 @@ public class Inventory {
     return products;
   }
 
-  /*
-   * The method should return a list of products that match the given id.
-   */
   private List<Product> findProductsById(String searchId) {
     List<Product> products = new ArrayList<Product>();
     for (Product product : inventory) {
@@ -137,12 +140,6 @@ public class Inventory {
         products.add(product);
       }
     }
-    
-    // if (!products.isEmpty()) {
-    //   return products;
-    // }
-
-    // throw new NoSuchElementException("No product with id: " + searchId);
 
     return products;
   }

@@ -46,7 +46,7 @@ public class Product {
               int quantity,
               int category) {
     this.setId(id);
-    this.setDesciption(description);
+    this.setDescription(description);
     this.setPrice(price);
     this.setBrand(brand);
     this.setWeight(weight);
@@ -86,7 +86,7 @@ public class Product {
    * Change the description of the product.
    * @param description The new description of the product.
    */
-  public void setDesciption(String description) {
+  public void setDescription(String description) {
     this.description = description;
   }
 
