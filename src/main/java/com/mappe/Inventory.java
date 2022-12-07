@@ -54,23 +54,10 @@ public class Inventory {
     );
   }
 
-  /*
-   * The client handles searching for the product and 
-   * the user choosing which product to delete.
-   * It then passes the id of the product to this method. 
-   */
   public void deleteProduct(String id) {
     Product product = findProductsById(id).get(0);
     inventory.remove(product);
   }
-
-  /*
-   * The increase and decrease methods should get the id to a specific product
-   * instead of using the search function here.
-   * When the user wants to increase or decrease the quantity of a product,
-   * the client handles searching for and selecting the specific product.
-   * 
-   */
 
   public void increaseProductQuantity(String id, int quantity) {
     Product product = findProductsById(id).get(0);
@@ -93,24 +80,21 @@ public class Inventory {
   }
 
   public List<Product> findProducts(String searchTerm) {
-    List<Product> products = new ArrayList<Product>();
-
-    try {
-      products = findProductsById(searchTerm);
-    } catch (NoSuchElementException e) {
-      try {
-        products = findProductByDescription(searchTerm);
-      } catch (NoSuchElementException e2) {
-        throw new NoSuchElementException("No products matches the search term: " + searchTerm);
-      }
+    List<Product> products = findProductsById(searchTerm);
+    if (products.isEmpty()) {
+      products = findProductByDescription(searchTerm);
     }
 
-    List<Product> deepcopieProducts = new ArrayList<Product>();
+    if (products.isEmpty()) {
+      return products;
+    }
+
+    List<Product> deepCopiedProducts = new ArrayList<Product>();
     for (Product product : products) {
-      deepcopieProducts.add(new Product(product));
+      deepCopiedProducts.add(new Product(product));
     }
 
-    return deepcopieProducts;
+    return deepCopiedProducts;
   }
 
   private List<Product> findProductByDescription(String searchTerm) {
@@ -134,9 +118,9 @@ public class Inventory {
       } else if (words > maxWords) {
         maxWords = words;
         products.clear();
-        products.add(new Product(product));
+        products.add(product);
       } else if (words == maxWords) {
-        products.add(new Product(product));
+        products.add(product);
       }
     }
 
@@ -154,11 +138,13 @@ public class Inventory {
       }
     }
     
-    if (!products.isEmpty()) {
-      return products;
-    }
+    // if (!products.isEmpty()) {
+    //   return products;
+    // }
 
-    throw new NoSuchElementException("No product with id: " + searchId);
+    // throw new NoSuchElementException("No product with id: " + searchId);
+
+    return products;
   }
 
   private boolean isUniqueID(String id) {
