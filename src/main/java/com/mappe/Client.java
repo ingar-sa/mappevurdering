@@ -33,27 +33,34 @@ public final class Client {
       System.out.println("\nEnter a number: ");
 
       int choice = -1;
-      // Scanner scanner = new Scanner(System.in);
-      choice = scanner.nextInt();
-      
+      try {
+        choice = Integer.parseInt(scanner.next());
+      } catch (NumberFormatException e) {
+        System.out.println("Invalid choice. Please try again.");
+        continue;
+      } catch (Exception e) {
+        System.out.println("Something went wrong. Please try again.");
+        continue;
+      }
+
       switch (choice) {
         case 1:
           printAllProducts();
           break;
         case 2:
-          printProduct();
+          printProduct(scanner);
           break;
         case 3:
           addProduct();
           break;
         case 4:
-          deleteProduct();
+          deleteProduct(scanner);
           break;
         case 5:
-          increaseProductQuantity();
+          increaseProductQuantity(scanner);
           break;
         case 6:
-          decreaseProductQuantity();
+          decreaseProductQuantity(scanner);
           break;
         case 7:
           modifyProduct();
@@ -66,8 +73,9 @@ public final class Client {
           System.out.println("Invalid choice. Please try again.");
           break;
       }
+      
+      System.out.println("Press enter to continue...");
       scanner.next();
-      // scanner.close();
     }
 
     scanner.close();
@@ -77,8 +85,8 @@ public final class Client {
     inventory.printAllProducts();
   }
 
-  private void printProduct() {
-    String id = findProduct();
+  private void printProduct(Scanner scanner) {
+    String id = findProduct(scanner);
     inventory.printSingleProduct(id);
   }
 
@@ -129,46 +137,40 @@ public final class Client {
   }
 
 
-  private void deleteProduct() {
-    String id = findProduct();
+  private void deleteProduct(Scanner scanner) {
+    String id = findProduct(scanner);
     inventory.deleteProduct(id);
   }
 
  
-  private void increaseProductQuantity() {
-    String id = findProduct();
-    System.out.println("Enter the amount to increase the quantity by: ");
+  private void increaseProductQuantity(Scanner scanner) {
+    String id = findProduct(scanner);
+    System.out.println("\nEnter the amount to increase the quantity by: ");
 
-    Scanner scanner = new Scanner(System.in);
-    int amount = scanner.nextInt();
+    int amount = Integer.parseInt(scanner.next());
     inventory.increaseProductQuantity(id, amount);
-    scanner.close();
   }
 
-  private void decreaseProductQuantity() {
-    String id = findProduct();
-    System.out.println("Enter the amount to decrease the quantity by: ");
+  private void decreaseProductQuantity(Scanner scanner) {
+    String id = findProduct(scanner);
+    System.out.println("\nEnter the amount to decrease the quantity by: ");
 
-    Scanner scanner = new Scanner(System.in);
-    int amount = scanner.nextInt();
+    int amount = Integer.parseInt(scanner.next());
     inventory.decreaseProductQuantity(id, amount);
-    scanner.close();
   }
 
   private void modifyProduct() {
   }
 
-  private String findProduct() {
+  private String findProduct(Scanner scanner) {
     System.out.println("---Search for a product---");
     System.out.println("Enter search term (--help for help): ");
-    Scanner scanner = new Scanner(System.in);
-    scanner.useDelimiter(System.lineSeparator());
     String searchTerm = scanner.next();
 
     if (searchTerm.equals("--help")) {
-      System.out.println("Search by id or description. "
+      System.out.println("\nSearch by id or description. "
             + "You don't have to enter the whole id or description, only part of it.\n"
-            + "ID's are case sensitive, and the input must match from the start:\n"
+            + "ID's are case sensitive, and the input must match from the start of the ID:\n"
             + "AB will match with ABC, but BC or aB will not.\n"
             + "Descriptions are not case sensitive, but the term must match whole words.\n"
             + "The description(s) that matches the search term the closest will be returned.\n");
@@ -181,27 +183,26 @@ public final class Client {
 
     if (matches.size() == 0) {
       System.out.println("No matches found.");
-      scanner.close();
       return null; //TODO(ingar): Throw exception instead?
     }
 
     for (int i = 0; i < matches.size(); i++) {
-      System.out.println("Option " + (i + 1) + ":\n" 
+      System.out.println("\nOption " + (i + 1) + ":\n" 
                   + "\tID: " + matches.get(i).getId()
                   + "\n\tDescription: " + matches.get(i).getDescription());
     }
 
     boolean chosenProduct = false;
-    String product = new String();
+    String product = "";
     while (!chosenProduct) {
-      System.out.println("Enter option number (--exit to exit): ");
+      System.out.println("\nEnter option number (--exit to exit): ");
+
       int chosenOption = -1;
       if (scanner.hasNextInt()) {
-        chosenOption = scanner.nextInt();
+        chosenOption = Integer.parseInt(scanner.next());
       } else {
         String exit = scanner.next();
         if (exit.equals("--exit")) {
-          scanner.close();
           return null;
         }
       }
@@ -213,8 +214,7 @@ public final class Client {
         System.out.println("Invalid option. Please try again.");
       }
     }
-
-    scanner.close();
+    
     return product;
   }
 

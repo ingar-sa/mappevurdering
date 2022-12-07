@@ -73,12 +73,12 @@ public class Inventory {
    */
 
   public void increaseProductQuantity(String id, int quantity) {
-    Product product = findProductById(id);
+    Product product = findProductsById(id).get(0);
     product.setQuantity(product.getQuantity() + quantity);
   }
 
   public void decreaseProductQuantity(String id, int quantity) {
-    Product product = findProductById(id);
+    Product product = findProductsById(id).get(0);
     product.setQuantity(product.getQuantity() - quantity);
   }
 
@@ -87,42 +87,71 @@ public class Inventory {
   }
 
   public void printSingleProduct(String id) {
-    Product product = findProductById(id);
+    Product product = findProductsById(id).get(0);
     product.printFormatted();
   }
 
-  public List<Product> findProducts(String stringToMatch) {
+  public List<Product> findProducts(String searchTerm) {
     List<Product> products = new ArrayList<Product>();
 
-    // Case sensitive search. ID's allways have uppercase letters
+    try {
+      products = findProductsById(searchTerm);
+    } catch (NoSuchElementException e) {
+      try {
+        products = findProductByDescription(searchTerm);
+      } catch (NoSuchElementException e2) {
+        throw new NoSuchElementException("No products matches the search term: " + searchTerm);
+      }
+    }
+    
+    return products;
+  }
+
+  private List<Product> findProductByDescription(String searchTerm) {
+    List<Product> products = new ArrayList<Product>();
+    String[] splitSearchTerm = searchTerm.split(" ");
+    int maxWords = 0;
+
     for (Product product : inventory) {
-      if (product.getId().startsWith(stringToMatch)) {
-        products.add(new Product(product));
-        break;
+      String[] splitDescription = product.getDescription().split(" ");
+      int words = 0;
+      for (String searchWord : splitSearchTerm) {
+        for (String descriptionWord : splitDescription) {
+          if (descriptionWord.equalsIgnoreCase(searchWord)) {
+            words++;
+          }
+        }
       }
 
-      // Case insensitive search. 
-      String[] splitDescription = product.getDescription().split(" ");
-      for (String word : splitDescription) {
-        if (word.toLowerCase().equals(stringToMatch.toLowerCase())) {
-          products.add(new Product(product));
-          break;
-        }
+      if (words > maxWords) {
+        maxWords = words;
+        products.clear();
+        products.add(new Product(product));
+      } else if (words == maxWords) {
+        products.add(new Product(product));
       }
     }
 
-    //TODO(ingar): Should I do handling for an empty list here?
-    return products;
+    if (!products.isEmpty()) {
+      return products;
+    }
+
+    throw new NoSuchElementException("No products matches the description: " + searchTerm);
   }
 
   /*
    * The method should return a list of products that match the given id.
    */
-  private Product findProductById(String searchId) {
+  private List<Product> findProductsById(String searchId) {
+    List<Product> products = new ArrayList<Product>();
     for (Product product : inventory) {
       if (product.getId().startsWith(searchId)) {
-        return product;
+        products.add(new Product(product));
       }
+    }
+    
+    if (!products.isEmpty()) {
+      return products;
     }
 
     throw new NoSuchElementException("No product with id: " + searchId);
