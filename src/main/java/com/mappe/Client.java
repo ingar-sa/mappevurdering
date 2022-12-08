@@ -1,26 +1,28 @@
 package com.mappe;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public final class Client {
   
-  private Inventory inventory;
+  private final Inventory inventory;
 
   /**
    * The constructor initializes an Inventory object.
    */
   public Client(boolean debug) {
-    inventory = new Inventory(debug);
+    inventory = new Inventory();
+    inventory.addDefaultProducts();
     //TODO(ingar): Add welcome message.
   }
 
   public void run() {
     Scanner scanner = new Scanner(System.in);
     scanner.useDelimiter(System.lineSeparator());
+
     boolean running = true;
     while (running) {
-      
       System.out.println("\n---What would you like to do?---");
       System.out.println("1. Print all products");
       System.out.println("2. Print a product");
@@ -95,11 +97,12 @@ public final class Client {
       return;
     }
     System.out.println("\n---The product is---");
-    inventory.printSingleProduct(id);
+    System.out.println(inventory.getProductById(id).getFormattedString());
   }
 
   private void addProduct(Scanner scanner) {
     try {
+      System.out.println("\n---Add a product---");
       System.out.println("\nWrite --exit to return to the menu");
       System.out.print("Enter the id: ");
 
@@ -269,9 +272,10 @@ public final class Client {
     if (id == null) {
       return;
     }
+
     System.out.println("\n---The product is---");
     inventory.printSingleProduct(id);
-
+    
     System.out.println("\nThe new quantity cannot be less than 0.");
     System.out.print("\nEnter the amount to decrease the quantity by: ");
     try {
@@ -281,7 +285,7 @@ public final class Client {
       inventory.printSingleProduct(id);
 
     } catch (NumberFormatException e) {
-      System.out.println("Invalid input. Please try again.");
+      System.out.println("Input must be an integer. Please try again.");
 
     } catch (IllegalArgumentException e) {
       System.out.println(e.getMessage());
@@ -300,22 +304,23 @@ public final class Client {
     inventory.printSingleProduct(oldId);
 
     try {
-      System.out.println("Write --exit to return to the menu\n");
-
+      System.out.println("Write --exit to return to the menu");
+      System.out.println("Press enter to keep a field the same\n");
       System.out.print("Enter the id: ");
       String input = scanner.next();
       if (input.equals("--exit")) {
         return;
       }
       final String newId = input;
-
+      
       System.out.print("\nEnter the description: ");
       input = scanner.next();
       if (input.equals("--exit")) {
         return;
       }
       final String description = input;
-
+      // Cannot be empty
+      
       System.out.print("\nEnter the price (must be greater than 0): ");
       input = scanner.next();
       if (input.equals("--exit")) {
@@ -409,7 +414,8 @@ public final class Client {
       System.out.println("Invalid input. Please try again.");
     }
   }
-   
+  
+  // Returns null instead of throwing exception because of the --exit option
   private String findProduct(Scanner scanner) {
     System.out.println("\n---Search for a product by id or description---");
     System.out.print("Enter search term (--help for help, --exit to exit): ");
@@ -478,6 +484,9 @@ public final class Client {
     
     return product;
   }
+
+  private void printAProduct(String id) {
+    
 
   public static void main(String[] args) {
     Client client = new Client(true);

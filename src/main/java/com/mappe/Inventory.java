@@ -6,20 +6,13 @@ import java.util.NoSuchElementException;
 
 public class Inventory {
 
-  private List<Product> inventory;
+  private final List<Product> inventory;
 
   /**
    * The constructor initializes an ArrayList for the products.
    */
   public Inventory() {
     inventory = new ArrayList<Product>();    
-  }
-
-  public Inventory(boolean debug) {
-    inventory = new ArrayList<Product>();    
-    if (debug) {
-      addDefaultProducts();
-    }
   }
 
   public void addProduct(
@@ -34,7 +27,7 @@ public class Inventory {
       int quantity,
       int category) {
     
-    if (!isUniqueID(id)) {
+    if (isExistingId(id)) {
       throw new IllegalArgumentException("The id is not unique.");
     }
 
@@ -55,46 +48,53 @@ public class Inventory {
   }
 
   public void deleteProduct(String id) {
+    if (!isExistingId(id)) {
+      throw new NoSuchElementException("The product with the id " + id + " does not exist.");
+    }
+
     Product product = findProductsById(id).get(0);
     inventory.remove(product);
   }
 
   public void increaseProductQuantity(String id, int quantity) {
+    if (!isExistingId(id)) {
+      throw new NoSuchElementException("The product with the id " + id + " does not exist.");
+    }
+
+    if (quantity < 0) {
+      throw new IllegalArgumentException("The quantity must be greater than or equal to 0.");
+    }
+
     Product product = findProductsById(id).get(0);
     product.setQuantity(product.getQuantity() + quantity);
     product.printFormatted();
   }
 
   public void decreaseProductQuantity(String id, int quantity) {
+    if (!isExistingId(id)) {
+      throw new NoSuchElementException("The product with the id " + id + " does not exist.");
+    }
+
+    if (quantity < 0) {
+      throw new IllegalArgumentException("The quantity must be greater than or equal to 0.");
+    }
+
     Product product = findProductsById(id).get(0);
     product.setQuantity(product.getQuantity() - quantity);
-  }
-
-  public void printAllProducts() {
-    inventory.stream().forEach(product -> product.printFormatted());
-  }
-
-  public void printSingleProduct(String id) {
-    Product product = findProductsById(id).get(0);
     product.printFormatted();
   }
 
-  public List<Product> findProducts(String searchTerm) {
-    List<Product> products = findProductsById(searchTerm);
-    if (products.isEmpty()) {
-      products = findProductByDescription(searchTerm);
+  // public void printAllProducts() {
+  //   inventory.stream().forEach(product -> product.printFormatted());
+  // }
+
+  public void printSingleProduct(String id) {
+    if (!isExistingId(id)) {
+      throw new IllegalArgumentException("The product with the id " + id + " does not exist.");
     }
 
-    if (products.isEmpty()) {
-      return products;
-    }
-
-    List<Product> deepCopiedProducts = new ArrayList<Product>();
-    for (Product product : products) {
-      deepCopiedProducts.add(new Product(product));
-    }
-
-    return deepCopiedProducts;
+    Product product = findProductsById(id).get(0);
+    product.printFormatted();
   }
 
   public Product editProduct(
@@ -110,12 +110,12 @@ public class Inventory {
       String quantity,
       String category) {
 
-    Product oldProduct = findProductsById(oldId).get(0);
-    Product newProduct = new Product(oldProduct);
-
-    if (!isUniqueID(newId)) {
+    if (!isExistingId(newId)) {
       throw new IllegalArgumentException("The id is not unique.");
     }
+
+    Product oldProduct = findProductsById(oldId).get(0);
+    Product newProduct = new Product(oldProduct);
 
     if (!newId.equals("")) {
       newProduct.setId(newId);
@@ -161,8 +161,47 @@ public class Inventory {
   }
 
   public void replaceProduct(Product newProduct, String oldId) {
+    if (!isExistingId(oldId)) {
+      throw new NoSuchElementException("The product with id " + oldId + " does not exist.");
+    }
+
     Product oldProduct = findProductsById(oldId).get(0);
     inventory.set(inventory.indexOf(oldProduct), new Product(newProduct));
+  }
+
+  public Product getProductById(String id) {
+    if (!isExistingId(id)) {
+      throw new NoSuchElementException("The product with id " + id + " does not exist.");
+    }
+
+    return new Product(findProductsById(id).get(0));
+  }
+
+  public List<Product> getAllProducts() {
+    List<Product> deepCopiedProducts = new ArrayList<Product>();
+    for (Product product : inventory) {
+      deepCopiedProducts.add(new Product(product));
+    }
+
+    return deepCopiedProducts;
+  }
+
+  public List<Product> findProducts(String searchTerm) {
+    List<Product> products = findProductsById(searchTerm);
+    if (products.isEmpty()) {
+      products = findProductByDescription(searchTerm);
+    }
+
+    if (products.isEmpty()) {
+      return products;
+    }
+
+    List<Product> deepCopiedProducts = new ArrayList<Product>();
+    for (Product product : products) {
+      deepCopiedProducts.add(new Product(product));
+    }
+
+    return deepCopiedProducts;
   }
   
   private List<Product> findProductByDescription(String searchTerm) {
@@ -206,7 +245,7 @@ public class Inventory {
     return products;
   }
 
-  private boolean isUniqueID(String id) {
+  private boolean isExistingId(String id) {
     for (Product product : inventory) {
       if (product.getId().equals(id)) {
         return false;
@@ -216,7 +255,7 @@ public class Inventory {
     return true;
   }
 
-  private void addDefaultProducts() {
+  public void addDefaultProducts() {
     addProduct(
         "A123", 
         "A description of the product", 

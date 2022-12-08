@@ -62,37 +62,48 @@ public class Product {
    * @param product The product to be copied.
    */
   public Product(Product product) {
-    this(product.getId(),
-         product.getDescription(),
-         product.getPrice(),
-         product.getBrand(),
-         product.getWeight(),
-         product.getLength(),
-         product.getHeight(),
-         product.getColor(),
-         product.getQuantity(),
-         product.getCategory());
+    this(product.id,
+        product.description,
+        product.price,
+        product.brand,
+        product.weight,
+        product.length,
+        product.height,
+        product.color,
+        product.quantity,
+        product.category);
   }
 
   /**
-   * Change the id of the product.
+   * Change the id of the product. Cannot be null or empty.
    * @param id The new id.
+   * @throws IllegalArgumentException if the id is null or empty.
    */
   public void setId(String id) {
-    this.id = id;
+    if (id == null || id.equals("")) {
+      throw new IllegalArgumentException("The id cannot be null or empty.");
+    }
+
+    this.id = id.toUpperCase();
   }
 
   /**
-   * Change the description of the product.
+   * Change the description of the product. The description cannot be null or empty.
    * @param description The new description of the product.
+   * @throws IllegalArgumentException if the description is null or empty.
    */
   public void setDescription(String description) {
+    if (description == null || description.equals("")) {
+      throw new IllegalArgumentException("The description cannot be null or empty.");
+    }
+
     this.description = description;
   }
 
   /**
    * Change the price of the product. The price must be greater than 0.
    * @param price The new price of the product.
+   * @throws IllegalArgumentException if the price is less than or equal to 0.
    */
   public void setPrice(int price) {
     if (price <= 0) {
@@ -112,6 +123,7 @@ public class Product {
   /**
    * Change the weight of the product. The weight must be greater than 0.
    * @param weight The new weight of the product.
+   * @throws IllegalArgumentException if the weight is less than or equal to 0.
    */
   public void setWeight(double weight) {
     if (weight <= 0) {
@@ -123,6 +135,7 @@ public class Product {
   /**
    * Change the length of the product. The length must be greater than 0.
    * @param length The new length of the product.
+   * @throws IllegalArgumentException if the length is less than or equal to 0.
    */
   public void setLength(double length) {
     if (length <= 0) {
@@ -134,6 +147,7 @@ public class Product {
   /**
    * Change the height of the product. The height must be greater than 0.
    * @param height The new height of the product.
+   * @throws IllegalArgumentException if the height is less than or equal to 0.
    */
   public void setHeight(double height) {
     if (height <= 0) {
@@ -153,6 +167,7 @@ public class Product {
   /**
    * Change the quantity of the product. The quantity must be greater than or equal to 0.
    * @param quantity The new quantity of the product.
+   * @throws IllegalArgumentException if the quantity is less than 0.
    */
   public void setQuantity(int quantity) {
     if (quantity < 0) {
@@ -164,6 +179,7 @@ public class Product {
   /**
    * Change the category of the product. The category must be either 1, 2, 3, or 4.
    * @param category The new category of the product.
+   * @throws IllegalArgumentException if the category is not 1, 2, 3, or 4.
    */
   public void setCategory(int category) {
     if (category < 1 || category > 4) {
@@ -216,18 +232,44 @@ public class Product {
   /**
    * Prints a formatted presentation of the products information.
    */
-  public void printFormatted() {
-    System.out.println("ID:          " + id);
-    System.out.println("Description: " + description);
-    System.out.println("Price:       " + price);
-    System.out.println("Brand:       " + brand);
-    System.out.println("Weight:      " + weight);
-    System.out.println("Length:      " + length);
-    System.out.println("Height:      " + height);
-    System.out.println("Color:       " + color);
-    System.out.println("Quantity:    " + quantity);
-    System.out.println("Category:    " + category);
-    System.out.println('\n');
+  public String getFormattedString() {
+    return """
+        ID:          %s
+        Description: %s
+        Price:       %d
+        Brand:       %s
+        Weight:      %f
+        Length:      %f
+        Height:      %f
+        Color:       %s
+        Quantity:    %d
+        Category:    %d
+        
+        """
+        .formatted(
+          id,
+          description,
+          price,
+          brand,
+          weight,
+          length,
+          height,
+          color,
+          quantity,
+          category
+        );
+
+    // System.out.println("ID:          " + id);
+    // System.out.println("Description: " + description);
+    // System.out.println("Price:       " + price);
+    // System.out.println("Brand:       " + brand);
+    // System.out.println("Weight:      " + weight);
+    // System.out.println("Length:      " + length);
+    // System.out.println("Height:      " + height);
+    // System.out.println("Color:       " + color);
+    // System.out.println("Quantity:    " + quantity);
+    // System.out.println("Category:    " + category);
+    // System.out.println('\n');
   }
 
   @Override
