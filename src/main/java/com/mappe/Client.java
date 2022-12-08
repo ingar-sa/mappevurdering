@@ -88,7 +88,9 @@ public final class Client {
 
   private void printAllProducts() {
     System.out.println("\n---All products---");
-    inventory.printAllProducts();
+    for (Product product : inventory.getAllProducts()) {
+      System.out.println(product.getFormattedString());
+    }
   }
 
   private void printProduct(Scanner scanner) {
@@ -189,7 +191,7 @@ public final class Client {
       );
 
       System.out.println("\n---The new product is---");
-      newProduct.printFormatted();
+      System.out.println(newProduct.getFormattedString());
 
       System.out.print("\nAre you sure you want to add this product? (y/n): ");
       input = scanner.next();
@@ -392,7 +394,7 @@ public final class Client {
       );
 
       System.out.println("\n---The edited product is---");
-      editedProduct.printFormatted();
+      System.out.println(editedProduct.getFormattedString());
 
       System.out.print("\nIs it okay to replace the old product with this? (y/n): ");
       input = scanner.next();
@@ -483,10 +485,7 @@ public final class Client {
     }
     
     return product;
-  }
-
-  private void printAProduct(String id) {
-    
+  } 
 
   public static void main(String[] args) {
     Client client = new Client(true);

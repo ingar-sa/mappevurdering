@@ -67,7 +67,7 @@ public class Inventory {
 
     Product product = findProductsById(id).get(0);
     product.setQuantity(product.getQuantity() + quantity);
-    product.printFormatted();
+    System.out.println(product.getFormattedString());
   }
 
   public void decreaseProductQuantity(String id, int quantity) {
@@ -81,7 +81,7 @@ public class Inventory {
 
     Product product = findProductsById(id).get(0);
     product.setQuantity(product.getQuantity() - quantity);
-    product.printFormatted();
+    System.out.println(product.getFormattedString());
   }
 
   // public void printAllProducts() {
@@ -94,7 +94,7 @@ public class Inventory {
     }
 
     Product product = findProductsById(id).get(0);
-    product.printFormatted();
+    System.out.println(product.getFormattedString());
   }
 
   public Product editProduct(
@@ -110,14 +110,13 @@ public class Inventory {
       String quantity,
       String category) {
 
-    if (!isExistingId(newId)) {
-      throw new IllegalArgumentException("The id is not unique.");
-    }
-
     Product oldProduct = findProductsById(oldId).get(0);
-    Product newProduct = new Product(oldProduct);
+    Product newProduct = new Product(oldProduct);  
 
     if (!newId.equals("")) {
+      if (!isExistingId(newId)) {
+        throw new IllegalArgumentException("The id is not unique.");
+      }
       newProduct.setId(newId);
     }
 
@@ -248,11 +247,11 @@ public class Inventory {
   private boolean isExistingId(String id) {
     for (Product product : inventory) {
       if (product.getId().equals(id)) {
-        return false;
+        return true;
       }
     }
 
-    return true;
+    return false;
   }
 
   public void addDefaultProducts() {
