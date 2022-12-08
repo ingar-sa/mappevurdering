@@ -420,7 +420,8 @@ public final class Client {
   // Returns null instead of throwing exception because of the --exit option
   private String findProduct(Scanner scanner) {
     System.out.println("\n---Search for a product by id or description---");
-    System.out.print("Enter search term (--help for help, --exit to exit): ");
+    System.out.print("Enter search term. Press enter for all products"
+                      + " (--help for help, --exit to exit): ");
 
     String searchTerm = scanner.next();
     if (searchTerm.equals("--exit")) {

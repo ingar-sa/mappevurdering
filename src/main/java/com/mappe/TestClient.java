@@ -94,24 +94,29 @@ public class TestClient {
     // product.printFormatted();
     // product.printFormatted();
 
-    Inventory inventory = new Inventory();
+    // Inventory inventory = new Inventory();
 
-    for (int i = 0; i < 100000; i++) {
-      if (i % 10000 == 0) {
-        System.out.println("Adding product " + i);
-      }
+    // for (int i = 0; i < 100000; i++) {
+    //   if (i % 10000 == 0) {
+    //     System.out.println("Adding product " + i);
+    //   }
 
-      inventory.addProduct(Integer.toString(i), "A product", 100, "A brand", 1.0, 1.0, 1.0, "red", 1, 1);
+    //   inventory.addProduct(Integer.toString(i), "A product", 100, "A brand", 1.0, 1.0, 1.0, "red", 1, 1);
+    // }
+    
+    // long startTime = System.nanoTime();
+    // inventory.printSingleProduct(Integer.toString(99999));
+    // long endTime = System.nanoTime();
+    // long duration = (endTime - startTime);
+
+    // System.out.println("Time: " + duration);
+
+    String s = "       true  r    ";
+    String[] arr = s.trim().split(" ");
+    System.out.println(arr.length);
+    for (String str : arr) {
+      System.out.println(str);
     }
-    
-    long startTime = System.nanoTime();
-    inventory.printSingleProduct(Integer.toString(99999));
-    long endTime = System.nanoTime();
-    long duration = (endTime - startTime);
-
-    System.out.println("Time: " + duration);
-    
-
   }
 }
 

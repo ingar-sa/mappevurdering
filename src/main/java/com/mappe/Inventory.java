@@ -186,6 +186,10 @@ public class Inventory {
   }
 
   public List<Product> findProducts(String searchTerm) {
+    if (searchTerm.equals("")) {
+      return getAllProducts();
+    }
+
     List<Product> products = findProductsById(searchTerm);
     if (products.isEmpty()) {
       products = findProductByDescription(searchTerm);
