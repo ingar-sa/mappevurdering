@@ -58,7 +58,6 @@ public class Inventory {
 
     Product product = findProductById(id);
     product.setQuantity(product.getQuantity() + quantity);
-    System.out.println(product.getFormattedString());
   }
 
   public void decreaseProductQuantity(String id, int quantity) {
@@ -68,12 +67,11 @@ public class Inventory {
 
     Product product = findProductById(id);
     product.setQuantity(product.getQuantity() - quantity);
-    System.out.println(product.getFormattedString());
   }
 
   // TODO: This needs to be fixed so printing happens in client
-  public void printSingleProduct(String id) {
-    System.out.println(findProductById(id).getFormattedString());
+  public String getProductFormattedString(String id) {
+    return findProductById(id).getFormattedString();
   }
 
   public Product editProduct(

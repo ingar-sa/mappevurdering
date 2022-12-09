@@ -232,7 +232,7 @@ public final class Client {
     }
 
     System.out.println("\n---The product is---");
-    inventory.printSingleProduct(id);
+    System.out.println(inventory.getProductFormattedString(id));
     System.out.print("\nAre you sure you want to delete this product? (y/n): ");
 
     String input = scanner.next();
@@ -252,14 +252,14 @@ public final class Client {
     }
 
     System.out.println("\n---The product is---");
-    inventory.printSingleProduct(id);
+    System.out.println(inventory.getProductFormattedString(id));
     
     System.out.print("\nEnter the amount to increase the quantity by: ");
     try {
       int amount = Integer.parseInt(scanner.next());
       inventory.increaseProductQuantity(id, amount);
       System.out.println("\n---The updated product is---");
-      inventory.printSingleProduct(id);
+      System.out.println(inventory.getProductFormattedString(id));
 
     } catch (NumberFormatException e) {
       System.out.println("Invalid input. Please try again.");
@@ -276,7 +276,7 @@ public final class Client {
     }
 
     System.out.println("\n---The product is---");
-    inventory.printSingleProduct(id);
+    System.out.println(inventory.getProductFormattedString(id));
     
     System.out.println("\nThe new quantity cannot be less than 0.");
     System.out.print("\nEnter the amount to decrease the quantity by: ");
@@ -284,7 +284,7 @@ public final class Client {
       int amount = Integer.parseInt(scanner.next());
       inventory.decreaseProductQuantity(id, amount);
       System.out.println("\n---The updated product is---");
-      inventory.printSingleProduct(id);
+      System.out.println(inventory.getProductFormattedString(id));
 
     } catch (NumberFormatException e) {
       System.out.println("Input must be an integer. Please try again.");
@@ -302,8 +302,9 @@ public final class Client {
     if (oldId == null) {
       return;
     }
+    
     System.out.println("\n---The product is---");
-    inventory.printSingleProduct(oldId);
+    System.out.println(inventory.getProductFormattedString(oldId));
 
     try {
       System.out.println("Write --exit to return to the menu");

@@ -258,18 +258,6 @@ public class Product {
           quantity,
           category
         );
-
-    // System.out.println("ID:          " + id);
-    // System.out.println("Description: " + description);
-    // System.out.println("Price:       " + price);
-    // System.out.println("Brand:       " + brand);
-    // System.out.println("Weight:      " + weight);
-    // System.out.println("Length:      " + length);
-    // System.out.println("Height:      " + height);
-    // System.out.println("Color:       " + color);
-    // System.out.println("Quantity:    " + quantity);
-    // System.out.println("Category:    " + category);
-    // System.out.println('\n');
   }
 
   @Override
