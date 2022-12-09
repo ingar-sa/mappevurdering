@@ -48,7 +48,12 @@ public class Inventory {
   }
 
   public void deleteProduct(String id) {
-    inventory.remove(findProductById(id));
+    Product product = findProductWithId(id);
+    if (product == null) {
+      throw new NoSuchElementException("The product does not exist.");
+    }
+    
+    inventory.remove(product);
   }
 
   public void increaseProductQuantity(String id, int quantity) {
@@ -56,8 +61,12 @@ public class Inventory {
       throw new IllegalArgumentException("The quantity must be greater than 0.");
     }
 
-    Product product = findProductById(id);
-    product.setQuantity(product.getQuantity() + quantity);
+    Product product = findProductWithId(id);
+    if (product == null) {
+      throw new NoSuchElementException("The product does not exist.");
+    }
+    
+    product.setQuantity(product.getQuantity() - quantity);
   }
 
   public void decreaseProductQuantity(String id, int quantity) {
@@ -65,13 +74,20 @@ public class Inventory {
       throw new IllegalArgumentException("The quantity must be greater than 0.");
     }
 
-    Product product = findProductById(id);
+    Product product = findProductWithId(id);
+    if (product == null) {
+      throw new NoSuchElementException("The product does not exist.");
+    }
+    
     product.setQuantity(product.getQuantity() - quantity);
   }
 
-  // TODO: This needs to be fixed so printing happens in client
   public String getProductFormattedString(String id) {
-    return findProductById(id).getFormattedString();
+    Product product = findProductWithId(id);
+    if (product == null) {
+      throw new NoSuchElementException("The product does not exist.");
+    }
+    return product.getFormattedString();
   }
 
   public Product editProduct(
@@ -87,7 +103,11 @@ public class Inventory {
       String quantity,
       String category) {
 
-    Product oldProduct = findProductsById(oldId).get(0);
+    Product oldProduct = findProductWithId(oldId);
+    if (oldProduct == null) {
+      throw new NoSuchElementException("The product does not exist.");
+    }
+
     Product newProduct = new Product(oldProduct);  
 
     if (!newId.equals("")) {
@@ -137,12 +157,21 @@ public class Inventory {
   }
 
   public void replaceProduct(Product newProduct, String oldId) {
-    // TODO: This can probably be done better
-    inventory.set(inventory.indexOf(findProductById(oldId)), new Product(newProduct));
+    Product product = findProductWithId(oldId);
+    if (product == null) {
+      throw new NoSuchElementException("The product does not exist.");
+    }
+
+    inventory.set(inventory.indexOf(product), new Product(newProduct));
   }
 
   public Product getProductById(String id) {
-    return new Product(findProductById(id));
+    Product product = findProductWithId(id);
+    if (product == null) {
+      throw new NoSuchElementException("The product does not exist.");
+    }
+
+    return new Product(product);
   }
 
   public List<Product> getAllProducts() {
@@ -217,19 +246,14 @@ public class Inventory {
     return products;
   }
 
-  private Product findProductById(String searchId) {
-    List<Product> products = new ArrayList<Product>();
+  private Product findProductWithId(String id) {
     for (Product product : inventory) {
-      if (product.getId().startsWith(searchId)) {
-        products.add(product);
+      if (product.getId().equals(id)) {
+        return product;
       }
     }
 
-    if (products.isEmpty()) {
-      throw new NoSuchElementException("The product with id " + searchId + " does not exist.");
-    }
-
-    return products.get(0);
+    return null;
   }
 
   private boolean isExistingId(String id) {

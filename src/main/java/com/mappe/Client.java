@@ -98,8 +98,9 @@ public final class Client {
     if (id == null) {
       return;
     }
+    
     System.out.println("\n---The product is---");
-    System.out.println(inventory.getProductById(id).getFormattedString());
+    System.out.println(inventory.getProductFormattedString(id));
   }
 
   private void addProduct(Scanner scanner) {
@@ -302,7 +303,7 @@ public final class Client {
     if (oldId == null) {
       return;
     }
-    
+
     System.out.println("\n---The product is---");
     System.out.println(inventory.getProductFormattedString(oldId));
 
