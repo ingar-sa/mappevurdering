@@ -80,7 +80,7 @@ public class Product {
    * @throws IllegalArgumentException if the id is null or empty.
    */
   public void setId(String id) {
-    if (id == null || id.equals("")) {
+    if (id == null || id.isBlank()) {
       throw new IllegalArgumentException("The id cannot be null or empty.");
     }
 
@@ -93,7 +93,7 @@ public class Product {
    * @throws IllegalArgumentException if the description is null or empty.
    */
   public void setDescription(String description) {
-    if (description == null || description.equals("")) {
+    if (description == null || description.isBlank()) {
       throw new IllegalArgumentException("The description cannot be null or empty.");
     }
 

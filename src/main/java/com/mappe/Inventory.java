@@ -307,6 +307,32 @@ public class Inventory {
         1, 
         1
     );
+
+    addProduct(
+        "F123", 
+        "  A     description of the product     ", 
+        1000, 
+        "Brand", 
+        1.0, 
+        1.0, 
+        1.0, 
+        "Color", 
+        1, 
+        1
+    );
+
+    addProduct(
+        "G123", 
+        "         t   ",
+        1000, 
+        "Brand", 
+        1.0, 
+        1.0, 
+        1.0, 
+        "Color", 
+        1, 
+        1
+    );
   }
 
 }
