@@ -251,7 +251,14 @@ public class Inventory {
    * @return A list of deep-copies of the matching products.
    */
   public List<Product> getProductsById(String searchTerm) {
-    return getDeepCopiesOfProducts(findProductsById(searchTerm));
+    List<Product> products = new ArrayList<Product>();
+    for (Product product : inventory) {
+      if (product.getId().startsWith(searchTerm)) {
+        products.add(new Product(product));
+      }
+    }
+
+    return products;
   }
 
   /**
@@ -263,40 +270,42 @@ public class Inventory {
    * 
    * @param searchTerm A string of words to match with the descriptions.
    * @return A list of deep-copies of the matching products.
-   */
+  */
   public List<Product> getProductsByDescription(String searchTerm) {
-    return getDeepCopiesOfProducts(findProductByDescription(searchTerm));
-  }
+    List<Product> products = new ArrayList<Product>();
+    // Remove all non-alphanumeric characters and split the search term into words.
+    String[] splitSearchTerm = searchTerm.replaceAll("[^a-zA-Z0-9 ]", "")
+                                        .toLowerCase().split("\\s+");
+    int maxWords = 0;
 
-  /**
-   * Retuns deep-copies of all the products that match the search term.
-   * If the search term is empty, it returns all products. Otherwise return products
-   * that match the search term by ID, or by description, 
-   * or return an empty list if no products match.
-   * 
-   * @param searchTerm The search term to use to find products.
-   * @return A list of deep-copies of the matching products.
-   */
-  public List<Product> getProductsByIdOrDescription(String searchTerm) {
-    if (searchTerm.equals("")) {
-      return getAllProducts();
+    for (Product product : inventory) {
+      // Remove all non-alphanumeric characters and split the description into words.
+      String[] splitDescription = product.getDescription()
+                                        .replaceAll("[^a-zA-Z0-9 ]", "")
+                                        .toLowerCase().split("\\s+");
+      int matchingWords = 0;
+      for (String searchWord : splitSearchTerm) {
+        for (String descriptionWord : splitDescription) {
+          if (descriptionWord.equalsIgnoreCase(searchWord)) {
+            matchingWords++;
+          }
+        }
+      }
+      
+      if (matchingWords == 0) {
+        continue;
+
+      } else if (matchingWords > maxWords) {
+        maxWords = matchingWords;
+        products.clear();
+        products.add(new Product(product));
+
+      } else if (matchingWords == maxWords) {
+        products.add(new Product(product));
+      }
     }
 
-    List<Product> products = findProductsById(searchTerm);
-    if (products.isEmpty()) {
-      products = findProductByDescription(searchTerm);
-    }
-
-    if (products.isEmpty()) {
-      return products;
-    }
-
-    List<Product> deepCopiedProducts = new ArrayList<Product>();
-    for (Product product : products) {
-      deepCopiedProducts.add(new Product(product));
-    }
-
-    return deepCopiedProducts;
+    return products;
   }
 
   /**
@@ -426,54 +435,6 @@ public class Inventory {
     );
   }
   
-  private List<Product> findProductByDescription(String searchTerm) {
-    List<Product> products = new ArrayList<Product>();
-    // Remove all non-alphanumeric characters and split the search term into words.
-    String[] splitSearchTerm = searchTerm.replaceAll("[^a-zA-Z0-9 ]", "")
-                                        .toLowerCase().split("\\s+");
-    int maxWords = 0;
-
-    for (Product product : inventory) {
-      // Remove all non-alphanumeric characters and split the description into words.
-      String[] splitDescription = product.getDescription()
-                                        .replaceAll("[^a-zA-Z0-9 ]", "")
-                                        .toLowerCase().split("\\s+");
-      int matchingWords = 0;
-      for (String searchWord : splitSearchTerm) {
-        for (String descriptionWord : splitDescription) {
-          if (descriptionWord.equalsIgnoreCase(searchWord)) {
-            matchingWords++;
-          }
-        }
-      }
-      
-      if (matchingWords == 0) {
-        continue;
-
-      } else if (matchingWords > maxWords) {
-        maxWords = matchingWords;
-        products.clear();
-        products.add(product);
-
-      } else if (matchingWords == maxWords) {
-        products.add(product);
-      }
-    }
-
-    return products;
-  }
-
-  private List<Product> findProductsById(String searchId) {
-    List<Product> products = new ArrayList<Product>();
-    for (Product product : inventory) {
-      if (product.getId().startsWith(searchId)) {
-        products.add(product);
-      }
-    }
-
-    return products;
-  }
-
   private Product findProductWithId(String id) {
     for (Product product : inventory) {
       if (product.getId().equals(id)) {
@@ -482,14 +443,5 @@ public class Inventory {
     }
 
     throw new NoSuchElementException("The product does not exist.");
-  }
-
-  private List<Product> getDeepCopiesOfProducts(List<Product> products) {
-    List<Product> deepCopiedProducts = new ArrayList<Product>();
-    for (Product product : products) {
-      deepCopiedProducts.add(new Product(product));
-    }
-
-    return deepCopiedProducts;
   }
 }

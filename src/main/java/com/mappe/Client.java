@@ -458,9 +458,10 @@ public final class Client {
       System.out.println("\nSearch by id or description. "
             + "You don't have to enter the whole id or description, only part of it.\n"
             + "ID's are case sensitive, and the input must match from the start of the ID:\n"
-            + "AB will match with ABC, but BC or aB will not.\n"
-            + "Descriptions are not case sensitive, but the term must match whole words.\n"
-            + "The description(s) with the most matching words will be returned.\n");
+            + "AB and ABC will match with ABC, but BC or aB will not.\n"
+            + "Descriptions are case-insensitive,"
+            + "and words in the search must match whole words in the descriptions.\n"
+            + "The description(s) with the most matching words will be shown.\n");
       System.out.print("\nEnter search term (--exit to exit): ");
 
       searchTerm = scanner.next();
@@ -471,10 +472,8 @@ public final class Client {
     }
 
     List<Product> matches = new ArrayList<>();
-
     if (searchTerm.equals("")) {
       matches = inventory.getAllProducts();
-      
     } else {
       matches = inventory.getProductsById(searchTerm);
       if (matches.size() == 0) {
@@ -495,7 +494,7 @@ public final class Client {
     }
 
     boolean chosenProduct = false;
-    String product = "";
+    String productId = "";
     while (!chosenProduct) {
       System.out.print("\nEnter option number (--exit to exit): ");
 
@@ -515,7 +514,7 @@ public final class Client {
 
       if (chosenOption > 0 && chosenOption <= matches.size()) {
         chosenProduct = true;
-        product = matches.get(chosenOption - 1).getId();
+        productId = matches.get(chosenOption - 1).getId();
 
       } else {
         System.out.println("Invalid option. Please try again.");
@@ -523,7 +522,7 @@ public final class Client {
       }
     }
     
-    return product;
+    return productId;
   }
 
   public static void main(String[] args) {

@@ -234,3 +234,6 @@ Rewriting the entire way I have been using exceptions. I am relying heavily on m
 throwing exceptions if parameters are not valid, especially the id in inventory.
 I should change it so that the caller has to have previously checked that the id
 exists. 
+
+rewriting the findproductsmethod so the caller must use either or both in their code.
+Makes it more generalized
