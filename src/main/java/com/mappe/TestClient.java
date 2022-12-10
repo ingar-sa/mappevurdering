@@ -151,22 +151,30 @@ public class TestClient {
     // System.out.println("Time: " + duration / 1000000);
 
     
-    String string = "A       description of the Product      ";
-    string = string.trim();
-    for (String s : string.split(" ")) {
-      System.out.println(s.trim() + "|");
-    }
+    // String string = "A       description of the Product      ";
+    // string = string.trim();
+    // for (String s : string.split(" ")) {
+    //   System.out.println(s.trim() + "|");
+    // }
 
-    Category category;
-    Scanner  scanner = new Scanner(System.in);
-    System.out.println("Enter a category: ");
-    String input = scanner.nextLine();
-    try {
-      category = Category.valueOf(input.toUpperCase());
-      System.out.println(category);
-    } catch (Exception e) {
-      System.out.println("Invalid category");
-    }
+    // Category category;
+    // Scanner  scanner = new Scanner(System.in);
+    // System.out.println("Enter a category: ");
+    // String input = scanner.nextLine();
+    // try {
+    //   category = Category.valueOf(input.toUpperCase());
+    //   System.out.println(category);
+    // } catch (Exception e) {
+    //   System.out.println("Invalid category");
+    // }
+
+    Inventory inventory = new Inventory();
+    inventory.addProduct("123", "A product", 100, "A brand", 1.0, 1.0, 1.0, "red", 1, Category.getCategoryFromString("1"));
+
+    Product product = inventory.getProductById("123");
+    product.setCategory(Category.getCategoryFromString("2"));
+    System.out.println(product.getFormattedString() + "\n");
+    System.out.println(inventory.getProductFormattedString("123"));
   }
 }
 

@@ -15,6 +15,22 @@ public class Inventory {
     inventory = new ArrayList<Product>();    
   }
 
+  /**
+   * Adds a product to the inventory.
+   * The id must be unique, and all arguments must 
+   * be valid as described in the Product class constructor.
+   * 
+   * @param id The id of the product. 
+   * @param description A string that describes the product.
+   * @param price The price of the product.
+   * @param brand The brand of the product.
+   * @param weight The weight of the product.
+   * @param length The length of the product.
+   * @param height The height of the product.
+   * @param color The color of the product.
+   * @param quantity The number of items in stock.
+   * @param category The category of the product.
+   */
   public void addProduct(
       String id, 
       String description,
@@ -25,94 +41,105 @@ public class Inventory {
       double height,
       String color,
       int quantity,
-      String category) {
+      Category category) {
     
     if (isExistingId(id)) {
       throw new IllegalArgumentException("The id is not unique.");
     }
 
-    try {
-      Product product = new Product(
-          id,
-          description,
-          price,
-          brand,
-          weight,
-          length,
-          height,
-          color,
-          quantity,
-          getCategoryFromString(category)
-      );
-      inventory.add(product);
-    } catch (IllegalArgumentException e) {
-      throw new IllegalArgumentException(category + " is not a valid category.");
-    }
+    Product product = new Product(
+        id,
+        description,
+        price,
+        brand,
+        weight,
+        length,
+        height,
+        color,
+        quantity,
+        category
+    );
+    inventory.add(product);
+    
   }
 
+  /**
+   * Deletes a product from the inventory.
+   * The caller must ensure that the id is valid.
+   * 
+   * @param id The id of the product.
+   */
   public void deleteProduct(String id) {
     Product product = findProductWithId(id);
-    if (product == null) {
-      throw new NoSuchElementException("The product does not exist.");
-    }
-    
     inventory.remove(product);
   }
 
+  /**
+  * Increase the quantity of a product.
+  * The caller must ensure that the id is valid.
+  *
+  * @param id The id of the product.
+  * @param quantity The amount to increase the quantity by.
+  */
   public void increaseProductQuantity(String id, int quantity) {
     if (quantity <= 0) {
       throw new IllegalArgumentException("The quantity must be greater than 0.");
     }
 
     Product product = findProductWithId(id);
-    if (product == null) {
-      throw new NoSuchElementException("The product does not exist.");
-    }
-    
     product.setQuantity(product.getQuantity() + quantity);
   }
 
+  /**
+   * Decrease the quantity of a product.
+   * The caller must ensure that the id is valid.
+   * 
+   * @param id The id of the product.
+   * @param quantity The amount to decrease the quantity by.
+   */
   public void decreaseProductQuantity(String id, int quantity) {
     if (quantity <= 0) {
       throw new IllegalArgumentException("The quantity must be greater than 0.");
     }
 
     Product product = findProductWithId(id);
-    if (product == null) {
-      throw new NoSuchElementException("The product does not exist.");
-    }
-    
     product.setQuantity(product.getQuantity() - quantity);
   }
 
+  /**
+   * Get the formatted string for a product.
+   * The caller must ensure that the id is valid.
+   * 
+   * @param id The id of the product.
+   * @return A string that contains the product's information.
+   */
   public String getProductFormattedString(String id) {
     Product product = findProductWithId(id);
-    if (product == null) {
-      throw new NoSuchElementException("The product does not exist.");
-    }
     return product.getFormattedString();
   }
 
   /**
-   * It takes a bunch of strings, and if they're not empty, it sets the corresponding fields of the
-   * product
+   * Returns an edited version of the old product with the new information.
+   * It takes in strings for all the parameters in the Product constructor,
+   * and if they're not empty, changes the value, otherwise, it keeps the old value.
+   * All new values must be valid as described in the Product class constructor.
+   * The caller must ensure that the id of the existing product is valid.
    * 
    * @param oldId The id of the product to be edited.
    * @param newId The new id of the product.
-   * @param description The description of the product.
-   * @param price The price of the product.
-   * @param brand The brand of the product.
-   * @param weight The weight of the product in kilograms.
-   * @param length The length of the product.
-   * @param height The height of the product.
-   * @param color The color of the product.
-   * @param quantity The quantity of the product.
-   * @param category The category of the product.
-   * @return A new product with the updated information.
+   * @param description The new description of the product. 
+   * @param price The new price of the product.
+   * @param brand The new brand of the product.
+   * @param weight The new weight of the product.
+   * @param length The new length of the product.
+   * @param height The new height of the product.
+   * @param color The new color of the product.
+   * @param quantity The new quantity of the product.
+   * @param category The new category of the product.
    * 
-   * @throws IllegalArgumentException If the id is not unique, or the category is invalid.
+   * @return A new product with the updated information.
    */
-  public Product editProduct(
+  public Product getEditedProduct(
       String oldId,
       String newId,
       String description,
@@ -126,14 +153,10 @@ public class Inventory {
       String category) {
 
     Product oldProduct = findProductWithId(oldId);
-    if (oldProduct == null) {
-      throw new NoSuchElementException("The product does not exist.");
-    }
-
     Product newProduct = new Product(oldProduct);  
 
     if (!newId.equals("")) {
-      if (!isExistingId(newId)) {
+      if (isExistingId(newId)) {
         throw new IllegalArgumentException("The id is not unique.");
       }
       newProduct.setId(newId);
@@ -172,30 +195,41 @@ public class Inventory {
     }
 
     if (!category.equals("")) {
-      newProduct.setCategory(getCategoryFromString(category));
+      newProduct.setCategory(Category.getCategoryFromString(category));
     }
 
     return newProduct;
   }
 
-  public void replaceProduct(Product newProduct, String oldId) {
+  /**
+   * Replace the product with the old id with the new product.
+   * The caller must ensure that the id is valid.
+   * 
+   * @param oldId The id of the product you want to replace.
+   * @param newProduct The new product to replace the 
+   */
+  public void replaceProduct(String oldId, Product newProduct) {
     Product product = findProductWithId(oldId);
-    if (product == null) {
-      throw new NoSuchElementException("The product does not exist.");
-    }
-
     inventory.set(inventory.indexOf(product), new Product(newProduct));
   }
 
+  /**
+   * Returns a deep-copy of the product with the given id.
+   * The caller must ensure that the id is valid.
+   * 
+   * @param id The id of the product to be retrieved.
+   * @return A deep-copy of the product.
+   */
   public Product getProductById(String id) {
     Product product = findProductWithId(id);
-    if (product == null) {
-      throw new NoSuchElementException("The product does not exist.");
-    }
-
     return new Product(product);
   }
 
+  /**
+   * Returns a list of deep-copies of all the products in the inventory.
+   * 
+   * @return A list of deep-copies.
+   */
   public List<Product> getAllProducts() {
     List<Product> deepCopiedProducts = new ArrayList<Product>();
     for (Product product : inventory) {
@@ -205,6 +239,15 @@ public class Inventory {
     return deepCopiedProducts;
   }
 
+  /**
+   * Find products that match either the id or the description.
+   * If the search term is empty, return all products, otherwise return products 
+   * that match the search term by ID, or by description, 
+   * or return an empty list if no products match.
+   * 
+   * @param searchTerm The search term to use to find products.
+   * @return A list of deep-copies of the matching products.
+   */
   public List<Product> findProducts(String searchTerm) {
     if (searchTerm.equals("")) {
       return getAllProducts();
@@ -226,30 +269,38 @@ public class Inventory {
 
     return deepCopiedProducts;
   }
+
   
   private List<Product> findProductByDescription(String searchTerm) {
     List<Product> products = new ArrayList<Product>();
-    String[] splitSearchTerm = searchTerm.split(" ");
+    // Remove all non-alphanumeric characters and split the search term into words.
+    String[] splitSearchTerm = searchTerm.replaceAll("[^a-zA-Z0-9 ]", "")
+                                        .toLowerCase().split("\\s+");
     int maxWords = 0;
 
     for (Product product : inventory) {
-      String[] splitDescription = product.getDescription().split(" ");
-      int words = 0;
+      // Remove all non-alphanumeric characters and split the description into words.
+      String[] splitDescription = product.getDescription()
+                                        .replaceAll("[^a-zA-Z0-9 ]", "")
+                                        .toLowerCase().split("\\s+");
+      int matchingWords = 0;
       for (String searchWord : splitSearchTerm) {
         for (String descriptionWord : splitDescription) {
           if (descriptionWord.equalsIgnoreCase(searchWord)) {
-            words++;
+            matchingWords++;
           }
         }
       }
-
-      if (words == 0) {
+      
+      if (matchingWords == 0) {
         continue;
-      } else if (words > maxWords) {
-        maxWords = words;
+
+      } else if (matchingWords > maxWords) {
+        maxWords = matchingWords;
         products.clear();
         products.add(product);
-      } else if (words == maxWords) {
+
+      } else if (matchingWords == maxWords) {
         products.add(product);
       }
     }
@@ -268,6 +319,115 @@ public class Inventory {
     return products;
   }
 
+  /**
+   * Adds two default products from each category to the inventory.
+   */
+  public void addDefaultProducts() {
+    addProduct(
+        "A1AA", 
+        "Grey floor laminate. 20mX5m",
+        100, 
+        "Floors 'r us", 
+        5.0, 
+        20.0, 
+        5.0, 
+        "Mixed grey",
+        352, 
+        Category.getCategoryFromString("1")
+    );
+
+    addProduct(
+        "A1AB", 
+        "Black floor laminate. 20mX5m",
+        100, 
+        "Floors 'r us", 
+        50.0,
+        20.0, 
+        5.0, 
+        "Black",
+        278,
+        Category.getCategoryFromString("1")
+    );
+
+    addProduct(
+        "B1AA",
+        "Double pane window. 1.5mX2m",
+        1000,
+        "Windows 'r us",
+        7.0,
+        1.5, 
+        2.0, 
+        "Clear", 
+        72, 
+        Category.getCategoryFromString("2")
+    );
+
+    addProduct(
+        "B1AB",
+        "Double pane window. 2.5mX1m",
+        1500,
+        "Windows 'r us",
+        10.0,
+        2.5, 
+        1.0, 
+        "Clear", 
+        56, 
+        Category.getCategoryFromString("2")
+    );
+
+    addProduct(
+        "C1AA", 
+        "White door. 2mX1m", 
+        2000,
+        "Doors 'r us",
+        15.0,
+        1.0, 
+        2.0, 
+        "White", 
+        17,
+        Category.getCategoryFromString("3")
+    );
+
+    addProduct(
+        "C1AB", 
+        "Brown door. 2mX1m", 
+        2000,
+        "Doors 'r us",
+        15.0,
+        1.0, 
+        2.0, 
+        "Brown",
+        31,
+        Category.getCategoryFromString("3")
+    );
+
+    addProduct(
+        "D1AA",
+        "Plywood. 1mX1m",
+        25,
+        "Bobs wood", 
+        2.5, 
+        1.0, 
+        1.0, 
+        "Beige", 
+        522, 
+        Category.getCategoryFromString("4")
+    );
+
+    addProduct(
+        "D1AB",
+        "Plywood. 3mX1m",
+        40,
+        "Bobs wood", 
+        6.2, 
+        3.0, 
+        1.0, 
+        "Beige", 
+        407, 
+        Category.getCategoryFromString("4")
+    );
+  }
+
   private Product findProductWithId(String id) {
     for (Product product : inventory) {
       if (product.getId().equals(id)) {
@@ -275,7 +435,7 @@ public class Inventory {
       }
     }
 
-    return null;
+    throw new NoSuchElementException("The product does not exist.");
   }
 
   private boolean isExistingId(String id) {
@@ -286,114 +446,6 @@ public class Inventory {
     }
 
     return false;
-  }
-
-  private Category getCategoryFromString(String category) {
-    switch (category) {
-      case "1":
-        return Category.FLOOR_LAMINATES;
-      case "2":
-        return Category.WINDOWS;
-      case "3":
-        return Category.DOORS;
-      case "4":
-        return Category.LUMBER;
-      default:
-        throw new IllegalArgumentException(category + " is not a valid category.");
-    }
-  }
-
-  public void addDefaultProducts() {
-    addProduct(
-        "A123", 
-        "A description of the product", 
-        1000, 
-        "Brand", 
-        1.0, 
-        1.0, 
-        1.0, 
-        "Color", 
-        1, 
-        Category.FLOOR_LAMINATES
-    );
-
-    addProduct(
-        "B123", 
-        "a description of the product", 
-        1000, 
-        "Brand", 
-        1.0, 
-        1.0, 
-        1.0, 
-        "Color", 
-        1, 
-        Category.WINDOWS
-    );
-
-    addProduct(
-        "C123", 
-        "This is a product", 
-        1000, 
-        "Brand", 
-        1.0, 
-        1.0, 
-        1.0, 
-        "Color", 
-        1, 
-        Category.DOORS
-    );
-
-    addProduct(
-        "C1A3", 
-        "Another product", 
-        1000, 
-        "Brand", 
-        1.0, 
-        1.0, 
-        1.0, 
-        "Color", 
-        1, 
-        Category.LUMBER
-    );
-
-    addProduct(
-        "E123", 
-        "A hammer", 
-        1000, 
-        "Brand", 
-        1.0, 
-        1.0, 
-        1.0, 
-        "Color", 
-        1, 
-        Category.FLOOR_LAMINATES
-    );
-
-    addProduct(
-        "F123", 
-        "  A     description of the product     ", 
-        1000, 
-        "Brand", 
-        1.0, 
-        1.0, 
-        1.0, 
-        "Color", 
-        1, 
-        Category.WINDOWS
-    );
-
-    addProduct(
-        "G123", 
-        "         t   ",
-        1000, 
-        "Brand", 
-        1.0, 
-        1.0, 
-        1.0, 
-        "Color", 
-        1, 
-        Category.DOORS
-    );
   }
 
 }

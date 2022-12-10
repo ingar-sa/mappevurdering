@@ -229,3 +229,8 @@ I think I want to do it in two ways.
 2. the user enters a number
 
 Problem with this is that it is going to be extra code, but hey, user convenience am i rite?
+
+Rewriting the entire way I have been using exceptions. I am relying heavily on my code
+throwing exceptions if parameters are not valid, especially the id in inventory.
+I should change it so that the caller has to have previously checked that the id
+exists. 

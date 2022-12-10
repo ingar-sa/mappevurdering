@@ -1,18 +1,32 @@
 package com.mappe;
 
 public enum Category {
-  FLOOR_LAMINATES(1),
-  WINDOWS(2),
-  DOORS(3),
-  LUMBER(4);
+  FLOOR_LAMINATES,
+  WINDOWS,
+  DOORS,
+  LUMBER;
 
-  private final int value;
-
-  private Category(int value) {
-    this.value = value;
+  /**
+   * Given a string, return the corresponding category.
+   * 
+   * @param category The "index" of the category. Must be "1", "2", "3", or "4".
+   * @return A Category enum.
+   * @throws IllegalArgumentException If the category is not a valid category.
+   */
+  public static Category getCategoryFromString(String category) {
+    switch (category) {
+      case "1":
+        return Category.FLOOR_LAMINATES;
+      case "2":
+        return Category.WINDOWS;
+      case "3":
+        return Category.DOORS;
+      case "4":
+        return Category.LUMBER;
+      default:
+        throw new IllegalArgumentException(category + " is not a valid category.");
+    }
   }
-
-  public int getValue() {
-    return value;
-  }
+  
 }
+

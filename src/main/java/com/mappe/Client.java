@@ -11,12 +11,13 @@ public final class Client {
   /**
    * The constructor initializes an Inventory object.
    */
-  public Client(boolean debug) {
+  public Client() {
     inventory = new Inventory();
-    inventory.addDefaultProducts();
-    //TODO(ingar): Add welcome message.
   }
 
+  /**
+   * It prints a menu, gets the user's choice, and then calls the appropriate function.
+   */
   public void run() {
     Scanner scanner = new Scanner(System.in);
     scanner.useDelimiter(System.lineSeparator());
@@ -31,7 +32,8 @@ public final class Client {
       System.out.println("5. Increase item quantity");
       System.out.println("6. Decrease item quantity");
       System.out.println("7. Modify a product");
-      System.out.println("8. Exit");
+      System.out.println("8. Add default products");
+      System.out.println("9. Exit");
       System.out.print("\nEnter a number: ");
 
       int choice = -1;
@@ -68,6 +70,9 @@ public final class Client {
           editProduct(scanner);
           break;
         case 8:
+          addDefaultProducts();
+          break;
+        case 9:
           System.out.println("Goodbye!");
           running = false;
           break;
@@ -176,7 +181,7 @@ public final class Client {
       if (id.equals("--exit")) {
         return;
       }
-      final Category category = Category.valueOf(input.toUpperCase());
+      final Category category = Category.getCategoryFromString(input);
 
       Product newProduct = new Product(
           id, 
@@ -265,6 +270,12 @@ public final class Client {
     } catch (NumberFormatException e) {
       System.out.println("Invalid input. Please try again.");
 
+    } catch (IllegalArgumentException e) {
+      System.out.println("Error: " + e.getMessage());
+
+    } catch (NoSuchElementException e) {
+      System.out.println("Error: " + e.getMessage());
+
     } catch (Exception e) {
       System.out.println("Something went wrong. Please try again.");
     }
@@ -276,12 +287,13 @@ public final class Client {
       return;
     }
 
-    System.out.println("\n---The product is---");
-    System.out.println(inventory.getProductFormattedString(id));
-    
-    System.out.println("\nThe new quantity cannot be less than 0.");
-    System.out.print("\nEnter the amount to decrease the quantity by: ");
     try {
+      System.out.println("\n---The product is---");
+      System.out.println(inventory.getProductFormattedString(id));
+      
+      System.out.println("\nThe new quantity cannot be less than 0.");
+      System.out.print("\nEnter the amount to decrease the quantity by: ");
+
       int amount = Integer.parseInt(scanner.next());
       inventory.decreaseProductQuantity(id, amount);
       System.out.println("\n---The updated product is---");
@@ -292,6 +304,9 @@ public final class Client {
 
     } catch (IllegalArgumentException e) {
       System.out.println(e.getMessage());
+
+    } catch (NoSuchElementException e) {
+      System.out.println("Error: " + e.getMessage());
 
     } catch (Exception e) {
       System.out.println("Something went wrong. Please try again.");
@@ -304,10 +319,10 @@ public final class Client {
       return;
     }
 
-    System.out.println("\n---The product is---");
-    System.out.println(inventory.getProductFormattedString(oldId));
-
     try {
+      System.out.println("\n---The product is---");
+      System.out.println(inventory.getProductFormattedString(oldId));
+
       System.out.println("Write --exit to return to the menu");
       System.out.println("Press enter to keep a field the same\n");
       System.out.print("Enter the id: ");
@@ -323,7 +338,6 @@ public final class Client {
         return;
       }
       final String description = input;
-      // Cannot be empty
       
       System.out.print("\nEnter the price (must be greater than 0): ");
       input = scanner.next();
@@ -381,7 +395,7 @@ public final class Client {
       }
       final String category = input;
 
-      Product editedProduct = inventory.editProduct(
+      Product editedProduct = inventory.getEditedProduct(
           oldId,
           newId, 
           description,
@@ -401,7 +415,7 @@ public final class Client {
       System.out.print("\nIs it okay to replace the old product with this? (y/n): ");
       input = scanner.next();
       if (input.equalsIgnoreCase("y")) {
-        inventory.replaceProduct(editedProduct, oldId);
+        inventory.replaceProduct(oldId, editedProduct);
         System.out.println("\n---The product was replaced---");
 
       } else {
@@ -418,6 +432,16 @@ public final class Client {
       System.out.println("Invalid input. Please try again.");
     }
   }
+
+  private void addDefaultProducts() {
+    try {
+      inventory.addDefaultProducts();
+      System.out.println("\n---Default products have been added---");
+    } catch (Exception e) {
+      System.out.println("\n---Default products have already been added---");
+    }
+  }
+
   
   // Returns null instead of throwing exception because of the --exit option
   private String findProduct(Scanner scanner) {
@@ -444,6 +468,8 @@ public final class Client {
     if (searchTerm.equals("--exit")) {
       return null;
     }
+
+    
     
     List<Product> matches = inventory.findProducts(searchTerm);
     if (matches.size() == 0) {
@@ -488,10 +514,10 @@ public final class Client {
     }
     
     return product;
-  } 
+  }
 
   public static void main(String[] args) {
-    Client client = new Client(true);
+    Client client = new Client();
     client.run();
   }
 }
