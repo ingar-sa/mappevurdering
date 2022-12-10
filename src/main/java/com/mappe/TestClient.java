@@ -1,6 +1,7 @@
 package com.mappe;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class TestClient {
   public static void main(String[] args) {
@@ -156,6 +157,16 @@ public class TestClient {
       System.out.println(s.trim() + "|");
     }
 
+    Category category;
+    Scanner  scanner = new Scanner(System.in);
+    System.out.println("Enter a category: ");
+    String input = scanner.nextLine();
+    try {
+      category = Category.valueOf(input.toUpperCase());
+      System.out.println(category);
+    } catch (Exception e) {
+      System.out.println("Invalid category");
+    }
   }
 }
 

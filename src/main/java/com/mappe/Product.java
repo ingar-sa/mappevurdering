@@ -20,7 +20,7 @@ public class Product {
   
   private int quantity;
   
-  private int category;
+  private Category category;
 
   /**
    * The constructor takes in all the parameters and assigns them to the member fields.
@@ -33,7 +33,7 @@ public class Product {
    * @param height The height of the product. Must be greater than 0.
    * @param color The color of the product.
    * @param quantity The quantity of the product. Must be greater than or equal to 0.
-   * @param category The category of the product. Must be either 1, 2, 3, or 4.
+   * @param category The category of the product.
    */
   public Product(String id, 
               String description,
@@ -44,7 +44,7 @@ public class Product {
               double height,
               String color,
               int quantity,
-              int category) {
+              Category category) {
     this.setId(id);
     this.setDescription(description);
     this.setPrice(price);
@@ -176,14 +176,15 @@ public class Product {
     this.quantity = quantity;
   }
 
+  
   /**
-   * Change the category of the product. The category must be either 1, 2, 3, or 4.
+   * Change the category of the product. 
    * @param category The new category of the product.
-   * @throws IllegalArgumentException if the category is not 1, 2, 3, or 4.
+   * @throws IllegalArgumentException if the category is invalid.
    */
-  public void setCategory(int category) {
-    if (category < 1 || category > 4) {
-      throw new IllegalArgumentException("The category must be either 1, 2, 3, or 4.");
+  public void setCategory(Category category) {
+    if (category == null) {
+      throw new IllegalArgumentException("The category cannot be null.");
     }
     this.category = category;
   }
@@ -224,8 +225,7 @@ public class Product {
     return quantity;
   }
 
-  // TODO(ingar): xShould be turned into an enum at some point
-  public int getCategory() {
+  public Category getCategory() {
     return category;
   }
 
@@ -243,7 +243,7 @@ public class Product {
         Height:      %f
         Color:       %s
         Quantity:    %d
-        Category:    %d
+        Category:    %s
         
         """
         .formatted(
@@ -266,5 +266,4 @@ public class Product {
       + brand + ", weight=" + weight + ", length=" + length + ", height=" + height + ", color=" 
       + color + ", quantity=" + quantity + ", category=" + category + "]";
   }
-
 }

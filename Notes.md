@@ -216,3 +216,16 @@ The main problem with this, is that each functionality the user can use requires
 This means that any new class that takes responsibility for one or more function will also need to take responsibility for getting the user input, unless we want an extremely convoluted setup for interaction between the client and this new class.
 Since each function requires the class to take input, it thereby takes over functionality that was originally the client's task.
 
+
+**Del 3**
+So, now that I have a quite nicely working program, it is time to look at refactoring it.
+The refactoring is specifically relating to using streams instead of for loops, as this is
+written as one of the things we should include, technically for part 2, but I'll do it now.
+Also Enum!!! Let's start with that.
+
+Setting the enum from user input.
+I think I want to do it in two ways.
+1. the user writes the name of the category
+2. the user enters a number
+
+Problem with this is that it is going to be extra code, but hey, user convenience am i rite?

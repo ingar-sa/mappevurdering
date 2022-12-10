@@ -176,7 +176,7 @@ public final class Client {
       if (id.equals("--exit")) {
         return;
       }
-      final int category = Integer.parseInt(input);
+      final Category category = Category.valueOf(input.toUpperCase());
 
       Product newProduct = new Product(
           id, 

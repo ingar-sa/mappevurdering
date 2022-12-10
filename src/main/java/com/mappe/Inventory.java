@@ -25,26 +25,29 @@ public class Inventory {
       double height,
       String color,
       int quantity,
-      int category) {
+      String category) {
     
     if (isExistingId(id)) {
       throw new IllegalArgumentException("The id is not unique.");
     }
 
-    inventory.add(
-        new Product(
-        id, 
-        description, 
-        price,
-        brand,
-        weight,
-        length,
-        height,
-        color,
-        quantity,
-        category
-      )
-    );
+    try {
+      Product product = new Product(
+          id,
+          description,
+          price,
+          brand,
+          weight,
+          length,
+          height,
+          color,
+          quantity,
+          getCategoryFromString(category)
+      );
+      inventory.add(product);
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException(category + " is not a valid category.");
+    }
   }
 
   public void deleteProduct(String id) {
@@ -90,6 +93,25 @@ public class Inventory {
     return product.getFormattedString();
   }
 
+  /**
+   * It takes a bunch of strings, and if they're not empty, it sets the corresponding fields of the
+   * product
+   * 
+   * @param oldId The id of the product to be edited.
+   * @param newId The new id of the product.
+   * @param description The description of the product.
+   * @param price The price of the product.
+   * @param brand The brand of the product.
+   * @param weight The weight of the product in kilograms.
+   * @param length The length of the product.
+   * @param height The height of the product.
+   * @param color The color of the product.
+   * @param quantity The quantity of the product.
+   * @param category The category of the product.
+   * @return A new product with the updated information.
+   * 
+   * @throws IllegalArgumentException If the id is not unique, or the category is invalid.
+   */
   public Product editProduct(
       String oldId,
       String newId,
@@ -150,7 +172,7 @@ public class Inventory {
     }
 
     if (!category.equals("")) {
-      newProduct.setCategory(Integer.parseInt(category));
+      newProduct.setCategory(getCategoryFromString(category));
     }
 
     return newProduct;
@@ -266,6 +288,21 @@ public class Inventory {
     return false;
   }
 
+  private Category getCategoryFromString(String category) {
+    switch (category) {
+      case "1":
+        return Category.FLOOR_LAMINATES;
+      case "2":
+        return Category.WINDOWS;
+      case "3":
+        return Category.DOORS;
+      case "4":
+        return Category.LUMBER;
+      default:
+        throw new IllegalArgumentException(category + " is not a valid category.");
+    }
+  }
+
   public void addDefaultProducts() {
     addProduct(
         "A123", 
@@ -277,7 +314,7 @@ public class Inventory {
         1.0, 
         "Color", 
         1, 
-        1
+        Category.FLOOR_LAMINATES
     );
 
     addProduct(
@@ -290,7 +327,7 @@ public class Inventory {
         1.0, 
         "Color", 
         1, 
-        1
+        Category.WINDOWS
     );
 
     addProduct(
@@ -303,7 +340,7 @@ public class Inventory {
         1.0, 
         "Color", 
         1, 
-        1
+        Category.DOORS
     );
 
     addProduct(
@@ -316,7 +353,7 @@ public class Inventory {
         1.0, 
         "Color", 
         1, 
-        1
+        Category.LUMBER
     );
 
     addProduct(
@@ -329,7 +366,7 @@ public class Inventory {
         1.0, 
         "Color", 
         1, 
-        1
+        Category.FLOOR_LAMINATES
     );
 
     addProduct(
@@ -342,7 +379,7 @@ public class Inventory {
         1.0, 
         "Color", 
         1, 
-        1
+        Category.WINDOWS
     );
 
     addProduct(
@@ -355,7 +392,7 @@ public class Inventory {
         1.0, 
         "Color", 
         1, 
-        1
+        Category.DOORS
     );
   }
 
