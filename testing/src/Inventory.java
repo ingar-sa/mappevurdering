@@ -1,5 +1,3 @@
-package com.mappe;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -66,7 +64,7 @@ public class Inventory {
       throw new NoSuchElementException("The product does not exist.");
     }
     
-    product.setQuantity(product.getQuantity() + quantity);
+    product.setQuantity(product.getQuantity() - quantity);
   }
 
   public void decreaseProductQuantity(String id, int quantity) {
