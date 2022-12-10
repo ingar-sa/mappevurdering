@@ -1,5 +1,6 @@
 package com.mappe;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -469,9 +470,18 @@ public final class Client {
       return null;
     }
 
+    List<Product> matches = new ArrayList<>();
+
+    if (searchTerm.equals("")) {
+      matches = inventory.getAllProducts();
+      
+    } else {
+      matches = inventory.getProductsById(searchTerm);
+      if (matches.size() == 0) {
+        matches = inventory.getProductsByDescription(searchTerm);
+      }
+    }
     
-    
-    List<Product> matches = inventory.findProducts(searchTerm);
     if (matches.size() == 0) {
       System.out.println("\n---No matches found---");
       return null;

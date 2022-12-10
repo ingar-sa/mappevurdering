@@ -79,7 +79,7 @@ public class Inventory {
   * The caller must ensure that the id is valid.
   *
   * @param id The id of the product.
-  * @param quantity The amount to increase the quantity by.
+  * @param quantity The amount to increase the quantity by. Must be greater than 0.
   */
   public void increaseProductQuantity(String id, int quantity) {
     if (quantity <= 0) {
@@ -95,7 +95,7 @@ public class Inventory {
    * The caller must ensure that the id is valid.
    * 
    * @param id The id of the product.
-   * @param quantity The amount to decrease the quantity by.
+   * @param quantity The amount to decrease the quantity by. Must be greater than 0.
    */
   public void decreaseProductQuantity(String id, int quantity) {
     if (quantity <= 0) {
@@ -111,7 +111,7 @@ public class Inventory {
    * The caller must ensure that the id is valid.
    * 
    * @param id The id of the product.
-   * @return A string that contains the product's information.
+   * @return A formatted string of the product's information.
    */
   public String getProductFormattedString(String id) {
     Product product = findProductWithId(id);
@@ -119,9 +119,9 @@ public class Inventory {
   }
 
   /**
-   * Returns an edited version of the old product with the new information.
-   * It takes in strings for all the parameters in the Product constructor,
-   * and if they're not empty, changes the value, otherwise, it keeps the old value.
+   * Returns an edited version of the old product with the updated information.
+   * It takes strings for all the parameters in the Product constructor,
+   * and if they're not empty, changes the value. Otherwise, it keeps the old value.
    * All new values must be valid as described in the Product class constructor.
    * The caller must ensure that the id of the existing product is valid.
    * 
@@ -206,7 +206,7 @@ public class Inventory {
    * The caller must ensure that the id is valid.
    * 
    * @param oldId The id of the product you want to replace.
-   * @param newProduct The new product to replace the 
+   * @param newProduct The product to replace it with.
    */
   public void replaceProduct(String oldId, Product newProduct) {
     Product product = findProductWithId(oldId);
@@ -226,7 +226,8 @@ public class Inventory {
   }
 
   /**
-   * Returns a list of deep-copies of all the products in the inventory.
+   * Returns deep-copies of all the products in the inventory.
+   * Returns an empty list if the inventory is empty.
    * 
    * @return A list of deep-copies.
    */
@@ -240,15 +241,43 @@ public class Inventory {
   }
 
   /**
-   * Find products that match either the id or the description.
-   * If the search term is empty, return all products, otherwise return products 
+   * Returns deep-copies of all the products with ids that
+   * match either part of or the entire search term.
+   * The search is case-sensitive, and the search term must match
+   * from the beginning of an id.
+   * Returns an empty list if no products match.
+   * 
+   * @param searchTerm String to match with ids.
+   * @return A list of deep-copies of the matching products.
+   */
+  public List<Product> getProductsById(String searchTerm) {
+    return getDeepCopiesOfProducts(findProductsById(searchTerm));
+  }
+
+  /**
+   * Returns deep-copies of the product(s) that match the most words
+   * in the search term. The search is canse-insensitive, and the words
+   * in the search term must match whole words in the description.
+   * If multiple descriptions contain the same amount of words
+   * they are all returned. Returns an empty list if no products match.
+   * 
+   * @param searchTerm A string of words to match with the descriptions.
+   * @return A list of deep-copies of the matching products.
+   */
+  public List<Product> getProductsByDescription(String searchTerm) {
+    return getDeepCopiesOfProducts(findProductByDescription(searchTerm));
+  }
+
+  /**
+   * Retuns deep-copies of all the products that match the search term.
+   * If the search term is empty, it returns all products. Otherwise return products
    * that match the search term by ID, or by description, 
    * or return an empty list if no products match.
    * 
    * @param searchTerm The search term to use to find products.
    * @return A list of deep-copies of the matching products.
    */
-  public List<Product> findProducts(String searchTerm) {
+  public List<Product> getProductsByIdOrDescription(String searchTerm) {
     if (searchTerm.equals("")) {
       return getAllProducts();
     }
@@ -270,53 +299,22 @@ public class Inventory {
     return deepCopiedProducts;
   }
 
-  
-  private List<Product> findProductByDescription(String searchTerm) {
-    List<Product> products = new ArrayList<Product>();
-    // Remove all non-alphanumeric characters and split the search term into words.
-    String[] splitSearchTerm = searchTerm.replaceAll("[^a-zA-Z0-9 ]", "")
-                                        .toLowerCase().split("\\s+");
-    int maxWords = 0;
-
+  /**
+   * Checks if a product with the id exists in the inventory.
+   * Should be used before passing an id to other methods in
+   * the class, unless the validity of the id is already checked.
+   * 
+   * @param id The id to check.
+   * @return True if the id exists, false otherwise.
+   */
+  public boolean isExistingId(String id) {
     for (Product product : inventory) {
-      // Remove all non-alphanumeric characters and split the description into words.
-      String[] splitDescription = product.getDescription()
-                                        .replaceAll("[^a-zA-Z0-9 ]", "")
-                                        .toLowerCase().split("\\s+");
-      int matchingWords = 0;
-      for (String searchWord : splitSearchTerm) {
-        for (String descriptionWord : splitDescription) {
-          if (descriptionWord.equalsIgnoreCase(searchWord)) {
-            matchingWords++;
-          }
-        }
-      }
-      
-      if (matchingWords == 0) {
-        continue;
-
-      } else if (matchingWords > maxWords) {
-        maxWords = matchingWords;
-        products.clear();
-        products.add(product);
-
-      } else if (matchingWords == maxWords) {
-        products.add(product);
+      if (product.getId().equals(id)) {
+        return true;
       }
     }
 
-    return products;
-  }
-
-  private List<Product> findProductsById(String searchId) {
-    List<Product> products = new ArrayList<Product>();
-    for (Product product : inventory) {
-      if (product.getId().startsWith(searchId)) {
-        products.add(product);
-      }
-    }
-
-    return products;
+    return false;
   }
 
   /**
@@ -427,6 +425,54 @@ public class Inventory {
         Category.getCategoryFromString("4")
     );
   }
+  
+  private List<Product> findProductByDescription(String searchTerm) {
+    List<Product> products = new ArrayList<Product>();
+    // Remove all non-alphanumeric characters and split the search term into words.
+    String[] splitSearchTerm = searchTerm.replaceAll("[^a-zA-Z0-9 ]", "")
+                                        .toLowerCase().split("\\s+");
+    int maxWords = 0;
+
+    for (Product product : inventory) {
+      // Remove all non-alphanumeric characters and split the description into words.
+      String[] splitDescription = product.getDescription()
+                                        .replaceAll("[^a-zA-Z0-9 ]", "")
+                                        .toLowerCase().split("\\s+");
+      int matchingWords = 0;
+      for (String searchWord : splitSearchTerm) {
+        for (String descriptionWord : splitDescription) {
+          if (descriptionWord.equalsIgnoreCase(searchWord)) {
+            matchingWords++;
+          }
+        }
+      }
+      
+      if (matchingWords == 0) {
+        continue;
+
+      } else if (matchingWords > maxWords) {
+        maxWords = matchingWords;
+        products.clear();
+        products.add(product);
+
+      } else if (matchingWords == maxWords) {
+        products.add(product);
+      }
+    }
+
+    return products;
+  }
+
+  private List<Product> findProductsById(String searchId) {
+    List<Product> products = new ArrayList<Product>();
+    for (Product product : inventory) {
+      if (product.getId().startsWith(searchId)) {
+        products.add(product);
+      }
+    }
+
+    return products;
+  }
 
   private Product findProductWithId(String id) {
     for (Product product : inventory) {
@@ -438,14 +484,12 @@ public class Inventory {
     throw new NoSuchElementException("The product does not exist.");
   }
 
-  private boolean isExistingId(String id) {
-    for (Product product : inventory) {
-      if (product.getId().equals(id)) {
-        return true;
-      }
+  private List<Product> getDeepCopiesOfProducts(List<Product> products) {
+    List<Product> deepCopiedProducts = new ArrayList<Product>();
+    for (Product product : products) {
+      deepCopiedProducts.add(new Product(product));
     }
 
-    return false;
+    return deepCopiedProducts;
   }
-
 }

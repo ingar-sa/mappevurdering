@@ -25,7 +25,7 @@ public class Product {
   /**
    * The constructor takes in all the parameters, checks if they are valid and sets them.
    * @param id The id of the product. Cannot be empty or null.
-   * @param description The description of the product.
+   * @param description The description of the product. Cannot be empty or null.
    * @param price The price of the product. Must be greater than 0.
    * @param brand The brand of the product. Cannot be empty or null.
    * @param weight The weight of the product. Must be greater than 0.
@@ -33,7 +33,7 @@ public class Product {
    * @param height The height of the product. Must be greater than 0.
    * @param color The color of the product. Cannot be empty or null.
    * @param quantity The quantity of the product. Must be greater than or equal to 0.
-   * @param category The category of the product. Must be a valid category.
+   * @param category The category of the product. Cannot be null.
    */
   public Product(String id, 
               String description,
@@ -258,7 +258,7 @@ public class Product {
   }
 
   /**
-   * Prints a formatted presentation of the products information.
+   * @return a formatted presentation of the products information.
    */
   public String getFormattedString() {
     return """
