@@ -1,9 +1,7 @@
 package com.mappe;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class TestClient {
+  
   public static void main(String[] args) {
 
     
@@ -120,7 +118,7 @@ public class TestClient {
 
     try {
       product.setCategory(Category.parseCategory("5"));
-      System.out.println(("(Test 15 failed) Set invalid category: " + product.getCategory())));
+      System.out.println(("(Test 15 failed) Set invalid category: " + product.getCategory()));
     } catch (Exception e) {
       System.out.println("(Test 15 success) Set invalid category: " + e.getMessage());
     }
@@ -130,70 +128,70 @@ public class TestClient {
       product.setId("A1B2C3");
       System.out.println("(Test 16 success) Set valid id: " + product.getId());
     } catch (Exception e) {
-      System.out.println("(Test 16) Failed to set valid id: " + e.getMessage());
+      System.out.println("(Test 16 failed) Failed to set valid id: " + e.getMessage());
     }
 
     try {
       product.setDescription("A valid description");
-      System.out.println("(Test 17) Set valid description: " + product.getDescription());
+      System.out.println("(Test 17 success) Set valid description: " + product.getDescription());
     } catch (Exception e) {
-      System.out.println("(Test 17) Failed to set valid description: " + e.getMessage());
+      System.out.println("(Test 17 failed) Failed to set valid description: " + e.getMessage());
     }
 
     try {
       product.setPrice(100);
-      System.out.println("(Test 18) Set valid price: " + product.getPrice());
+      System.out.println("(Test 18 success) Set valid price: " + product.getPrice());
     } catch (Exception e) {
-      System.out.println("(Test 18) Failed to set valid price: " + e.getMessage());
+      System.out.println("(Test 18 failed) Failed to set valid price: " + e.getMessage());
     }
 
     try {
       product.setBrand("Brand");
-      System.out.println("(Test 19) Set valid brand: " + product.getBrand());
+      System.out.println("(Test 19 success) Set valid brand: " + product.getBrand());
     } catch (Exception e) {
-      System.out.println("(Test 19) Failed to set valid brand: " + e.getMessage());
+      System.out.println("(Test 19 failed) Failed to set valid brand: " + e.getMessage());
     }
 
     try {
       product.setWeight(1.0);
-      System.out.println("(Test 20) Set valid weight: " + product.getWeight());
+      System.out.println("(Test 20 success) Set valid weight: " + product.getWeight());
     } catch (Exception e) {
-      System.out.println("(Test 20) Failed to set valid weight: " + e.getMessage());
+      System.out.println("(Test 20 failed) Failed to set valid weight: " + e.getMessage());
     }
 
     try {
       product.setLength(1.0);
-      System.out.println("(Test 21) Set valid length: " + product.getLength());
+      System.out.println("(Test 21 success) Set valid length: " + product.getLength());
     } catch (Exception e) {
-      System.out.println("(Test 21) Failed to set valid length: " + e.getMessage());
+      System.out.println("(Test 21 failed) Failed to set valid length: " + e.getMessage());
     }
 
     try {
       product.setHeight(1.0);
-      System.out.println("(Test 22) Set valid height: " + product.getHeight());
+      System.out.println("(Test 22 success) Set valid height: " + product.getHeight());
     } catch (Exception e) {
-      System.out.println("(Test 22) Failed to set valid height: " + e.getMessage());
+      System.out.println("(Test 22 failed) Failed to set valid height: " + e.getMessage());
     }
 
     try {
       product.setColor("Blue");
-      System.out.println("(Test 23) Set valid color: " + product.getColor());
+      System.out.println("(Test 23 success) Set valid color: " + product.getColor());
     } catch (Exception e) {
-      System.out.println("(Test 23) Failed to set valid color: " + e.getMessage());
+      System.out.println("(Test 23 failed) Failed to set valid color: " + e.getMessage());
     }
 
     try {
       product.setQuantity(1);
-      System.out.println("(Test 24) Set valid quantity: " + product.getQuantity());
+      System.out.println("(Test 24 success) Set valid quantity: " + product.getQuantity());
     } catch (Exception e) {
-      System.out.println("(Test 24) Failed to set valid quantity: " + e.getMessage());
+      System.out.println("(Test 24 failed) Failed to set valid quantity: " + e.getMessage());
     }
 
     try {
       product.setCategory(Category.FLOOR_LAMINATES);
-      System.out.println("(Test 25) Set valid category: " + product.getCategory());
+      System.out.println("(Test 25 success) Set valid category: " + product.getCategory());
     } catch (Exception e) {
-      System.out.println("(Test 25) Failed to set valid category: " + e.getMessage());
+      System.out.println("(Test 25 failed) Failed to set valid category: " + e.getMessage());
     }
   }
 }

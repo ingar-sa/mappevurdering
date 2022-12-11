@@ -12,7 +12,7 @@ public class Inventory {
    * The constructor initializes an ArrayList for the products.
    */
   public Inventory() {
-    inventory = new ArrayList<Product>();    
+    inventory = new ArrayList<Product>(); 
   }
 
   /**
@@ -20,7 +20,7 @@ public class Inventory {
    * The caller must ensure the id is unique, and all arguments must 
    * be valid as described in the Product class constructor.
    * 
-   * @param id The id of the product. 
+   * @param id The id of the product.
    * @param description The description of the product.
    * @param price The price of the product.
    * @param brand The brand of the product.
