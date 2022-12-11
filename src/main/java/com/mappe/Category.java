@@ -13,7 +13,7 @@ public enum Category {
    * @return A Category enum.
    * @throws IllegalArgumentException If the category is not a valid category.
    */
-  public static Category getCategoryFromString(String category) {
+  public static Category parseCategory(String category) {
     switch (category) {
       case "1":
         return Category.FLOOR_LAMINATES;

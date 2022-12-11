@@ -169,10 +169,10 @@ public class TestClient {
     // }
 
     Inventory inventory = new Inventory();
-    inventory.addProduct("123", "A product", 100, "A brand", 1.0, 1.0, 1.0, "red", 1, Category.getCategoryFromString("1"));
+    inventory.addProduct("123", "A product", 100, "A brand", 1.0, 1.0, 1.0, "red", 1, Category.parseCategory("1"));
 
     Product product = inventory.getProductById("123");
-    product.setCategory(Category.getCategoryFromString("2"));
+    product.setCategory(Category.parseCategory("2"));
     System.out.println(product.getFormattedString() + "\n");
     System.out.println(inventory.getProductFormattedString("123"));
   }

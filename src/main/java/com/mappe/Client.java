@@ -40,11 +40,9 @@ public final class Client {
       int choice = -1;
       try {
         choice = Integer.parseInt(scanner.next());
-      } catch (NumberFormatException e) {
-        System.out.println("Invalid choice. Please try again.");
-        continue;
+
       } catch (Exception e) {
-        System.out.println("Something went wrong. Please try again.");
+        System.out.println("Invalid choice. Please try again.");
         continue;
       }
 
@@ -182,7 +180,7 @@ public final class Client {
       if (id.equals("--exit")) {
         return;
       }
-      final Category category = Category.getCategoryFromString(input);
+      final Category category = Category.parseCategory(input);
 
       Product newProduct = new Product(
           id, 
@@ -221,11 +219,9 @@ public final class Client {
       } else {
         System.out.println("\n---The product was not added---");
       }
-    } catch (NumberFormatException e) {
-      System.out.println("\nInvalid input. Please try again.");
 
     } catch (IllegalArgumentException e) {
-      System.out.println("\nError: " + e.getMessage());
+      System.out.println("\nInvalid value for product: " + e.getMessage());
 
     } catch (Exception e) {
       System.out.println("\nInvalid input. Please try again.");
@@ -268,17 +264,11 @@ public final class Client {
       System.out.println("\n---The updated product is---");
       System.out.println(inventory.getProductFormattedString(id));
 
-    } catch (NumberFormatException e) {
-      System.out.println("Invalid input. Please try again.");
-
     } catch (IllegalArgumentException e) {
-      System.out.println("Error: " + e.getMessage());
-
-    } catch (NoSuchElementException e) {
-      System.out.println("Error: " + e.getMessage());
+      System.out.println("Invalid value for product: " + e.getMessage());
 
     } catch (Exception e) {
-      System.out.println("Something went wrong. Please try again.");
+      System.out.println("Invalid input. Please try again.");
     }
   }
 
@@ -300,17 +290,11 @@ public final class Client {
       System.out.println("\n---The updated product is---");
       System.out.println(inventory.getProductFormattedString(id));
 
-    } catch (NumberFormatException e) {
-      System.out.println("Input must be an integer. Please try again.");
-
     } catch (IllegalArgumentException e) {
-      System.out.println(e.getMessage());
-
-    } catch (NoSuchElementException e) {
-      System.out.println("Error: " + e.getMessage());
+      System.out.println("Invalid value for product: " + e.getMessage());
 
     } catch (Exception e) {
-      System.out.println("Something went wrong. Please try again.");
+      System.out.println("Invalid input. Please try again.");
     }
   }
   
@@ -423,11 +407,8 @@ public final class Client {
         System.out.println("\n---The product was not replaced---");
       }
 
-    } catch (NumberFormatException e) {
-      System.out.println("Invalid input. Please try again.");
-
     } catch (IllegalArgumentException e) {
-      System.out.println("Error: " + e.getMessage());
+      System.out.println("Invalid value for product: " + e.getMessage());
 
     } catch (Exception e) {
       System.out.println("Invalid input. Please try again.");
@@ -438,13 +419,18 @@ public final class Client {
     try {
       inventory.addDefaultProducts();
       System.out.println("\n---Default products have been added---");
+
     } catch (Exception e) {
       System.out.println("\n---Default products have already been added---");
     }
   }
 
   
-  // Returns null instead of throwing exception because of the --exit option
+  /*
+   * This method guarantees that the id that is returned is valid,
+   * so there is no need to use the isExistingId() when this methods
+   * is used.
+   */
   private String findProduct(Scanner scanner) {
     System.out.println("\n---Search for a product by id or description---");
     System.out.print("Enter search term. Press enter for all products"
@@ -474,6 +460,7 @@ public final class Client {
     List<Product> matches = new ArrayList<>();
     if (searchTerm.equals("")) {
       matches = inventory.getAllProducts();
+
     } else {
       matches = inventory.getProductsById(searchTerm);
       if (matches.size() == 0) {
@@ -507,7 +494,7 @@ public final class Client {
       try {
         chosenOption = Integer.parseInt(input);
 
-      } catch (NumberFormatException e) {
+      } catch (Exception e) {
         System.out.println("Invalid option. Please try again.");
         continue;
       }

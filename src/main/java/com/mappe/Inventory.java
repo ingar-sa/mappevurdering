@@ -17,11 +17,11 @@ public class Inventory {
 
   /**
    * Adds a product to the inventory.
-   * The id must be unique, and all arguments must 
+   * The caller must ensure the id is unique, and all arguments must 
    * be valid as described in the Product class constructor.
    * 
    * @param id The id of the product. 
-   * @param description A string that describes the product.
+   * @param description The description of the product.
    * @param price The price of the product.
    * @param brand The brand of the product.
    * @param weight The weight of the product.
@@ -42,10 +42,6 @@ public class Inventory {
       String color,
       int quantity,
       Category category) {
-    
-    if (isExistingId(id)) {
-      throw new IllegalArgumentException("The id is not unique.");
-    }
 
     Product product = new Product(
         id,
@@ -60,7 +56,6 @@ public class Inventory {
         category
     );
     inventory.add(product);
-    
   }
 
   /**
@@ -123,19 +118,20 @@ public class Inventory {
    * It takes strings for all the parameters in the Product constructor,
    * and if they're not empty, changes the value. Otherwise, it keeps the old value.
    * All new values must be valid as described in the Product class constructor.
-   * The caller must ensure that the id of the existing product is valid.
+   * The caller must ensure that the id of the existing product is valid,
+   * and that the new id is unique.
    * 
-   * @param oldId The id of the product to be edited.
-   * @param newId The new id of the product.
-   * @param description The new description of the product. 
-   * @param price The new price of the product.
-   * @param brand The new brand of the product.
-   * @param weight The new weight of the product.
-   * @param length The new length of the product.
-   * @param height The new height of the product.
-   * @param color The new color of the product.
-   * @param quantity The new quantity of the product.
-   * @param category The new category of the product.
+   * @param oldId Id of the product to be edited.
+   * @param newId Empty string, or the new id of the product.
+   * @param description Empty string, or the new description of the product. 
+   * @param price Empty string, or the new price of the product.
+   * @param brand Empty string, or the new brand of the product.
+   * @param weight Empty string, or the new weight of the product.
+   * @param length Empty string, or the new length of the product.
+   * @param height Empty string, or the new height of the product.
+   * @param color Empty string, or the new color of the product.
+   * @param quantity Empty string, or the new quantity of the product.
+   * @param category Empty string, or the new category of the product.
    * 
    * @return A new product with the updated information.
    */
@@ -156,9 +152,6 @@ public class Inventory {
     Product newProduct = new Product(oldProduct);  
 
     if (!newId.equals("")) {
-      if (isExistingId(newId)) {
-        throw new IllegalArgumentException("The id is not unique.");
-      }
       newProduct.setId(newId);
     }
 
@@ -195,7 +188,7 @@ public class Inventory {
     }
 
     if (!category.equals("")) {
-      newProduct.setCategory(Category.getCategoryFromString(category));
+      newProduct.setCategory(Category.parseCategory(category));
     }
 
     return newProduct;
@@ -241,10 +234,10 @@ public class Inventory {
   }
 
   /**
-   * Returns deep-copies of all the products with ids that
+   * Returns deep-copies the product(s) with ids that
    * match either part of or the entire search term.
    * The search is case-sensitive, and the search term must match
-   * from the beginning of an id.
+   * from the beginning of an id. If multiple ids match, they are all returned.
    * Returns an empty list if no products match.
    * 
    * @param searchTerm String to match with ids.
@@ -277,7 +270,6 @@ public class Inventory {
     String[] splitSearchTerm = searchTerm.replaceAll("[^a-zA-Z0-9 ]", "")
                                         .toLowerCase().split("\\s+");
     int maxWords = 0;
-
     for (Product product : inventory) {
       // Remove all non-alphanumeric characters and split the description into words.
       String[] splitDescription = product.getDescription()
@@ -311,7 +303,7 @@ public class Inventory {
   /**
    * Checks if a product with the id exists in the inventory.
    * Should be used before passing an id to other methods in
-   * the class, unless the validity of the id is already checked.
+   * the class, unless the validity of the id is otherwise guaranteed.
    * 
    * @param id The id to check.
    * @return True if the id exists, false otherwise.
@@ -328,6 +320,8 @@ public class Inventory {
 
   /**
    * Adds two default products from each category to the inventory.
+   * The caller must ensure that there are no products with matching
+   * ids in the inventory.
    */
   public void addDefaultProducts() {
     addProduct(
@@ -340,7 +334,7 @@ public class Inventory {
         5.0, 
         "Mixed grey",
         352, 
-        Category.getCategoryFromString("1")
+        Category.parseCategory("1")
     );
 
     addProduct(
@@ -353,7 +347,7 @@ public class Inventory {
         5.0, 
         "Black",
         278,
-        Category.getCategoryFromString("1")
+        Category.parseCategory("1")
     );
 
     addProduct(
@@ -366,7 +360,7 @@ public class Inventory {
         2.0, 
         "Clear", 
         72, 
-        Category.getCategoryFromString("2")
+        Category.parseCategory("2")
     );
 
     addProduct(
@@ -379,7 +373,7 @@ public class Inventory {
         1.0, 
         "Clear", 
         56, 
-        Category.getCategoryFromString("2")
+        Category.parseCategory("2")
     );
 
     addProduct(
@@ -392,7 +386,7 @@ public class Inventory {
         2.0, 
         "White", 
         17,
-        Category.getCategoryFromString("3")
+        Category.parseCategory("3")
     );
 
     addProduct(
@@ -405,7 +399,7 @@ public class Inventory {
         2.0, 
         "Brown",
         31,
-        Category.getCategoryFromString("3")
+        Category.parseCategory("3")
     );
 
     addProduct(
@@ -418,7 +412,7 @@ public class Inventory {
         1.0, 
         "Beige", 
         522, 
-        Category.getCategoryFromString("4")
+        Category.parseCategory("4")
     );
 
     addProduct(
@@ -431,7 +425,7 @@ public class Inventory {
         1.0, 
         "Beige", 
         407, 
-        Category.getCategoryFromString("4")
+        Category.parseCategory("4")
     );
   }
   
