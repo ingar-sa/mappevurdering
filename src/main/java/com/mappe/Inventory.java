@@ -44,7 +44,7 @@ public class Inventory {
    * @param quantity The number of items in stock.
    * @param category The category of the product.
    * 
-   * @throws IllegalArgumentException If the new id is not unique, or if any of the arguments are \
+   * @throws IllegalArgumentException If the new id is not unique, or if any of the arguments are
    *                                  invalid acccording to the Product class constructor.
    */
   public void addProduct(
@@ -91,7 +91,7 @@ public class Inventory {
   }
 
   /**
-  * Increase the quantity of a product.
+  * Increases the quantity of a product.
   * The caller must ensure that the product exists.
   *
   * @param id The id of the product.
@@ -109,7 +109,7 @@ public class Inventory {
   }
 
   /**
-   * Decrease the quantity of a product.
+   * Decreases the quantity of a product.
    * The caller must ensure that the product exists.
    * 
    * @param id The id of the product.
@@ -161,7 +161,7 @@ public class Inventory {
    * @param category Empty string, or the new category of the product.
    * 
    * @return A new product with the updated information.
-   * @throws IllegalArgumentException If the new id is not unique, or if any of the arguments are \
+   * @throws IllegalArgumentException If the new id is not unique, or if any of the arguments are
    *                                  invalid acccording to the Product class constructor.
    */
   public Product getEditedProduct(
@@ -227,7 +227,7 @@ public class Inventory {
   }
 
   /**
-   * Replace the product with the old id with the new product.
+   * Replace a product with a new one.
    * The caller must ensure that the product exists.
    * 
    * @param oldId The id of the product you want to replace.

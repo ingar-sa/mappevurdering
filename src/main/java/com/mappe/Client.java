@@ -26,7 +26,7 @@ public final class Client {
 
   /**
    * Prints a menu, gets the user's choice using a scanner, 
-   * and then calls the appropriate function.
+   * and then calls the corresonding method.
    */
   public void run() {
     Scanner scanner = new Scanner(System.in);
