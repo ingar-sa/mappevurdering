@@ -59,6 +59,10 @@ public class Inventory {
       int quantity,
       Category category) {
 
+    if (isExistingId(id)) {
+      throw new IllegalArgumentException("A product with this id already exists.");
+    }
+
     Product product = new Product(
         id,
         description,
