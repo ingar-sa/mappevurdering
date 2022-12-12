@@ -4,6 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Represents the inventory of a warehouse, and contains a list 
+ * of products and methods for manipulating the list and the products 
+ * in the list. The management of the products is based on an id system,
+ * with each product having a unique id. The user must provide the id 
+ * of a product to the methods that manipulate them. To this end, 
+ * the class provides methods for searching for products based on 
+ * part of or the entire id, as well as being able to search based on 
+ * the description of the product. The user can then use the id to
+ * call methods that can change or retrieve the values of the product.
+ * The class also provides methods for adding, deleting and editing
+ * products.
+ */
 public class Inventory {
 
   private final List<Product> inventory;
@@ -30,6 +43,9 @@ public class Inventory {
    * @param color The color of the product.
    * @param quantity The number of items in stock.
    * @param category The category of the product.
+   * 
+   * @throws IllegalArgumentException If the new id is not unique, or if any of the arguments are \
+   *                                  invalid acccording to the Product class constructor.
    */
   public void addProduct(
       String id, 
@@ -60,9 +76,10 @@ public class Inventory {
 
   /**
    * Deletes a product from the inventory.
-   * The caller must ensure that the id is valid.
+   * The caller must ensure that the product exists.
    * 
    * @param id The id of the product.
+   * @throws NoSuchElementException If the product doesn't exist.
    */
   public void deleteProduct(String id) {
     Product product = findProductWithId(id);
@@ -71,10 +88,12 @@ public class Inventory {
 
   /**
   * Increase the quantity of a product.
-  * The caller must ensure that the id is valid.
+  * The caller must ensure that the product exists.
   *
   * @param id The id of the product.
   * @param quantity The amount to increase the quantity by. Must be greater than 0.
+  * @throws IllegalArgumentException If the quantity is less than or equal to 0.
+  * @throws NoSuchElementException If the product doesn't exist.
   */
   public void increaseProductQuantity(String id, int quantity) {
     if (quantity <= 0) {
@@ -87,10 +106,12 @@ public class Inventory {
 
   /**
    * Decrease the quantity of a product.
-   * The caller must ensure that the id is valid.
+   * The caller must ensure that the product exists.
    * 
    * @param id The id of the product.
    * @param quantity The amount to decrease the quantity by. Must be greater than 0.
+   * @throws IllegalArgumentException If the quantity is less than or equal to 0.
+   * @throws NoSuchElementException If the product doesn't exist.
    */
   public void decreaseProductQuantity(String id, int quantity) {
     if (quantity <= 0) {
@@ -102,11 +123,12 @@ public class Inventory {
   }
 
   /**
-   * Get the formatted string for a product.
-   * The caller must ensure that the id is valid.
+   * Get the formatted string from a product.
+   * The caller must ensure that the product exists.
    * 
    * @param id The id of the product.
    * @return A formatted string of the product's information.
+   * @throws NoSuchElementException If the product doesn't exist.
    */
   public String getProductFormattedString(String id) {
     Product product = findProductWithId(id);
@@ -119,7 +141,8 @@ public class Inventory {
    * and if they're not empty, changes the value. Otherwise, it keeps the old value.
    * All new values must be valid as described in the Product class constructor.
    * The caller must ensure that the id of the existing product is valid,
-   * and that the new id is unique.
+   * and that the new id is unique. If the user has entered a new id,
+   * and it is the same as the old id, the method will not throw an exception.
    * 
    * @param oldId Id of the product to be edited.
    * @param newId Empty string, or the new id of the product.
@@ -134,6 +157,8 @@ public class Inventory {
    * @param category Empty string, or the new category of the product.
    * 
    * @return A new product with the updated information.
+   * @throws IllegalArgumentException If the new id is not unique, or if any of the arguments are \
+   *                                  invalid acccording to the Product class constructor.
    */
   public Product getEditedProduct(
       String oldId,
@@ -152,6 +177,9 @@ public class Inventory {
     Product newProduct = new Product(oldProduct);  
 
     if (!newId.equals("")) {
+      if (isExistingId(newId) && !newId.equals(oldId)) {
+        throw new IllegalArgumentException("The new id must be unique.");
+      }
       newProduct.setId(newId);
     }
 
@@ -196,10 +224,11 @@ public class Inventory {
 
   /**
    * Replace the product with the old id with the new product.
-   * The caller must ensure that the id is valid.
+   * The caller must ensure that the product exists.
    * 
    * @param oldId The id of the product you want to replace.
    * @param newProduct The product to replace it with.
+   * @throws IllegalArgumentException If the product doesn't exist.
    */
   public void replaceProduct(String oldId, Product newProduct) {
     Product product = findProductWithId(oldId);
@@ -208,10 +237,11 @@ public class Inventory {
 
   /**
    * Returns a deep-copy of the product with the given id.
-   * The caller must ensure that the id is valid.
+   * The caller must ensure that the product exists
    * 
    * @param id The id of the product to be retrieved.
    * @return A deep-copy of the product.
+   * @throws IllegalArgumentException If the product doesn't exist.
    */
   public Product getProductById(String id) {
     Product product = findProductWithId(id);
@@ -322,6 +352,8 @@ public class Inventory {
    * Adds two default products from each category to the inventory.
    * The caller must ensure that there are no products with matching
    * ids in the inventory.
+   * 
+   * @throws IllegalArgumentException If there are products with matching ids.
    */
   public void addDefaultProducts() {
     addProduct(
@@ -429,6 +461,14 @@ public class Inventory {
     );
   }
   
+  /**
+   * Returns the product with the given id.
+   * Used internally to manipulate data on a product.
+   * 
+   * @param id The id of the product.
+   * @return The product.
+   * @throws NoSuchElementException If the product does not exist.
+   */
   private Product findProductWithId(String id) {
     for (Product product : inventory) {
       if (product.getId().equals(id)) {

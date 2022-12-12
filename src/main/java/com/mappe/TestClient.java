@@ -1,10 +1,18 @@
 package com.mappe;
 
+/**
+ * A simple test client. Only tests the Product class for now.
+ */
 public class TestClient {
-  
-  public static void main(String[] args) {
 
-    
+  /**
+   * Tests the Product class setters and asserts
+   * that they throw exceptions when one attempts 
+   * to set invalid values.
+   */
+  public void testProduct() {
+    System.out.println("\nTesting Product class");
+
     Product product = new Product("A123", 
                               "A product", 
                               100, 
@@ -15,7 +23,6 @@ public class TestClient {
                               "red", 
                               1, 
                               Category.FLOOR_LAMINATES);
-    System.out.println(product);
 
     // TEST INVALID VALUES
     try {
@@ -193,6 +200,11 @@ public class TestClient {
     } catch (Exception e) {
       System.out.println("(Test 25 failed) Failed to set valid category: " + e.getMessage());
     }
+  }
+
+  public static void main(String[] args) {
+    TestClient testClient = new TestClient();
+    testClient.testProduct();
   }
 }
 

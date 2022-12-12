@@ -4,6 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Represents a user interface for a warehouse management system.
+ * The client presents a menu to the user, and the user can choose what to do.
+ * The user has options for printing all products, printing a specific product,
+ * adding, deleting and editing a product and increasing and decreasing the quantity
+ * of a product.
+ * The class has extensive guard clauses to ensure that invalid input does not crash
+ * the program.
+ */
 public final class Client {
   
   private final Inventory inventory;
@@ -16,7 +25,8 @@ public final class Client {
   }
 
   /**
-   * It prints a menu, gets the user's choice, and then calls the appropriate function.
+   * Prints a menu, gets the user's choice using a scanner, 
+   * and then calls the appropriate function.
    */
   public void run() {
     Scanner scanner = new Scanner(System.in);
@@ -89,6 +99,12 @@ public final class Client {
     System.exit(0);
   }
 
+  /**
+   * Prints all the products in the inventory using the 
+   * formatted string the Product class provides.
+   * 
+   * @param scanner A scanner to get the user's input.
+   */
   private void printAllProducts() {
     System.out.println("\n---All products---");
     for (Product product : inventory.getAllProducts()) {
@@ -96,6 +112,14 @@ public final class Client {
     }
   }
 
+  /**
+   * Prints a single product using in the inventory using
+   * the formatted string the Product class provides.
+   * Uses the findProduct method to get a product id.
+   * Exits to the main menu if no prodcut is found.
+   * 
+   * @param scanner A scanner to get the user's input.
+   */
   private void printProduct(Scanner scanner) {
     String id = findProduct(scanner);
     if (id == null) {
@@ -106,6 +130,13 @@ public final class Client {
     System.out.println(inventory.getProductFormattedString(id));
   }
 
+  /**
+   * Creates a new product from the user's input and adds it to the inventory.
+   * Exits to the main menu if the the product id already exists,
+   * or the user enters invalid values for the Product class parameters.
+   * 
+   * @param scanner A scanner to get the user's input.
+   */
   private void addProduct(Scanner scanner) {
     try {
       System.out.println("\n---Add a product---");
@@ -227,6 +258,14 @@ public final class Client {
     }
   }
 
+  /**
+   * Deletes a product from the inventory. Uses the findProduct method
+   * to get a product id. It prints the products information and waits
+   * for the user to confirm the deletion. Exits to the main menu if no
+   * product is found.
+   * 
+   * @param A scanner to get the user's input.
+   */
   private void deleteProduct(Scanner scanner) {
     String id = findProduct(scanner);
     if (id == null) {
@@ -247,6 +286,14 @@ public final class Client {
     }
   }
 
+  /**
+   * Increases the quantity of a product. Uses the findProduct method
+   * to get a product id. Gets the amount to increase the quantity from
+   * the user. Exits to the main menu if no product is found, or if the user
+   * enters a negative value or a non-number. 
+   * 
+   * @param A scanner to get the user's input.
+   */
   private void increaseProductQuantity(Scanner scanner) {
     String id = findProduct(scanner);
     if (id == null) {
@@ -271,6 +318,15 @@ public final class Client {
     }
   }
 
+  /**
+   * Decreases the quantity of a product. Uses the findProduct method
+   * to get a product id. Gets the amount to increase the quantity from
+   * the user. Exits to the main menu if no product is found, if the user
+   * enters a negative value or a non-number or if the new quantity is less
+   * than 0.
+   * 
+   * @param A scanner to get the user's input.
+   */
   private void decreaseProductQuantity(Scanner scanner) {
     String id = findProduct(scanner);
     if (id == null) {
@@ -297,6 +353,20 @@ public final class Client {
     }
   }
   
+  /**
+   * Edits a product in the inventory. Uses the findProduct method
+   * to get a product id. The user can edit any field of the product.
+   * This is to maximize user frinendliness, as they can edit any
+   * mistake they made when adding a product without having to delete
+   * the product and add it again. If an input is left blank, the existing
+   * value for that field is kept. After a new version of the product is
+   * successfully created, it waits for confirmation that the user wants to
+   * replace the old product with the edited one. 
+   * Exits to the main menu if no product is found, if the user enters 
+   * an existing id or if the user enters invalid values for the fields.
+   * 
+   * @param A scanner to get the user's input.
+   */
   private void editProduct(Scanner scanner) {
     String oldId = findProduct(scanner);
     if (oldId == null) {
@@ -414,21 +484,37 @@ public final class Client {
     }
   }
 
+  /**
+   * Adds two products from each category to the inventory.
+   */
   private void addDefaultProducts() {
     try {
       inventory.addDefaultProducts();
       System.out.println("\n---Default products have been added---");
 
     } catch (Exception e) {
-      System.out.println("\n---Default products have already been added---");
+      System.out.println("\n---Products with matching ids already exist---");
     }
   }
 
   
-  /*
-   * This method guarantees that the id that is returned is valid,
-   * so there is no need to use the isExistingId() when this methods
-   * is used.
+  /**
+   * Finds a product in the inventory from user input. The user can search
+   * by id or description, or leave the input blank to retrieve all products.
+   * The user does not need to enter the whole id or description. For the id search,
+   * the user input must match from the start of the id, and the search is case sensitive
+   * (A, AB and ABC will match with ABC, but BC or aB will not.) If multiple products
+   * start with the user input, they are all returned. For the description search,
+   * the words in the user input are simply matched with words in a product's 
+   * description. The product(s) with the most matching words, regardless of order,
+   * are returned. Exits to the main menu if at any point the user enters --exit,
+   * or if no product is found. If any product is found, the user *must* either choose a product
+   * or explicitly exit to the main menu. As long as the caller checks for a null return value
+   * and exits if it gets it, this ensures caller is guaranteed to get a valid product id,
+   * and they can safely call methods on the inventory.
+   * 
+   * @param A scanner to get the user's input.
+   * @return The id of a product, or null if the user exits or no product is found.
    */
   private String findProduct(Scanner scanner) {
     System.out.println("\n---Search for a product by id or description---");

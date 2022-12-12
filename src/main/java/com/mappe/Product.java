@@ -1,5 +1,13 @@
 package com.mappe;
 
+/**
+ * Represents a product that can be catalogued by an id.
+ * The class contains information that is mostly useful
+ * for an employee, and it is intended for use in a warehouse
+ * management system rather than a retail system. 
+ * The class has thourough error checking to ensure that the values
+ * can never be invalid. 
+ */
 public class Product {
     
   private String id;
@@ -77,6 +85,7 @@ public class Product {
   /**
    * Changes the id of the product.
    * @param id The new id. Cannot be null or empty.
+   * @throws IllegalArgumentException If the id is null or empty.
    */
   public void setId(String id) {
     if (id == null || id.isBlank()) {
@@ -89,6 +98,7 @@ public class Product {
   /**
    * Changes the description of the product. 
    * @param description The new description of the product. Cannot be null or empty.
+   * @throws IllegalArgumentException If the description is null or empty.
    */
   public void setDescription(String description) {
     if (description == null || description.isBlank()) {
@@ -101,6 +111,7 @@ public class Product {
   /**
    * Changes the price of the product. 
    * @param price The new price of the product. Must be greater than 0.
+   * @throws IllegalArgumentException If the price is less than or equal to 0.
    */
   public void setPrice(int price) {
     if (price <= 0) {
@@ -112,6 +123,7 @@ public class Product {
   /**
    * Changes the brand of the product. 
    * @param brand The new brand of the product. Cannot be null or empty.
+   * @throws IllegalArgumentException If the brand is null or empty.
    */
   public void setBrand(String brand) {
     if (brand == null || brand.isBlank()) {
@@ -123,6 +135,7 @@ public class Product {
   /**
    * Changes the weight of the product. 
    * @param weight The new weight of the product. Must be greater than 0.
+   * @throws IllegalArgumentException If the weight is less than or equal to 0.
    */
   public void setWeight(double weight) {
     if (weight <= 0) {
@@ -134,6 +147,7 @@ public class Product {
   /**
    * Changes the length of the product. 
    * @param length The new length of the product. Must be greater than 0.
+   * @throws IllegalArgumentException If the length is less than or equal to 0.
    */
   public void setLength(double length) {
     if (length <= 0) {
@@ -145,6 +159,7 @@ public class Product {
   /**
    * Changes the height of the product. 
    * @param height The new height of the product. Must be greater than 0.
+   * @throws IllegalArgumentException If the height is less than or equal to 0.
    */
   public void setHeight(double height) {
     if (height <= 0) {
@@ -156,6 +171,7 @@ public class Product {
   /**
    * Changes the color of the product. 
    * @param color The new color. Cannot be null or empty.
+   * @throws IllegalArgumentException If the color is null or empty.
    */
   public void setColor(String color) {
     if (color == null || color.isBlank()) {
@@ -167,6 +183,7 @@ public class Product {
   /**
    * Changes the quantity of the product. 
    * @param quantity The new quantity of the product. Must be greater than or equal to 0.
+   * @throws IllegalArgumentException If the quantity is less than 0.
    */
   public void setQuantity(int quantity) {
     if (quantity < 0) {
@@ -179,6 +196,7 @@ public class Product {
   /**
    * Changes the category of the product. 
    * @param category The new category of the product. Cannot be null.
+   * @throws IllegalArgumentException If the category is null.
    */
   public void setCategory(Category category) {
     if (category == null) {

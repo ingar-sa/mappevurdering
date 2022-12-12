@@ -1,11 +1,15 @@
 package com.mappe;
 
+
+/**
+ * Represents the four different categories a Product class can have.
+ */
 public enum Category {
   FLOOR_LAMINATES,
   WINDOWS,
   DOORS,
   LUMBER;
-
+  
   /**
    * Given a string, return the corresponding category.
    * 
@@ -27,6 +31,4 @@ public enum Category {
         throw new IllegalArgumentException(category + " is not a valid category.");
     }
   }
-  
 }
-
