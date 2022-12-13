@@ -1,5 +1,13 @@
 package com.mappe;
 
+/**
+ * Represents a product that can be catalogued by an id.
+ * The class contains information that is mostly useful
+ * for an employee, and it is intended for use in a warehouse
+ * management system rather than a retail system. 
+ * The class has thourough error checking to ensure that the values
+ * can never be invalid. 
+ */
 public class Product {
     
   private String id;
@@ -20,20 +28,20 @@ public class Product {
   
   private int quantity;
   
-  private int category;
+  private Category category;
 
   /**
-   * The constructor takes in all the parameters and assigns them to the member fields.
-   * @param id The id of the product.
-   * @param description The description of the product.
+   * The constructor takes in all the parameters, checks if they are valid and sets them.
+   * @param id The id of the product. Cannot be empty or null.
+   * @param description The description of the product. Cannot be empty or null.
    * @param price The price of the product. Must be greater than 0.
-   * @param brand The brand of the product.
+   * @param brand The brand of the product. Cannot be empty or null.
    * @param weight The weight of the product. Must be greater than 0.
    * @param length The length of the product. Must be greater than 0.
    * @param height The height of the product. Must be greater than 0.
-   * @param color The color of the product.
+   * @param color The color of the product. Cannot be empty or null.
    * @param quantity The quantity of the product. Must be greater than or equal to 0.
-   * @param category The category of the product. Must be either 1, 2, 3, or 4.
+   * @param category The category of the product. Cannot be null.
    */
   public Product(String id, 
               String description,
@@ -44,7 +52,7 @@ public class Product {
               double height,
               String color,
               int quantity,
-              int category) {
+              Category category) {
     this.setId(id);
     this.setDescription(description);
     this.setPrice(price);
@@ -62,37 +70,48 @@ public class Product {
    * @param product The product to be copied.
    */
   public Product(Product product) {
-    this(product.getId(),
-         product.getDescription(),
-         product.getPrice(),
-         product.getBrand(),
-         product.getWeight(),
-         product.getLength(),
-         product.getHeight(),
-         product.getColor(),
-         product.getQuantity(),
-         product.getCategory());
+    this(product.id,
+        product.description,
+        product.price,
+        product.brand,
+        product.weight,
+        product.length,
+        product.height,
+        product.color,
+        product.quantity,
+        product.category);
   }
 
   /**
-   * Change the id of the product.
-   * @param id The new id.
+   * Changes the id of the product.
+   * @param id The new id. Cannot be null or empty.
+   * @throws IllegalArgumentException If the id is null or empty.
    */
   public void setId(String id) {
-    this.id = id;
+    if (id == null || id.isBlank()) {
+      throw new IllegalArgumentException("The id cannot be null or empty.");
+    }
+
+    this.id = id.toUpperCase();
   }
 
   /**
-   * Change the description of the product.
-   * @param description The new description of the product.
+   * Changes the description of the product. 
+   * @param description The new description of the product. Cannot be null or empty.
+   * @throws IllegalArgumentException If the description is null or empty.
    */
   public void setDescription(String description) {
+    if (description == null || description.isBlank()) {
+      throw new IllegalArgumentException("The description cannot be null or empty.");
+    }
+
     this.description = description;
   }
 
   /**
-   * Change the price of the product. The price must be greater than 0.
-   * @param price The new price of the product.
+   * Changes the price of the product. 
+   * @param price The new price of the product. Must be greater than 0.
+   * @throws IllegalArgumentException If the price is less than or equal to 0.
    */
   public void setPrice(int price) {
     if (price <= 0) {
@@ -102,16 +121,21 @@ public class Product {
   }
 
   /**
-   * Change the brand of the product.
-   * @param brand The new brand of the product.
+   * Changes the brand of the product. 
+   * @param brand The new brand of the product. Cannot be null or empty.
+   * @throws IllegalArgumentException If the brand is null or empty.
    */
   public void setBrand(String brand) {
+    if (brand == null || brand.isBlank()) {
+      throw new IllegalArgumentException("The brand cannot be null or empty.");
+    }
     this.brand = brand;
   }
 
   /**
-   * Change the weight of the product. The weight must be greater than 0.
-   * @param weight The new weight of the product.
+   * Changes the weight of the product. 
+   * @param weight The new weight of the product. Must be greater than 0.
+   * @throws IllegalArgumentException If the weight is less than or equal to 0.
    */
   public void setWeight(double weight) {
     if (weight <= 0) {
@@ -121,8 +145,9 @@ public class Product {
   }
 
   /**
-   * Change the length of the product. The length must be greater than 0.
-   * @param length The new length of the product.
+   * Changes the length of the product. 
+   * @param length The new length of the product. Must be greater than 0.
+   * @throws IllegalArgumentException If the length is less than or equal to 0.
    */
   public void setLength(double length) {
     if (length <= 0) {
@@ -132,8 +157,9 @@ public class Product {
   }
 
   /**
-   * Change the height of the product. The height must be greater than 0.
-   * @param height The new height of the product.
+   * Changes the height of the product. 
+   * @param height The new height of the product. Must be greater than 0.
+   * @throws IllegalArgumentException If the height is less than or equal to 0.
    */
   public void setHeight(double height) {
     if (height <= 0) {
@@ -143,16 +169,21 @@ public class Product {
   }
 
   /**
-   * Change the color of the product.
-   * @param color The new color.
+   * Changes the color of the product. 
+   * @param color The new color. Cannot be null or empty.
+   * @throws IllegalArgumentException If the color is null or empty.
    */
   public void setColor(String color) {
+    if (color == null || color.isBlank()) {
+      throw new IllegalArgumentException("The color cannot be null or empty.");
+    }
     this.color = color;
   }
 
   /**
-   * Change the quantity of the product. The quantity must be greater than or equal to 0.
-   * @param quantity The new quantity of the product.
+   * Changes the quantity of the product. 
+   * @param quantity The new quantity of the product. Must be greater than or equal to 0.
+   * @throws IllegalArgumentException If the quantity is less than 0.
    */
   public void setQuantity(int quantity) {
     if (quantity < 0) {
@@ -161,73 +192,118 @@ public class Product {
     this.quantity = quantity;
   }
 
+  
   /**
-   * Change the category of the product. The category must be either 1, 2, 3, or 4.
-   * @param category The new category of the product.
+   * Changes the category of the product. 
+   * @param category The new category of the product. Cannot be null.
+   * @throws IllegalArgumentException If the category is null.
    */
-  public void setCategory(int category) {
-    if (category < 1 || category > 4) {
-      throw new IllegalArgumentException("The category must be either 1, 2, 3, or 4.");
+  public void setCategory(Category category) {
+    if (category == null) {
+      throw new IllegalArgumentException("The category cannot be null.");
     }
     this.category = category;
   }
 
+  /**
+   * @return The id of the product.
+   */
   public String getId() {
     return id;
   }
 
+  /**
+   * @return The description of the product.
+   */
   public String getDescription() {
     return description;
   }
 
+  /**
+   * @return The price of the product.
+   */
   public int getPrice() {
     return price;
   }
 
+  /**
+   * @return The brand of the product.
+   */
   public String getBrand() {
     return brand;
   }
 
+  /**
+   * @return The weight of the product.
+   */
   public double getWeight() {
     return weight;
   }
 
+  /**
+   * @return The length of the product.
+   */
   public double getLength() {
     return length;
   }
 
+  /**
+   * @return The height of the product.
+   */
   public double getHeight() {
     return height;
   }
 
+  /**
+   * @return The color of the product.
+   */
   public String getColor() {
     return color;
   }
 
+  /**
+   * @return The quantity of the product.
+   */
   public int getQuantity() {
     return quantity;
   }
 
-  // TODO(ingar): xShould be turned into an enum at some point
-  public int getCategory() {
+  /**
+   * @return The category of the product.
+   */
+  public Category getCategory() {
     return category;
   }
 
   /**
-   * Prints a formatted presentation of the products information.
+   * @return a formatted presentation of the product's information.
    */
-  public void printFormatted() {
-    System.out.println("ID:          " + id);
-    System.out.println("Description: " + description);
-    System.out.println("Price:       " + price);
-    System.out.println("Brand:       " + brand);
-    System.out.println("Weight:      " + weight);
-    System.out.println("Length:      " + length);
-    System.out.println("Height:      " + height);
-    System.out.println("Color:       " + color);
-    System.out.println("Quantity:    " + quantity);
-    System.out.println("Category:    " + category);
-    System.out.println('\n');
+  public String getFormattedString() {
+    return """
+        ID:          %s
+        Description: %s
+        Price:       %d
+        Brand:       %s
+        Weight:      %f
+        Length:      %f
+        Height:      %f
+        Color:       %s
+        Quantity:    %d
+        Category:    %s
+        
+        """
+        .formatted(
+          id,
+          description,
+          price,
+          brand,
+          weight,
+          length,
+          height,
+          color,
+          quantity,
+          category
+        );
   }
 
   @Override
@@ -236,5 +312,4 @@ public class Product {
       + brand + ", weight=" + weight + ", length=" + length + ", height=" + height + ", color=" 
       + color + ", quantity=" + quantity + ", category=" + category + "]";
   }
-
 }

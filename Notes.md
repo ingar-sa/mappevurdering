@@ -166,6 +166,19 @@ private functions:
      5. No: print an option list with the different items (doesn't matter if there is just one, they choose regardless)
      6. return item id
    
+hashmap verification of inputs:
+You would need an array of all of the different messages
+loop through it and print the message for each one
+wait for user input
+exit if it is --exit 
+store it as a string in a hashmap
+
+pass the hashmap into the inventory
+inventory loops through the hashmap
+if it is not an empty string
+this is already incredibly convoluted
+ifs it is
+   
 **Ideas**
 Use hashmap with the id's as keys, since this has O(1) lookup time.
 This also works since strings are immutable objects.
@@ -181,3 +194,46 @@ I think it makes most sence to use an array based container.
 **WTF...**
 Apparently there is a max distance between a variable declaration and its first
 use that is allowed, which is kinda dumb if 
+
+**Del 2**
+Loose coupling
+There might be tight coupling in the edit and add methods in the client.
+This is because what input the client is supposed to take in is completely dependent on what parameters the inventory's method has.
+However, you can argue that this is not an issue because the design of this program is decided by what the client's functionality is supposed to be.
+It is therefore the inventory's method that must change with changes in the client, not the other way around.
+There is also an argument to be made about cohesion.
+Designing these methods with completely loose coupling would require the Inventory to read user input.
+Is this really appropriate functionality for it? 
+
+Cohesion.
+The inventory class and Product class are well designed from a cohesion perspective.
+The inventory is a collection of Products, and performs operations that match what you would do on a collection of products.
+The client might have possibilities for improved cohesion.
+The client provides the UI.
+This includes showing the user what options they have, and getting the input from the user.
+Is it possible that the functionality of using that input should be passed on to another class?
+The main problem with this, is that each functionality the user can use requires more input to be had from the user.
+This means that any new class that takes responsibility for one or more function will also need to take responsibility for getting the user input, unless we want an extremely convoluted setup for interaction between the client and this new class.
+Since each function requires the class to take input, it thereby takes over functionality that was originally the client's task.
+
+
+**Del 3**
+So, now that I have a quite nicely working program, it is time to look at refactoring it.
+The refactoring is specifically relating to using streams instead of for loops, as this is
+written as one of the things we should include, technically for part 2, but I'll do it now.
+Also Enum!!! Let's start with that.
+
+Setting the enum from user input.
+I think I want to do it in two ways.
+1. the user writes the name of the category
+2. the user enters a number
+
+Problem with this is that it is going to be extra code, but hey, user convenience am i rite?
+
+Rewriting the entire way I have been using exceptions. I am relying heavily on my code
+throwing exceptions if parameters are not valid, especially the id in inventory.
+I should change it so that the caller has to have previously checked that the id
+exists. 
+
+rewriting the findproductsmethod so the caller must use either or both in their code.
+Makes it more generalized
