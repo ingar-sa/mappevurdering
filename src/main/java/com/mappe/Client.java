@@ -449,7 +449,7 @@ public final class Client {
       }
       final String category = input;
 
-      Product editedProduct = inventory.getEditedProduct(
+      Product editedProduct = getEditedProduct(
           oldId,
           newId, 
           description,
@@ -595,6 +595,93 @@ public final class Client {
     }
     
     return productId;
+  }
+
+  /**
+   * Returns an edited version of the old product with the updated information.
+   * It takes strings for all the parameters in the Product constructor,
+   * and if they're not empty, changes the value. Otherwise, it keeps the old value.
+   * All new values must be valid as described in the Product class constructor.
+   * The caller must ensure that the id of the existing product is valid,
+   * and that the new id is unique. If the user has entered a new id,
+   * and it is the same as the old id, the method will not throw an exception.
+   * 
+   * @param oldId Id of the product to be edited.
+   * @param newId Empty string, or the new id of the product.
+   * @param description Empty string, or the new description of the product. 
+   * @param price Empty string, or the new price of the product.
+   * @param brand Empty string, or the new brand of the product.
+   * @param weight Empty string, or the new weight of the product.
+   * @param length Empty string, or the new length of the product.
+   * @param height Empty string, or the new height of the product.
+   * @param color Empty string, or the new color of the product.
+   * @param quantity Empty string, or the new quantity of the product.
+   * @param category Empty string, or the new category of the product.
+   * 
+   * @return A new product with the updated information.
+   * @throws IllegalArgumentException If the new id is not unique, or if any of the arguments are
+   *                                  invalid acccording to the Product class constructor.
+   */
+  private Product getEditedProduct(
+      String oldId,
+      String newId,
+      String description,
+      String price,
+      String brand,
+      String weight,
+      String length,
+      String height,
+      String color,
+      String quantity,
+      String category) {
+
+    Product oldProduct = inventory.getProductById(oldId);
+    Product newProduct = new Product(oldProduct);  
+
+    if (!newId.equals("")) {
+      if (inventory.isExistingId(newId) && !newId.equals(oldId)) {
+        throw new IllegalArgumentException("The new id must be unique.");
+      }
+      newProduct.setId(newId);
+    }
+
+    if (!description.equals("")) {
+      newProduct.setDescription(description);
+    }
+
+    if (!price.equals("")) {
+      newProduct.setPrice(Integer.parseInt(price));
+    }
+    
+    if (!brand.equals("")) {
+      newProduct.setBrand(brand);
+    }
+
+    if (!weight.equals("")) {
+      newProduct.setWeight(Double.parseDouble(weight));
+    }
+
+    if (!length.equals("")) {
+      newProduct.setLength(Double.parseDouble(length));
+    }
+
+    if (!height.equals("")) {
+      newProduct.setHeight(Double.parseDouble(height));
+    }
+
+    if (!color.equals("")) {
+      newProduct.setColor(color);
+    }
+
+    if (!quantity.equals("")) {
+      newProduct.setQuantity(Integer.parseInt(quantity));
+    }
+
+    if (!category.equals("")) {
+      newProduct.setCategory(Category.parseCategory(category));
+    }
+
+    return newProduct;
   }
 
   public static void main(String[] args) {
